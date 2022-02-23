@@ -4,10 +4,10 @@ import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const cookies = cookie.parse(event.request.headers.get('cookie') || '');
-  // @ts-ignore
-	event.locals.userid = cookies.userid || uuid();
+    // @ts-ignore
+  event.locals.userid = cookies.userid || uuid();
 
-	const response = await resolve(event);
+  const response = await resolve(event);
 
 	if (!cookies.userid) {
 		// if this is the first time the user has visited this app,
