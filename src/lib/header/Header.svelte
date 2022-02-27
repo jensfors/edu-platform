@@ -1,128 +1,57 @@
 <script lang="ts">
-  import { page } from '$app/stores';
-  import logo from './svelte-logo.svg';
+  import { HomeIcon, SearchIcon } from 'svelte-feather-icons'
 </script>
 
-<header class="flex justify-between bg-primary">
-  <div class="corner">
-    <a href="https://kit.svelte.dev">
-      <img src={logo} alt="SvelteKit" />
-    </a>
-  </div>
+<header>
+  <div class="navbar bg-primary mb-40 shadow-xl rounded-b-2xl">
+    <div class="navbar-start">
+      <a sveltekit:prefetch href="/" class="btn btn-ghost btn-circle">
+        <HomeIcon size="28" class="text-base-100" />
+      </a>
 
-  <nav>
-    <svg viewBox="0 0 2 3" aria-hidden="true">
-      <path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
-    </svg>
-
-    <ul>
-      <li class:active={$page.url.pathname === '/'}><a sveltekit:prefetch href="/">Home</a></li>
-      <li class:active={$page.url.pathname === '/about'}>
-        <a sveltekit:prefetch href="/about">About</a>
-      </li>
-      <li class:active={$page.url.pathname === '/todos'}>
-        <a sveltekit:prefetch href="/todos">Todos</a>
-      </li>
-    </ul>
-
-    <!-- <ul> -->
-    <!-- 	<li class:active={$page.url.pathname === '/'}><a sveltekit:prefetch href="/">Home</a></li> -->
-    <!-- 	<li class:active={$page.url.pathname === '/about'}><a sveltekit:prefetch href="/about">About</a></li> -->
-    <!-- 	<li class:active={$page.url.pathname === '/todos'}><a sveltekit:prefetch href="/todos">Todos</a></li> -->
-    <!-- </ul> -->
-    <svg viewBox="0 0 2 3" aria-hidden="true">
-      <path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
-    </svg>
-  </nav>
-
-  <div class="corner">
-    <a href="https://kit.svelte.dev">
-      <img src={logo} alt="SvelteKit" />
-    </a>
+      <!-- TODO: Make this search button do stuff -->
+      <button class="btn btn-ghost btn-circle">
+        <SearchIcon size="28" class="text-base-100" />
+      </button>
+      <!-------------------------------------------->
+    </div>
+    <div class="navbar-center">
+      <ul tabindex="0" class="flex-row p-4 menu menu-compact">
+        <li>
+          <a sveltekit:prefetch href="/about">About</a>
+        </li>
+        <li>
+          <a sveltekit:prefetch href="/testing-zone">Testing Zone</a>
+        </li>
+      </ul>
+    </div>
+    <div class="navbar-end">
+      <div class="dropdown dropdown-end">
+        <div tabindex="0" class="btn btn-ghost btn-circle avatar">
+          <div type="text" class="w-10 rounded-full">
+            <img src="https://api.lorem.space/image/face?hash=33791" alt="profile" />
+          </div>
+        </div>
+        <ul
+          tabindex="0"
+          class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
+        >
+          <li>
+            <a sveltekit:prefetch href="/dymmy-url" class="justify-between">
+              Profile
+              <span class="badge">New</span>
+            </a>
+          </li>
+          <li><a sveltekit:prefetch href="/dymma-url">Settings</a></li>
+          <li><a sveltekit:prefetch href="/dyamy-url">Logout</a></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </header>
 
 <style>
-  .corner {
-    width: 3em;
-    height: 3em;
-  }
-
-  .corner a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-  }
-
-  .corner img {
-    width: 2em;
-    height: 2em;
-    object-fit: contain;
-  }
-
-  nav {
-    display: flex;
-    justify-content: center;
-    --background: rgba(255, 255, 255, 0.7);
-  }
-
-  svg {
-    width: 2em;
-    height: 3em;
-    display: block;
-  }
-
-  path {
-    fill: var(--background);
-  }
-
-  ul {
-    position: relative;
-    padding: 0;
-    margin: 0;
-    height: 3em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    list-style: none;
-    background: var(--background);
-    background-size: contain;
-  }
-
-  li {
-    position: relative;
-    height: 100%;
-  }
-
-  li.active::before {
-    --size: 6px;
-    content: '';
-    width: 0;
-    height: 0;
-    position: absolute;
-    top: 0;
-    left: calc(50% - var(--size));
-    border: var(--size) solid transparent;
-    border-top: var(--size) solid var(--accent-color);
-  }
-
-  nav a {
-    display: flex;
-    height: 100%;
-    align-items: center;
-    padding: 0 1em;
-    color: var(--heading-color);
-    font-weight: 700;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    text-decoration: none;
-    transition: color 0.2s linear;
-  }
-
-  a:hover {
-    color: var(--accent-color);
+  .navbar-center a {
+    @apply text-base-100 text-lg;
   }
 </style>

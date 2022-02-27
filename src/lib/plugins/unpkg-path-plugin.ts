@@ -1,4 +1,4 @@
-import type * as esbuild from 'esbuild-wasm';
+import type * as esbuild from 'esbuild-wasm'
 
 export const unpkgPathPlugin = () => {
   return {
@@ -13,11 +13,8 @@ export const unpkgPathPlugin = () => {
       build.onResolve({ filter: /^\.+\// }, (args: any) => {
         return {
           namespace: 'a',
-          path: new URL(
-            args.path,
-            'https://unpkg.com' + args.resolveDir + '/'
-          ).href,
-        };
+          path: new URL(args.path, 'https://unpkg.com' + args.resolveDir + '/').href,
+        }
       })
 
       // Handle main file of a module
@@ -25,8 +22,8 @@ export const unpkgPathPlugin = () => {
         return {
           namespace: 'a',
           path: `https://unpkg.com/${args.path}`,
-        };
-      });
+        }
+      })
     },
-  };
-};
+  }
+}
