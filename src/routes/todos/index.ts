@@ -1,11 +1,24 @@
 import { api } from './_api';
 import type { RequestHandler } from '@sveltejs/kit';
+import PrismaClient from '$lib/prisma';
+import {v4 as uuidv4} from 'uuid';
+
+type Todo = {
+	uid: string;
+	created_at: Date;
+	text: string;
+	done: boolean;
+};
+
+
+
+const prisma = new PrismaClient();
 
 export const get: RequestHandler = async ({ locals }) => {
 	// locals.userid comes from src/hooks.js
-	const response = await api('get', `todos/${locals.userid}`);
+	const response = await prisma.todo.findMany();
 
-	if (response.status === 404) {
+	/*if (response.status === 404) {
 		// user hasn't created a todo list.
 		// start with an empty array
 		return {
@@ -13,15 +26,15 @@ export const get: RequestHandler = async ({ locals }) => {
 				todos: []
 			}
 		};
-	}
+	} */
 
-	if (response.status === 200) {
+	//if (response.status === 200) {
 		return {
 			body: {
-				todos: await response.json()
+				todos: response
 			}
 		};
-	}
+	//}
 
 	return {
 		status: response.status
@@ -30,10 +43,20 @@ export const get: RequestHandler = async ({ locals }) => {
 
 export const post: RequestHandler = async ({ request, locals }) => {
 	const form = await request.formData();
+	console.log(form.get('text').toString());
+	const dab: Todo = {uid: uuidv4(), created_at: new Date("Wed, 27 July 2016 13:30:00"), text: form.get('text').toString(), done: false }
+	await prisma.todo.create({
+		data: {
+			created_at: new Date(),
+			done: false,
+			text: form.get('text').toString(),
+		}
+	}) 
 
+	/*
 	await api('post', `todos/${locals.userid}`, {
 		text: form.get('text')
-	});
+	}); */
 
 	return {};
 };

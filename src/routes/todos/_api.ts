@@ -11,6 +11,13 @@
 
 const base = 'https://api.svelte.dev';
 
+export type Todo = {
+	uid: string;
+	created_at: Date;
+	text: string;
+	done: boolean;
+};
+
 export function api(method: string, resource: string, data?: Record<string, unknown>) {
 	return fetch(`${base}/${resource}`, {
 		method,
