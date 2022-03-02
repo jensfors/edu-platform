@@ -17,6 +17,7 @@ const prisma = new PrismaClient();
 export const get: RequestHandler = async ({ locals }) => {
 	// locals.userid comes from src/hooks.js
 	const response = await prisma.todo.findMany();
+	console.log("GET")
 
 	/*if (response.status === 404) {
 		// user hasn't created a todo list.
@@ -71,20 +72,23 @@ const redirect = {
 };
 
 export const patch: RequestHandler = async ({ request, locals }) => {
-	const form = await request.formData();
+	console.log('Patch')
 
+	const form = await request.formData();
+/*
 	await api('patch', `todos/${locals.userid}/${form.get('uid')}`, {
 		text: form.has('text') ? form.get('text') : undefined,
 		done: form.has('done') ? !!form.get('done') : undefined
 	});
-
+*/
 	return redirect;
 };
 
 export const del: RequestHandler = async ({ request, locals }) => {
+	console.log('Delete')
 	const form = await request.formData();
 
-	await api('delete', `todos/${locals.userid}/${form.get('uid')}`);
+	//await api('delete', `todos/${locals.userid}/${form.get('uid')}`);
 
 	return redirect;
 };
