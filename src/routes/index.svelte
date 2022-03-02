@@ -70,11 +70,11 @@
           Level {23}
         </p>
       </div>
-      <h2 class="card-title">Shoes!</h2>
-      <p>If a dog chews shoes whose shoes does he choose?</p>
       <div class="card-actions">
         <button class="btn btn-primary">Buy Now</button>
       </div>
+      <h2 class="card-title">Solved exercises</h2>
+      <p>{528}</p>
     </div>
   </div>
 </div>
