@@ -22,6 +22,24 @@
       url: 'https://picsum.photos/120/120?random=5',
     },
   ]
+
+  const badges = [
+    {
+      url: 'https://picsum.photos/120/120?random=111',
+    },
+    {
+      url: 'https://picsum.photos/120/120?random=222',
+    },
+    {
+      url: 'https://picsum.photos/120/120?random=333',
+    },
+    {
+      url: 'https://picsum.photos/120/120?random=444',
+    },
+    {
+      url: 'https://picsum.photos/120/120?random=555',
+    },
+  ]
 </script>
 
 <h1 class="text-2xl">This is our front page homie dog</h1>
@@ -70,8 +88,10 @@
           Level {23}
         </p>
       </div>
-      <div class="card-actions">
-        <button class="btn btn-primary">Buy Now</button>
+      <div class="flex w-full justify-evenly">
+        {#each badges as badge}
+          <img class="rounded-xl h-10 w-10" src={badge.url} alt="WCAG badges" />
+        {/each}
       </div>
       <h2 class="card-title">Solved exercises</h2>
       <p>{528}</p>
