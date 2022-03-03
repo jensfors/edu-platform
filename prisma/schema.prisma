@@ -12,17 +12,148 @@ generator client {
 }
 
 model Todo {
-  uid        String  @id @default(cuid())
-  created_at DateTime
-  text       String
-  done       Boolean
+  uid           String  @id @default(cuid())
+  created_at    DateTime
+  text          String
+  done          Boolean
 }
 
+// A user 
 model User {
-  id         String @id @default(cuid())
-  login      String
-  avatar_url String
-  name       String
-  company    String
-  location   String
+  id               String    @id @default(cuid())
+  email            String    @unique
+  password         String
+  avatarURL        String
+  firstName        String
+  lastName         String
+  createdAt        DateTime  @default(now())
+  role             String    // Normal, Creator, Admin // Some role to create news?
+  courses          UserHasCourse[]
+  solvedExercises  UserSolvesExercise[]
+  Personas         Persona[]
+}
+
+// A Course with exercises
+model Course {
+  id            String      @id @default(cuid())
+  title         String 
+  description   String
+  createdAt     DateTime    @default(now())
+  public        Boolean     @default(false)
+  exercises     Exercise[]
+  authors       UserHasCourse[]  
+}
+
+// An exercise, the content will be in a markdown filde "[id].md"
+model Exercise {
+  id            String    @id @default(cuid())
+  title         String 
+  public        Boolean   @default(false)
+  difficulty    String    @default("Beginner") // Beginner, Intermediate, Expert, ... OR Easy, Medium, Hard, ...
+  createdAt     DateTime  @default(now())
+  criteria      ExerciseHasCriteria[]
+  course        Course    @relation(fields: [courseId], references: [id])
+  courseId      String // The id of the course the exercise belongs to
+  persona       Persona    @relation(fields: [personaId], references: [id])
+  personaId     String // The id of the course the exercise belongs to
+  usersSolved   UserSolvesExercise[] // All users who solved the exercise
+}
+
+model Persona {
+  id            String    @id @default(cuid())
+  name          String 
+  age           Int   
+  disability    String?
+  description   String
+  avatarUrl     String
+  official      Boolean   @default(false)   // An official persona
+  private       Boolean   @default(true)    // Can other people use the persona for their content
+  author        User      @relation(fields: [authorId], references: [id])
+  authorId      String // The id of the course the exercise belongs to
+  exercises     Exercise[]
+}
+
+
+// Relation table for keeping track of who the authors of a course is
+model UserHasCourse {
+  userId       String    
+  user         User         @relation(fields: [userId], references: [id]) 
+  courseId     String   
+  course       Course       @relation(fields: [courseId], references: [id]) 
+  mainAuthor   Boolean      @default(false)  // Is it the user who has created the course
+
+  @@id([userId, courseId])  // PKey is combination of the two IDs
+}
+
+// Relation table for users who solved a exercise 
+model UserSolvesExercise {
+  userId       String    
+  user         User         @relation(fields: [userId], references: [id]) 
+  exerciseId   String   
+  exercise     Exercise     @relation(fields: [exerciseId], references: [id]) 
+  solvedAt     DateTime     @default(now())
+  xp           Int?  
+
+  @@id([userId, exerciseId])  // PKey is combination of the two IDs
+}
+
+model ExerciseHasCriteria {
+  exerciseId    String        // ID to the exercise
+  exercise      Exercise      @relation(fields: [exerciseId], references: [id]) 
+  criteriaId    String        // ID to the criteria
+  criteria      WCAGCriteria  @relation(fields: [criteriaId], references: [id])
+  assignedAt    DateTime      @default(now())
+
+  @@id([exerciseId, criteriaId]) // PKey is combination of the two IDs
+}
+
+// WCAG Principles for categories
+model WCAGPrinciple {
+  id            String    @id @default(cuid())
+  name          String
+  color         String?  // Color of principle for categories 
+  icon          String?  // Icon for principle logo
+  description   String
+  criteria      WCAGCriteria[] // Has a list of WCAGCriteria 
+}
+
+// A WCAG criteria of a principle
+model WCAGCriteria {
+  id            String    @id @default(cuid())
+  number        String
+  name          String
+  description   String?
+  conformance   String // A, AA, AAA
+  principleId   String // The id of the WCAGPrinciple the criteria belongs to
+  principle     WCAGPrinciple @relation(fields: [principleId], references: [id])
+  exercises     ExerciseHasCriteria[] // Relation to exercises assigned this criteria
+}
+
+
+
+
+
+
+
+model Post {
+  id         Int                 @id @default(autoincrement())
+  title      String
+  categories CategoriesOnPosts[]
+}
+
+model Category {
+  id    Int                 @id @default(autoincrement())
+  name  String
+  posts CategoriesOnPosts[]
+}
+
+model CategoriesOnPosts {
+  post       Post     @relation(fields: [postId], references: [id])
+  postId     Int // relation scalar field (used in the `@relation` attribute above)
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int // relation scalar field (used in the `@relation` attribute above)
+  assignedAt DateTime @default(now())
+  assignedBy String
+
+  @@id([postId, categoryId])
 }
