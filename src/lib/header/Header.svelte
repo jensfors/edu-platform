@@ -3,7 +3,7 @@
 </script>
 
 <!-- The header looks ass on less than 400px, and should be fixed with an entire other menu -->
-<header class="navbar bg-primary mb-40 shadow-xl rounded-b-2xl">
+<header class="navbar bg-primary mb-20 shadow-xl rounded-b-2xl">
   <!-- <div class="navbar bg-primary mb-40 shadow-xl rounded-b-2xl"> -->
   <div class="navbar-start">
     <a sveltekit:prefetch href="/" class="btn btn-ghost btn-circle">
