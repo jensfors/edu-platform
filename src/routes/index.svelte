@@ -22,12 +22,78 @@
       url: 'https://picsum.photos/120/120?random=5',
     },
   ]
+
+  const badges = [
+    {
+      url: 'https://picsum.photos/120/120?random=111',
+    },
+    {
+      url: 'https://picsum.photos/120/120?random=222',
+    },
+    {
+      url: 'https://picsum.photos/120/120?random=333',
+    },
+    {
+      url: 'https://picsum.photos/120/120?random=444',
+    },
+    {
+      url: 'https://picsum.photos/120/120?random=555',
+    },
+  ]
+
+  const blogPosts = [
+    {
+      tite: 'Deadline for accessibility on governments websites',
+      author: 'Mathias Rasmussen',
+      date: '23-05-1997',
+      profileImg: 'https://picsum.photos/40/40?random=123',
+    },
+    {
+      tite: 'Deadline for accessibility for private websites',
+      author: 'Mathias Rasmussen',
+      date: '01-12-1985',
+      profileImg: 'https://picsum.photos/40/40?random=234',
+    },
+    {
+      tite: 'Deadline for accessibility for private websites',
+      author: 'Mathias Rasmussen',
+      date: '17-12-1969',
+      profileImg: 'https://picsum.photos/40/40?random=345',
+    },
+  ]
 </script>
 
-<h1 class="text-2xl">This is our front page homie dog</h1>
+<!-- Blog posts -->
+<div class="flex gap-20 pb-20">
+  <div class="card lg:card-side flex-wrap bg-white shadow-xl max-w-[792px]">
+    <div class="flex w-full bg-primary">
+      <h1 class="text-2xl px-8 py-4 text-white">Blog Posts</h1>
+    </div>
+    <div class="flex py-8 px-8 gap-8">
+      {#each blogPosts as blogPost}
+        <div class="card w-50 bg-base-100 shadow-xl w-1/3">
+          <div class="card-body justify-between">
+            <h2 class="card-title w-2/3">
+              {blogPost.tite}
+            </h2>
+            <div class="h-1/3">
+              <figure>
+                <img src={blogPost.profileImg} alt="Author profile" class="rounded-3xl" />
+              </figure>
+              <p class="font-semibold">{blogPost.author}</p>
+              <p class="text-gray-500">{blogPost.date}</p>
+            </div>
+          </div>
+        </div>
+      {/each}
+    </div>
+  </div>
+</div>
+
+<!-- Personas, courses, profile card -->
 <div class="flex gap-20">
-  <!-- Persona and Course card -->
   <div class="flex flex-col gap-20">
+    <!-- Persona card -->
     <div class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[792px]">
       <div class="flex w-full bg-primary">
         <h1 class="text-2xl pl-8 py-4 text-white">Personas</h1>
@@ -41,6 +107,8 @@
         {/each}
       </div>
     </div>
+
+    <!-- Courses Card -->
     <div class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[792px]">
       <div class="flex w-full bg-primary">
         <h1 class="text-2xl pl-8 py-4 text-white">Courses</h1>
@@ -55,6 +123,7 @@
       </div>
     </div>
   </div>
+
   <!-- Profile card  -->
   <div class="card w-96 bg-base-100 shadow-xl">
     <div class="flex w-full bg-primary">
@@ -70,15 +139,13 @@
           Level {23}
         </p>
       </div>
-      <div class="card-actions">
-        <button class="btn btn-primary">Buy Now</button>
+      <div class="flex w-full justify-evenly">
+        {#each badges as badge}
+          <img class="rounded-xl h-10 w-10" src={badge.url} alt="WCAG badges" />
+        {/each}
       </div>
       <h2 class="card-title">Solved exercises</h2>
       <p>{528}</p>
     </div>
   </div>
 </div>
-
-<style>
-  /* your styles go here */
-</style>
