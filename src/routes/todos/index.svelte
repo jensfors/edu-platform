@@ -10,8 +10,9 @@
 		done: boolean;
 		pending_delete: boolean;
 	};
-
+	
 	export let todos: Todo[];
+	//console.log(todos)
 </script>
 
 <svelte:head>
