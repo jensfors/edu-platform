@@ -47,7 +47,6 @@ export const post: RequestHandler = async ({ request, locals }) => {
 	const form = await request.formData();
 	console.log(form.get('text').toString());
 	const dab: Todo = {uid: uuidv4(), created_at: new Date("Wed, 27 July 2016 13:30:00"), text: form.get('text').toString(), done: false }
-	//assignCategories();
 	/*await prisma.todo.create({
 		data: {
 			created_at: new Date(),

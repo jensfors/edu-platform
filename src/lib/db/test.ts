@@ -2,9 +2,9 @@ import PrismaClient from '$lib/prisma';
 
 const prisma = new PrismaClient();
 
-// Create a Post ("How to be Bob"), that relates to a category we create ("New category")
+// Create a Post2 ("How to be Bob"), that relates to a category we create ("New category")
 export const createCategory = async () => {
-    await prisma.post.create({
+    await prisma.post2.create({
       data: {
         title: 'How to be Bob',
         categories: {
@@ -27,7 +27,7 @@ export const createCategory = async () => {
 
 // Create a new post ("How to be Bob") an assign to existing category (id = 1)
 export const assignCategories = async () => {
-  await prisma.post.create({
+  await prisma.post2.create({
     data: {
       title: 'How to be Bob',
       categories: {
@@ -49,7 +49,7 @@ export const assignCategories = async () => {
 
 // getting posts where Category = "New category"
 export const getPosts = async () => {
-  const lol = await prisma.post.findMany({
+  const lol = await prisma.post2.findMany({
     where: {
       categories: {
         some: {

@@ -30,7 +30,11 @@ model User {
   role             String    // Normal, Creator, Admin // Some role to create news?
   courses          UserHasCourse[]
   solvedExercises  UserSolvesExercise[]
-  Personas         Persona[]
+  personas         Persona[]
+  posts            UserHasPost[]
+  readPosts        UserReadsPost[]
+  comments         Comment[]
+  likes            UserLikesComment[]
 }
 
 // A Course with exercises
@@ -53,9 +57,9 @@ model Exercise {
   createdAt     DateTime  @default(now())
   criteria      ExerciseHasCriteria[]
   course        Course    @relation(fields: [courseId], references: [id])
-  courseId      String // The id of the course the exercise belongs to
-  persona       Persona    @relation(fields: [personaId], references: [id])
-  personaId     String // The id of the course the exercise belongs to
+  courseId      String    // The id of the course the exercise belongs to
+  persona       Persona   @relation(fields: [personaId], references: [id])
+  personaId     String    // The id of the course the exercise belongs to
   usersSolved   UserSolvesExercise[] // All users who solved the exercise
 }
 
@@ -69,8 +73,52 @@ model Persona {
   official      Boolean   @default(false)   // An official persona
   private       Boolean   @default(true)    // Can other people use the persona for their content
   author        User      @relation(fields: [authorId], references: [id])
-  authorId      String // The id of the course the exercise belongs to
+  authorId      String    // The id of the course the exercise belongs to
   exercises     Exercise[]
+}
+
+model Post {
+  id            String    @id @default(cuid())
+  title         String
+  type          String    @default("Blog") // Blog post, News, etc
+  createdAt     DateTime  @default(now())
+  public        Boolean   @default(false) // false = draft
+  criteria      PostHasCriteria[]  
+  authors       UserHasPost[]
+  usersRead     UserReadsPost[]
+  comments      Comment[]
+}
+
+model Comment {
+  id            String    @id @default(cuid())
+  createdAt     DateTime  @default(now())
+  text          String
+  post          Post      @relation(fields: [postId], references: [id])
+  postId        String    // The id of the post the comment belongs to
+  user          User      @relation(fields: [userId], references: [id])
+  userId        String    // The id of the user who wrote the comment
+  likes         UserLikesComment[] 
+}
+
+model UserLikesComment {
+  createdAt     DateTime     @default(now())
+  userId        String    
+  user          User         @relation(fields: [userId], references: [id]) 
+  commentId     String   
+  comment       Comment      @relation(fields: [commentId], references: [id]) 
+
+  @@id([userId, commentId])  // PKey is combination of the two IDs
+}
+
+// The relation of post authors
+model UserHasPost {
+  userId       String    
+  user         User         @relation(fields: [userId], references: [id]) 
+  postId       String   
+  post         Post         @relation(fields: [postId], references: [id]) 
+  mainAuthor   Boolean      @default(false)  // Is it the user who has created the course
+
+  @@id([userId, postId])  // PKey is combination of the two IDs
 }
 
 
@@ -83,6 +131,17 @@ model UserHasCourse {
   mainAuthor   Boolean      @default(false)  // Is it the user who has created the course
 
   @@id([userId, courseId])  // PKey is combination of the two IDs
+}
+
+model UserReadsPost {
+  userId       String    
+  user         User         @relation(fields: [userId], references: [id]) 
+  postId       String   
+  post         Post         @relation(fields: [postId], references: [id]) 
+  readAt       DateTime     @default(now())
+  xp           Int?  
+
+  @@id([userId, postId])  // PKey is combination of the two IDs
 }
 
 // Relation table for users who solved a exercise 
@@ -107,6 +166,17 @@ model ExerciseHasCriteria {
   @@id([exerciseId, criteriaId]) // PKey is combination of the two IDs
 }
 
+model PostHasCriteria {
+  postId        String        // ID to the exercise
+  post          Post          @relation(fields: [postId], references: [id]) 
+  criteriaId    String        // ID to the criteria
+  criteria      WCAGCriteria  @relation(fields: [criteriaId], references: [id])
+  assignedAt    DateTime      @default(now())
+
+  @@id([postId, criteriaId]) // PKey is combination of the two IDs
+}
+
+
 // WCAG Principles for categories
 model WCAGPrinciple {
   id            String    @id @default(cuid())
@@ -127,6 +197,7 @@ model WCAGCriteria {
   principleId   String // The id of the WCAGPrinciple the criteria belongs to
   principle     WCAGPrinciple @relation(fields: [principleId], references: [id])
   exercises     ExerciseHasCriteria[] // Relation to exercises assigned this criteria
+  posts         PostHasCriteria[] // Relation to posts assigned this criteria
 }
 
 
@@ -135,7 +206,7 @@ model WCAGCriteria {
 
 
 
-model Post {
+model Post2 {
   id         Int                 @id @default(autoincrement())
   title      String
   categories CategoriesOnPosts[]
@@ -148,7 +219,7 @@ model Category {
 }
 
 model CategoriesOnPosts {
-  post       Post     @relation(fields: [postId], references: [id])
+  post       Post2     @relation(fields: [postId], references: [id])
   postId     Int // relation scalar field (used in the `@relation` attribute above)
   category   Category @relation(fields: [categoryId], references: [id])
   categoryId Int // relation scalar field (used in the `@relation` attribute above)
