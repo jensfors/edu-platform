@@ -5,7 +5,7 @@
 
 <Header />
 
-<main class="flex flex-col flex-1 p-4 w-full max-w-[1024px] my-0 mx-auto">
+<main class="flex flex-col flex-1 p-4 w-full max-w-[1280px] my-0 mx-auto">
   <slot />
 </main>
 
