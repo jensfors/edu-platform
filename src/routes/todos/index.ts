@@ -1,8 +1,9 @@
 import { api } from './_api';
 import type { RequestHandler } from '@sveltejs/kit';
 import PrismaClient from '$lib/prisma';
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { assignCategories, createCategory, getAssignments, getPosts } from '$lib/db/test';
+import { createAllDummyData } from '$lib/db/dummy/main';
 
 type Todo = {
 	uid: string;
@@ -31,22 +32,18 @@ export const get: RequestHandler = async ({ locals }) => {
 	} */
 
 	//if (response.status === 200) {
-		return {
-			body: {
-				todos: response
-			}
-		};
-	//}
-
 	return {
-		status: response.status
+		body: {
+			todos: response
+		}
 	};
+	//}
 };
 
 export const post: RequestHandler = async ({ request, locals }) => {
 	const form = await request.formData();
 	console.log(form.get('text').toString());
-	const dab: Todo = {uid: uuidv4(), created_at: new Date("Wed, 27 July 2016 13:30:00"), text: form.get('text').toString(), done: false }
+	const dab: Todo = { uid: uuidv4(), created_at: new Date("Wed, 27 July 2016 13:30:00"), text: form.get('text').toString(), done: false }
 	/*await prisma.todo.create({
 		data: {
 			created_at: new Date(),
@@ -76,12 +73,12 @@ export const patch: RequestHandler = async ({ request, locals }) => {
 	console.log('Patch')
 
 	const form = await request.formData();
-/*
-	await api('patch', `todos/${locals.userid}/${form.get('uid')}`, {
-		text: form.has('text') ? form.get('text') : undefined,
-		done: form.has('done') ? !!form.get('done') : undefined
-	});
-*/
+	/*
+		await api('patch', `todos/${locals.userid}/${form.get('uid')}`, {
+			text: form.has('text') ? form.get('text') : undefined,
+			done: form.has('done') ? !!form.get('done') : undefined
+		});
+	*/
 	return redirect;
 };
 
