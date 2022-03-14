@@ -3,8 +3,8 @@
 </script>
 
 <script lang="ts">
-  import Editor from '$lib/Editor.svelte';
-  import Counter from '$lib/Counter.svelte';
+  import Editor from '$lib/components/Editor.svelte';
+  import Counter from '$lib/components/Counter.svelte';
   import * as esbuild from 'esbuild-wasm';
   import { onMount } from 'svelte';
   import { unpkgPathPlugin } from '$lib/plugins/unpkg-path-plugin';

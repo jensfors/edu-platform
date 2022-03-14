@@ -1,0 +1,46 @@
+# Uses Copy
+
+**Here's some stuff that sucks freaking ass**
+
+- SvelteKit
+- SvelteKit
+- SvelteKit
+- SvelteKit
+- SvelteKit
+- SvelteKit
+- SvelteKit
+- SvelteKit
+- SvelteKit
+- SvelteKit
+- SvelteKit
+- SvelteKit
+- SvelteKit
+- SvelteKit
+- VS Code
+- Emojis 😎
+- VS Code
+- Emojis 😎
+- VS Code
+- Emojis 😎
+- VS Code
+- Emojis 😎
+- VS Code
+- Emojis 😎
+- VS Code
+- Emojis 😎
+- VS Code
+- Emojis 😎
+- VS Code
+- Emojis 😎
+- VS Code
+- Emojis 😎
+- VS Code
+- Emojis 😎
+- VS Code
+- Emojis 😎
+- VS Code
+- Emojis 😎
+- VS Code
+- Emojis 😎
+- VS Code
+- Emojis 😎
