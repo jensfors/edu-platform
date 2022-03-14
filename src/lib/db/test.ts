@@ -4,24 +4,24 @@ const prisma = new PrismaClient();
 
 // Create a Post2 ("How to be Bob"), that relates to a category we create ("New category")
 export const createCategory = async () => {
-    await prisma.post2.create({
-      data: {
-        title: 'How to be Bob',
-        categories: {
-          create: [
-            {
-              assignedBy: 'Bob',
-              assignedAt: new Date(),
-              category: {
-                create: {
-                  name: 'New category',
-                },
+  await prisma.post2.create({
+    data: {
+      title: 'How to be Bob',
+      categories: {
+        create: [
+          {
+            assignedBy: 'Bob',
+            assignedAt: new Date(),
+            category: {
+              create: {
+                name: 'New category',
               },
             },
-          ],
-        },
+          },
+        ],
       },
-    })
+    },
+  })
 };
 
 
