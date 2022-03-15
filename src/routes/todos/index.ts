@@ -1,11 +1,7 @@
-import { api } from './_api';
 import type { RequestHandler } from '@sveltejs/kit';
 import PrismaClient from '$lib/prisma';
 import { v4 as uuidv4 } from 'uuid';
-import { addAuthorToPost, addCommentToPost, assignCategories, createCategory, getAssignments, getPost, getPosts } from '$lib/db/test';
-import { createAllDummyData } from '$lib/db/dummy/main';
-import { getLatestBlogPosts, getPopularBlogPosts } from '$lib/db/posts';
-import { getPopularCourses } from '$lib/db/courses';
+import { likeComment } from '$lib/db/comments';
 
 type Todo = {
 	uid: string;
@@ -22,8 +18,6 @@ export const get: RequestHandler = async ({ locals }) => {
 	// locals.userid comes from src/hooks.js
 	const response = await prisma.todo.findMany();
 	console.log("GET")
-	getPopularCourses(3, 7)
-
 	/*if (response.status === 404) {
 		// user hasn't created a todo list.
 		// start with an empty array

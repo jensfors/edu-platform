@@ -4,7 +4,7 @@ import { userJen, userSimon } from './dummy/data';
 
 const prisma = new PrismaClient();
 
-export const addCommentToPost = async () => {
+export const addCommentToPost2 = async () => {
   await prisma.comment.create({
     data: {
       text: 'This is my test comment',
@@ -18,7 +18,7 @@ export const addCommentToPost = async () => {
   })
 }
 
-export const getPost = async () => {
+export const getPost2 = async () => {
   let dab: Post = await prisma.post.findUnique({
     where: {
       id: 'cl0jgmcyj0004l4v6qzjd21ec'
@@ -33,7 +33,7 @@ export const getPost = async () => {
 }
 
 // Creating a relation that a user is an author of a existing post
-export const addAuthorToPost = async () => {
+export const addAuthorToPost2 = async () => {
   await prisma.userHasPost.create({
     data: {
       user: {
