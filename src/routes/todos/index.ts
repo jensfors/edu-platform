@@ -1,9 +1,7 @@
-import { api } from './_api';
 import type { RequestHandler } from '@sveltejs/kit';
 import PrismaClient from '$lib/prisma';
 import { v4 as uuidv4 } from 'uuid';
-import { assignCategories, createCategory, getAssignments, getPosts } from '$lib/db/test';
-import { createAllDummyData } from '$lib/db/dummy/main';
+import { likeComment } from '$lib/db/comments';
 
 type Todo = {
 	uid: string;
@@ -20,7 +18,6 @@ export const get: RequestHandler = async ({ locals }) => {
 	// locals.userid comes from src/hooks.js
 	const response = await prisma.todo.findMany();
 	console.log("GET")
-
 	/*if (response.status === 404) {
 		// user hasn't created a todo list.
 		// start with an empty array
@@ -44,6 +41,8 @@ export const post: RequestHandler = async ({ request, locals }) => {
 	const form = await request.formData();
 	console.log(form.get('text').toString());
 	const dab: Todo = { uid: uuidv4(), created_at: new Date("Wed, 27 July 2016 13:30:00"), text: form.get('text').toString(), done: false }
+	console.log('Adding')
+	addCommentToPost()
 	/*await prisma.todo.create({
 		data: {
 			created_at: new Date(),
