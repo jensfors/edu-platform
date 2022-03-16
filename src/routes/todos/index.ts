@@ -1,7 +1,13 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import PrismaClient from '$lib/prisma';
 import { v4 as uuidv4 } from 'uuid';
-import { likeComment } from '$lib/db/comments';
+import { likeComment, removelikeFromComment } from '$lib/db/comments';
+import { getPost } from '$lib/db/posts';
+import { deletePersona, findAllExercisesWithPersona, getAllOfficialPersonas, getAllPersonas, getUsablePersonas, getUsersPersonas } from '$lib/db/persona';
+import { mattiMovement } from '$lib/db/dummy/data';
+import { getExercise } from '$lib/db/exercises';
+import { createCourse, getAllPersonasForCourse, getAuthoredCourses, getCourse, getWCAGPrinciplesForCourse } from '$lib/db/courses';
+import type { Course } from '@prisma/client';
 
 type Todo = {
 	uid: string;

@@ -78,12 +78,17 @@ export async function getPost(postId: string): Promise<Post> {
         include: {
             comments: {
                 include: {
-                    likes: true
+                    likes: true,
+                    _count: {
+                        select: { likes: true }
+                    }
                 }
+            },
+            _count: {
+                select: { comments: true }
             }
         }
     })
-    console.log(result)
     return result
 }
 

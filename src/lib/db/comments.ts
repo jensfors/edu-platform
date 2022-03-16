@@ -37,3 +37,22 @@ export async function likeComment(comment: Comment): Promise<Comment> {
     })
     return result
 }
+
+export async function removelikeFromComment(comment: Comment): Promise<boolean> {
+    try {
+        await prisma.userLikesComment.delete({
+            where: {
+                userId_commentId: {
+                    userId: userMatti.id, // TODO: Change to local storage
+                    commentId: comment.id
+                }
+            },
+        })
+        return true
+    }
+    catch (PrismaClientKnownRequestError) {
+        console.log('User has not liked the comment') // TODO: Better error handling
+        return false
+    }
+}
+
