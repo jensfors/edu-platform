@@ -4,10 +4,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { likeComment, removelikeFromComment } from '$lib/db/comments';
 import { getPost } from '$lib/db/posts';
 import { deletePersona, findAllExercisesWithPersona, getAllOfficialPersonas, getAllPersonas, getUsablePersonas, getUsersPersonas } from '$lib/db/persona';
-import { mattiMovement } from '$lib/db/dummy/data';
+import { mattiMovement, userJen, userKasper, userMatti, userSimon } from '$lib/db/dummy/data';
 import { getExercise } from '$lib/db/exercises';
 import { createCourse, getAllPersonasForCourse, getAuthoredCourses, getCourse, getWCAGPrinciplesForCourse } from '$lib/db/courses';
 import type { Course } from '@prisma/client';
+import { getAmountOfReadPosts, getAmountOfSolvedExercises, getXP } from '$lib/db/user';
+import { PostType } from '$lib/utils/stringTypes';
 
 type Todo = {
 	uid: string;
@@ -24,6 +26,8 @@ export const get: RequestHandler = async ({ locals }) => {
 	// locals.userid comes from src/hooks.js
 	const response = await prisma.todo.findMany();
 	console.log("GET")
+	getAmountOfReadPosts(userKasper, PostType.Blog)
+	getXP(userSimon)
 	/*if (response.status === 404) {
 		// user hasn't created a todo list.
 		// start with an empty array

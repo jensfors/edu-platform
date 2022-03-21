@@ -65,7 +65,7 @@ export async function getAuthoredCourses(): Promise<Course[]> {
         return result
     }
     catch (PrismaClientKnownRequestError) {
-        console.log(`Something went wrong`)
+        console.log(`Something went wrong (getAuthoredCourses)`)
     }
 }
 
