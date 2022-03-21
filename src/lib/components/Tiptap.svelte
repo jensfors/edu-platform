@@ -4,9 +4,9 @@
   import StarterKit from '@tiptap/starter-kit'
   import Image from '@tiptap/extension-image'
 
-  let element
-  let editor
-  $: content = null
+  let element: Element
+  let editor: Editor
+  $: content = ''
 
   onMount(() => {
     editor = new Editor({
@@ -47,12 +47,15 @@
     const title = window.prompt('Title')
 
     if (url) {
-      editor.chain().focus().setImage({ src: url }).run()
-      editor.commands.setImage({
-        src: url,
-        alt: altTag,
-        title: title,
-      })
+      editor
+        .chain()
+        .focus()
+        .setImage({
+          src: url,
+          alt: altTag,
+          title: title,
+        })
+        .run()
     }
   }
 </script>
