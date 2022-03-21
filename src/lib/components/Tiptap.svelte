@@ -88,7 +88,7 @@
       Bullet list
     </button>
     <button
-      on:click={editor.chain().focus().toggleOrderedList().run()}
+      on:click={() => editor.chain().focus().toggleOrderedList().run()}
       class:active={editor.isActive('orderedList')}
     >
       Ordered list
