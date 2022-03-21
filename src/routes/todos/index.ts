@@ -5,7 +5,7 @@ import { likeComment, removelikeFromComment } from '$lib/db/comments';
 import { getPost } from '$lib/db/posts';
 import { deletePersona, findAllExercisesWithPersona, getAllOfficialPersonas, getAllPersonas, getUsablePersonas, getUsersPersonas } from '$lib/db/persona';
 import { mattiMovement, userJen, userKasper, userMatti, userSimon } from '$lib/db/dummy/data';
-import { getExercise } from '$lib/db/exercises';
+import { getExercise, giveExerciseCategoryAndAnswers } from '$lib/db/exercises';
 import { createCourse, getAllPersonasForCourse, getAuthoredCourses, getCourse, getWCAGPrinciplesForCourse } from '$lib/db/courses';
 import type { Course } from '@prisma/client';
 import { getAmountOfReadPosts, getAmountOfSolvedExercises, getXP } from '$lib/db/user';
@@ -27,7 +27,9 @@ export const get: RequestHandler = async ({ locals }) => {
 	const response = await prisma.todo.findMany();
 	console.log("GET")
 	getAmountOfReadPosts(userKasper, PostType.Blog)
-	getXP(userSimon)
+	let ass = getExercise('cl0jgn8t30117l4v66axko0vj')
+	let something: { question: string, answers: { text: string, isSolution: boolean }[] }[] = [{ question: 'q1', answers: [{ text: 'q1a1', isSolution: true }, { text: 'q1a2', isSolution: false }] }, { question: 'q2', answers: [{ text: 'q2a1', isSolution: false }] }]
+	//giveExerciseCategoryAndAnswers(await ass, [], something)
 	/*if (response.status === 404) {
 		// user hasn't created a todo list.
 		// start with an empty array

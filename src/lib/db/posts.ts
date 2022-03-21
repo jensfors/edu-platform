@@ -65,7 +65,7 @@ export async function getPopularBlogPosts(amount: number, days: number): Promise
             }
         },
     }) */
-    const result: Post[] = await prisma.$queryRaw`SELECT id, title, "createdAt", public, type FROM "public"."Post" JOIN "public"."UserReadsPost" ON "public"."Post".id = "public"."UserReadsPost"."postId" WHERE public = true AND "type" = 'Blog' AND "readAt" > current_date - interval '7 days' GROUP BY  "public"."Post".id ORDER BY COUNT(*) DESC LIMIT ${amount};`
+    const result: Post[] = await prisma.$queryRaw`SELECT id, title, content, "createdAt", public, type FROM "public"."Post" JOIN "public"."UserReadsPost" ON "public"."Post".id = "public"."UserReadsPost"."postId" WHERE public = true AND "type" = 'Blog' AND "readAt" > current_date - interval '7 days' GROUP BY  "public"."Post".id ORDER BY COUNT(*) DESC LIMIT ${amount};`
     return result
 }
 
@@ -135,12 +135,13 @@ export async function updatePost(post: Post): Promise<boolean> {
 }
 
 // Create a post
-export async function createPost(title: string, _public: boolean, type: PostType): Promise<Post> {
+export async function createPost(title: string, content: string, _public: boolean, type: PostType): Promise<Post> {
     const userId: string = userMatti.id // TODO: Change to localstorage
 
     const result: Post = await prisma.post.create({
         data: {
             title: title,
+            content: content,
             public: _public,
             type: type,
             authors: {

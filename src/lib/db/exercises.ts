@@ -1,5 +1,5 @@
 import PrismaClient from '$lib/prisma';
-import type { Course, Exercise, Persona, WCAGCriteria } from '@prisma/client';
+import type { Assignment, Course, Exercise, Persona, WCAGCriteria } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -24,10 +24,11 @@ export async function getExercise(exerciseId: string): Promise<Exercise> {
     }
 }
 
-export async function createExercise(title: string, persona: Persona, course: Course): Promise<Exercise> {
+export async function createExercise(title: string, content: string, persona: Persona, course: Course): Promise<Exercise> {
     const result: Exercise = await prisma.exercise.create({
         data: {
             title: title,
+            content: content,
             course: {
                 connect: { id: course.id }
             },
@@ -39,22 +40,44 @@ export async function createExercise(title: string, persona: Persona, course: Co
     return result
 }
 
-export async function updateExercise(exercise: Exercise, criteria: WCAGCriteria[]): Promise<Exercise> {
+export async function giveExerciseCategoryAndAnswers(exercise: Exercise, criteria: WCAGCriteria[], assignments: { question: string, answers: { text: string, isSolution: boolean }[] }[]): Promise<boolean> {
     // Adds all WCAG criteria to the exercise
-    const relation = criteria.map(criterion => ({ exerciseId: exercise.id, criteriaId: criterion.id }));
-    await prisma.exerciseHasCriteria.createMany({
-        data: relation
-    })
+    try {
+        const relation = criteria.map(criterion => ({ exerciseId: exercise.id, criteriaId: criterion.id }));
+        await prisma.exerciseHasCriteria.createMany({
+            data: relation
+        })
 
-    const result: Exercise = await prisma.exercise.update({
-        where: {
-            id: exercise.id
-        },
-        data: exercise
-    })
-
-    return result
+        for (let assignment of assignments) {
+            const result: Assignment = await prisma.assignment.create({
+                data: {
+                    question: assignment.question,
+                    exercise: {
+                        connect: { id: exercise.id }
+                    }
+                }
+            })
+            for (let answer of assignment.answers) {
+                await prisma.answer.create({
+                    data: {
+                        text: answer.text,
+                        isSolution: answer.isSolution,
+                        assignment: {
+                            connect: { id: result.id }
+                        }
+                    }
+                })
+            }
+        }
+        console.log('dab')
+        return true
+    }
+    catch (PrismaClientKnownRequestError) {
+        console.log(`Creating exercise categories and assignments/answers failed`)
+        return false
+    }
 }
+
 
 
 // TODO: Delte exercise

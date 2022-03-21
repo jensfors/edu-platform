@@ -55,12 +55,33 @@ model Exercise {
   public      Boolean               @default(false)
   difficulty  String                @default("Beginner") // Beginner, Intermediate, Expert, ... OR Easy, Medium, Hard, ...
   createdAt   DateTime              @default(now())
+  type        String?               @default("Code")
+  content     String?
   criteria    ExerciseHasCriteria[]
   course      Course                @relation(fields: [courseId], references: [id])
   courseId    String // The id of the course the exercise belongs to
   persona     Persona               @relation(fields: [personaId], references: [id])
   personaId   String // The id of the course the exercise belongs to
   usersSolved UserSolvesExercise[] // All users who solved the exercise
+  assignments Assignment[]
+}
+
+// The assignment(s) for an exercise
+model Assignment {
+  id         String   @id @default(cuid())
+  question   String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+  exerciseId String
+  answers    Answer[]
+}
+
+// Answer to an assignment
+model Answer {
+  id           String     @id @default(cuid())
+  text         String
+  isSolution   Boolean    @default(false)
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  assignmentId String
 }
 
 model Persona {
@@ -80,6 +101,7 @@ model Persona {
 model Post {
   id        String            @id @default(cuid())
   title     String
+  content   String
   type      String            @default("Blog") // Blog post, News, etc
   createdAt DateTime          @default(now())
   public    Boolean           @default(false) // false = draft

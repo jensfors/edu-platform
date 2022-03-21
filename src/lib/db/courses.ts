@@ -37,7 +37,12 @@ export async function getCourse(courseId: string): Promise<Course> {
                     },
                     include: {
                         persona: true,
-                        criteria: true
+                        criteria: true,
+                        assignments: {
+                            include: {
+                                answers: true
+                            }
+                        }
                     }
                 },
                 authors: true,
