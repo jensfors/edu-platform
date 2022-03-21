@@ -9,6 +9,7 @@
   $: content = ''
 
   onMount(() => {
+    console.log('Mounting markdown editor..')
     editor = new Editor({
       element: element,
       extensions: [StarterKit, Image],
@@ -23,7 +24,7 @@
         editor = editor
       },
     })
-    console.log(editor.getHTML())
+    console.log('Markdown editor mounted successfully')
   })
 
   onDestroy(() => {
@@ -31,15 +32,6 @@
       editor.destroy()
     }
   })
-
-  $: if (editor) {
-    content = editor.getHTML()
-  }
-
-  function showContent() {
-    console.log(editor)
-    console.log(element)
-  }
 
   function addImage() {
     const url = window.prompt('URL')
@@ -57,6 +49,11 @@
         })
         .run()
     }
+  }
+
+  // Just used to test how the content is rendered from the getHTML() function
+  $: if (editor) {
+    content = editor.getHTML()
   }
 </script>
 
@@ -96,8 +93,9 @@
   </div>
 {/if}
 
-<div bind:this={element} on:change={showContent} />
-<button on:click={showContent}>Tryk her Jen</button>
+<!-- binding the editor to a div element -->
+<div bind:this={element} />
+<!-- Preview stuff for testing -->
 <article class="prose prose-pre:text-white">
   {@html content}
 </article>
