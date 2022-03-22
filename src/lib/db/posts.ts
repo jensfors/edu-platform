@@ -1,6 +1,6 @@
 import PrismaClient from '$lib/prisma';
 import { PostType } from '$lib/utils/stringTypes';
-import type { Post, User, UserHasPost } from '@prisma/client';
+import type { Post, User, UserHasPost, WCAGCriteria } from '@prisma/client';
 import { userMatti } from './dummy/data';
 
 const prisma = new PrismaClient();
@@ -65,7 +65,7 @@ export async function getPopularBlogPosts(amount: number, days: number): Promise
             }
         },
     }) */
-    const result: Post[] = await prisma.$queryRaw`SELECT id, title, "createdAt", public, type FROM "public"."Post" JOIN "public"."UserReadsPost" ON "public"."Post".id = "public"."UserReadsPost"."postId" WHERE public = true AND "type" = 'Blog' AND "readAt" > current_date - interval '7 days' GROUP BY  "public"."Post".id ORDER BY COUNT(*) DESC LIMIT ${amount};`
+    const result: Post[] = await prisma.$queryRaw`SELECT id, title, content, "createdAt", public, type FROM "public"."Post" JOIN "public"."UserReadsPost" ON "public"."Post".id = "public"."UserReadsPost"."postId" WHERE public = true AND "type" = 'Blog' AND "readAt" > current_date - interval '7 days' GROUP BY  "public"."Post".id ORDER BY COUNT(*) DESC LIMIT ${amount};`
     return result
 }
 
@@ -78,12 +78,17 @@ export async function getPost(postId: string): Promise<Post> {
         include: {
             comments: {
                 include: {
-                    likes: true
+                    likes: true,
+                    _count: {
+                        select: { likes: true }
+                    }
                 }
+            },
+            _count: {
+                select: { comments: true }
             }
         }
     })
-    console.log(result)
     return result
 }
 
@@ -116,7 +121,8 @@ export async function updatePost(post: Post): Promise<boolean> {
                 post: {
                     update: {
                         title: post.title,
-                        public: post.public
+                        public: post.public,
+                        content: post.content
                     }
                 }
             }
@@ -130,12 +136,13 @@ export async function updatePost(post: Post): Promise<boolean> {
 }
 
 // Create a post
-export async function createPost(title: string, _public: boolean, type: PostType): Promise<Post> {
+export async function createPost(title: string, content: string, _public: boolean, type: PostType): Promise<Post> {
     const userId: string = userMatti.id // TODO: Change to localstorage
 
     const result: Post = await prisma.post.create({
         data: {
             title: title,
+            content: content,
             public: _public,
             type: type,
             authors: {
@@ -148,6 +155,22 @@ export async function createPost(title: string, _public: boolean, type: PostType
     })
     return result
 }
+
+
+export async function addCategoriesToPost(post: Post, criteria: WCAGCriteria[]): Promise<boolean> {
+    try {
+        const relation = criteria.map(criterion => ({ postId: post.id, criteriaId: criterion.id }));
+        await prisma.postHasCriteria.createMany({
+            data: relation
+        })
+        return true
+    }
+    catch (PrismaClientKnownRequestError) {
+        console.log(`Adding criteria to post failed`)
+        return false
+    }
+}
+
 
 export async function addAuthorToPost(post: Post, author: User): Promise<UserHasPost> {
     const result: UserHasPost = await prisma.userHasPost.create({
