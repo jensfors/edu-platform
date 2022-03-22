@@ -1,5 +1,5 @@
 import PrismaClient from '$lib/prisma';
-import { PostType } from '$lib/utils/stringTypes';
+import type { PostType } from '$lib/utils/stringTypes';
 import type { User } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -48,4 +48,17 @@ export async function getXP(user: User): Promise<number> {
 
     console.log(xp)
     return xp
+}
+
+export async function createUser(id: string, email: string, firstName: string, lastName: string, avatarURL?: string): Promise<User> {
+    const result: User = await prisma.user.create({
+        data: {
+            id: id,
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            avatarURL: avatarURL,
+        }
+    })
+    return result
 }

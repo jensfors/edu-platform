@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "avatarURL" DROP NOT NULL,
+ALTER COLUMN "role" SET DEFAULT E'Normal';
