@@ -54,7 +54,7 @@ export const post: RequestHandler = async ({ request, locals }) => {
 	console.log(form.get('text').toString());
 	const dab: Todo = { uid: uuidv4(), created_at: new Date("Wed, 27 July 2016 13:30:00"), text: form.get('text').toString(), done: false }
 	console.log('Adding')
-	addCommentToPost()
+	//addCommentToPost()
 	/*await prisma.todo.create({
 		data: {
 			created_at: new Date(),

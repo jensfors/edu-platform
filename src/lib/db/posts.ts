@@ -1,6 +1,6 @@
 import PrismaClient from '$lib/prisma';
 import { PostType } from '$lib/utils/stringTypes';
-import type { Post, User, UserHasPost } from '@prisma/client';
+import type { Post, User, UserHasPost, WCAGCriteria } from '@prisma/client';
 import { userMatti } from './dummy/data';
 
 const prisma = new PrismaClient();
@@ -121,7 +121,8 @@ export async function updatePost(post: Post): Promise<boolean> {
                 post: {
                     update: {
                         title: post.title,
-                        public: post.public
+                        public: post.public,
+                        content: post.content
                     }
                 }
             }
@@ -154,6 +155,22 @@ export async function createPost(title: string, content: string, _public: boolea
     })
     return result
 }
+
+
+export async function addCategoriesToPost(post: Post, criteria: WCAGCriteria[]): Promise<boolean> {
+    try {
+        const relation = criteria.map(criterion => ({ postId: post.id, criteriaId: criterion.id }));
+        await prisma.postHasCriteria.createMany({
+            data: relation
+        })
+        return true
+    }
+    catch (PrismaClientKnownRequestError) {
+        console.log(`Adding criteria to post failed`)
+        return false
+    }
+}
+
 
 export async function addAuthorToPost(post: Post, author: User): Promise<UserHasPost> {
     const result: UserHasPost = await prisma.userHasPost.create({
