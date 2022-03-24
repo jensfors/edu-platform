@@ -10,6 +10,8 @@
     avatarURL: string = null
   let message = { success: null, display: '' }
 
+  console.log(supabase.auth.user())
+
   const handleSignup = async () => {
     if (password != confirmpassword) {
       message = { success: false, display: 'Password and Confirm Password fields do not match' }
@@ -19,8 +21,6 @@
     try {
       loading = true
       const { error, user } = await supabase.auth.signUp({ email, password })
-      //const publicUser: User = createUser(user.id, email, firstName, lastName, avatarURL)
-      //console.log('data', publicUser)
       console.log(error)
       if (error) throw error
       message = {
@@ -58,8 +58,8 @@
 
 <form on:submit|preventDefault={handleSignup}>
   <div class="form-widget">
-    <h1 class="header">Eternal Dev Community</h1>
-    <p class="description">Create an account and join the community of developers</p>
+    <h1 class="header">Sign up today</h1>
+    <p class="description">Create an account and join the community of memers</p>
     <div class="form-group">
       <label for="email">Email address</label>
       <input

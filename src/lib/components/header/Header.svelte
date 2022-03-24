@@ -1,5 +1,7 @@
 <script lang="ts">
+  import { supabase } from '$lib/db/supabaseClient'
   import { HomeIcon, SearchIcon } from 'svelte-feather-icons'
+  let authUser = supabase.auth.user()
 </script>
 
 <!-- The header looks ass on less than 400px, and should be fixed with an entire other menu -->
@@ -28,27 +30,34 @@
     </ul>
   </div>
   <div class="navbar-end">
-    <div class="dropdown dropdown-end">
-      <div tabindex="0" class="btn btn-ghost btn-circle avatar">
-        <div type="text" class="w-10 rounded-full">
-          <img src="https://api.lorem.space/image/face?hash=33791" alt="profile" />
+    {#if authUser}
+      <div class="dropdown dropdown-end">
+        <div tabindex="0" class="btn btn-ghost btn-circle avatar">
+          <div type="text" class="w-10 rounded-full">
+            <img src="https://api.lorem.space/image/face?hash=33791" alt="profile" />
+          </div>
         </div>
+        <ul
+          tabindex="0"
+          class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
+        >
+          <li>
+            <a sveltekit:prefetch href="/dymmy-url" class="justify-between">
+              Profile
+              <span class="badge">New</span>
+            </a>
+          </li>
+          <li><a sveltekit:prefetch href="/dymma-url">Settings</a></li>
+          <li><a sveltekit:prefetch href="/dyamy-url">Logout</a></li>
+        </ul>
       </div>
-      <ul
-        tabindex="0"
-        class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
-      >
-        <li>
-          <a sveltekit:prefetch href="/dymmy-url" class="justify-between">
-            Profile
-            <span class="badge">New</span>
-          </a>
-        </li>
-        <li><a sveltekit:prefetch href="/dymma-url">Settings</a></li>
-        <li><a sveltekit:prefetch href="/dyamy-url">Logout</a></li>
-      </ul>
-    </div>
+    {:else}
+      <button class="btn btn-secondary">
+        <a sveltekit:prefetch href="/auth">login</a>
+      </button>
+    {/if}
   </div>
+
   <!-- </div> -->
 </header>
 

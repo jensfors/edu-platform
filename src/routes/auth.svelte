@@ -1,5 +1,5 @@
 <script>
-  import Login from './login.svelte'
+  import Login from './login/index.svelte'
   import Signup from './signup/index.svelte'
 
   let currentTab = 'Login'
@@ -23,7 +23,7 @@
           class="col tab-heading {currentTab == 'Signup' ? 'tab-active' : ''}"
           on:click={() => changeTab('Signup')}
         >
-          <span>Create Account</span>
+          <span>Sign up</span>
         </div>
       </div>
       {#if currentTab === 'Login'}
@@ -36,6 +36,15 @@
 </main>
 
 <style>
+  .row {
+    justify-content: center;
+  }
+  .container {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+  }
+
   .tab-heading {
     font-weight: bold;
     padding: 1rem;
