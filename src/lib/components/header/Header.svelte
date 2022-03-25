@@ -43,7 +43,7 @@
         >
           <li>
             <a sveltekit:prefetch href="/dymmy-url" class="justify-between">
-              Profile
+              Profile {authUser.id}
               <span class="badge">New</span>
             </a>
           </li>

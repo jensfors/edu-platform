@@ -62,3 +62,22 @@ export async function createUser(id: string, email: string, firstName: string, l
     })
     return result
 }
+
+export async function getUser(id: string): Promise<User> {
+    try {
+        const result: User = await prisma.user.findUnique({
+            where: { id: id },
+            include: {
+                solvedExercises: true,
+                readPosts: true,
+                personas: true,
+                posts: true,
+                courses: true
+            }
+        })
+        return result;
+    }
+    catch (PrismaClientKnownRequestError) {
+        console.log(`User with id ${id} does not exist`)
+    }
+}

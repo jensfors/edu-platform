@@ -8,8 +8,20 @@
   const handleLogin = async () => {
     try {
       loading = true
-      const { error } = await supabase.auth.signIn({ email, password })
+      const { error, user } = await supabase.auth.signIn({ email, password })
       if (error) throw error
+      fetch('/login', {
+        method: 'GET',
+        headers: [['Content-Type', 'multipart/form-data']],
+      })
+        .then((response) => {
+          console.log('Upload Successfully')
+          // Successfully uploaded
+        })
+        .catch((error) => {
+          console.log('Yikes an fucking error occured')
+          // Upload failed
+        })
       message = { success: true, display: 'Successfully logged in!' }
     } catch (error) {
       let errorMsg = error.error_description || error.message

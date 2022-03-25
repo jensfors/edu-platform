@@ -1,4 +1,13 @@
 <script>
+  import { supabase } from '$lib/db/supabaseClient'
+  import { getLevels, getUserLevel } from '$lib/utils/levels'
+
+  import { authUser } from '../stores'
+
+  let hmm = supabase.auth.user()
+  console.log('nou', hmm)
+  console.log(getUserLevel())
+
   // your script goes here
   const avatars = [
     {
@@ -146,6 +155,7 @@
       </div>
       <h2 class="card-title">Solved exercises</h2>
       <p>{528}</p>
+      <h2 class="card-ass">{JSON.stringify($authUser)}</h2>
     </div>
   </div>
 </div>
