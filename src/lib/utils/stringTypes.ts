@@ -13,3 +13,8 @@ export enum Difficulty {
     Intermediate = 'Intermediate',
     Expert = 'Expert',
 }
+
+
+export type XP = {
+    level: number, nextLevelXP: number, progressXP: number
+}
