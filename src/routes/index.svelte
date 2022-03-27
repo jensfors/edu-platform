@@ -1,6 +1,6 @@
 <script>
   import { supabase } from '$lib/db/supabaseClient'
-  import { getIcon } from '$lib/utils/courseIcon'
+  import { getCourseIcon } from '$lib/utils/courseIcon'
   import { getLevels, getUserLevel } from '$lib/utils/levels'
 
   import { authUser } from '../stores'
@@ -127,7 +127,7 @@
       <div class="flex py-8 pr-8">
         {#each avatars as avatar}
           <figure class="flex flex-col pl-8">
-            <img class="rounded-2xl" src={getIcon()} alt={avatar.name} />
+            <img class="rounded-2xl" src={getCourseIcon()} alt={avatar.name} />
             <p class="absolute top-3/4 text-white text-xl font-bold">{avatar.name}</p>
           </figure>
         {/each}

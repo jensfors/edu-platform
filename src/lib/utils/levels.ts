@@ -23,7 +23,7 @@ export function getUserLevel(): XP {
 
     // TODO: get XP from db
     //const xp = getXP(user)
-    let xp: XP = { level: 0, nextLevelXP: 0, progressXP: 583 }
+    let xp: XP = { level: 0, nextLevelXP: 0, progressXP: 12400 }
 
     // New user = level 0
     if (xp.progressXP === 0) {

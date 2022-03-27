@@ -2,7 +2,7 @@ import type { WCAGPrinciple } from "@prisma/client";
 import { Principle } from '$lib/utils/stringTypes';
 
 export function getCourseIcon(): string {
-    const principles: WCAGPrinciple[] = [{ name: 'Operable', id: '1', number: 1, description: '', link: '', color: '', icon: '' }, { name: 'Perceivable', id: '1', number: 1, description: '', link: '', color: '', icon: '' }]
+    const principles: WCAGPrinciple[] = [{ name: 'Operable', id: '1', number: 1, description: '', link: '', color: '', icon: '' }, { name: 'Understandable', id: '1', number: 1, description: '', link: '', color: '', icon: '' }]
 
     if (principles.length === 1) {
         return `static/principles/${principles[0].name}.jpg`
