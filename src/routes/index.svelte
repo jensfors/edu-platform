@@ -1,5 +1,6 @@
 <script>
   import { supabase } from '$lib/db/supabaseClient'
+  import { getIcon } from '$lib/utils/courseIcon'
   import { getLevels, getUserLevel } from '$lib/utils/levels'
 
   import { authUser } from '../stores'
@@ -7,6 +8,7 @@
   let hmm = supabase.auth.user()
   console.log('nou', hmm)
   console.log(getUserLevel())
+  const userXP = getUserLevel()
 
   // your script goes here
   const avatars = [
@@ -125,7 +127,7 @@
       <div class="flex py-8 pr-8">
         {#each avatars as avatar}
           <figure class="flex flex-col pl-8">
-            <img class="rounded-2xl" src={avatar.url} alt={avatar.name} />
+            <img class="rounded-2xl" src={getIcon()} alt={avatar.name} />
             <p class="absolute top-3/4 text-white text-xl font-bold">{avatar.name}</p>
           </figure>
         {/each}
@@ -143,9 +145,13 @@
     </figure>
     <div class="card-body items-center text-center">
       <div class="w-full relative">
-        <progress class="progress progress-primary w-full h-10" value="70" max="100" />
+        <progress
+          class="progress progress-primary w-full h-10"
+          value={userXP.progressXP}
+          max={userXP.nextLevelXP}
+        />
         <p class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-xl">
-          Level {23}
+          Level {userXP.level}
         </p>
       </div>
       <div class="flex w-full justify-evenly">
