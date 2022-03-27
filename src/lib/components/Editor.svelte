@@ -1,16 +1,19 @@
 <script lang="ts">
-  import { browser } from '$app/env';
-  import { onMount } from 'svelte';
-  import type monaco from 'monaco-editor';
-  import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
-  import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
-  import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
-  import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
-  import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
+  import { browser } from '$app/env'
+  import { onMount } from 'svelte'
+  import type monaco from 'monaco-editor'
+  import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
+  import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
+  import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker'
+  import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
+  import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
 
-  let divEl: HTMLDivElement = null;
-  let editor: monaco.editor.IStandaloneCodeEditor;
-  let Monaco;
+  export let initialValue: string
+  export let onChange: (value: string) => string
+
+  let divEl: HTMLDivElement = null
+  let editor: monaco.editor.IStandaloneCodeEditor
+  let Monaco
 
   if (browser) {
     onMount(async () => {
@@ -18,24 +21,25 @@
       self.MonacoEnvironment = {
         getWorker: function (_moduleId: any, label: string) {
           if (label === 'json') {
-            return new jsonWorker();
+            return new jsonWorker()
           }
           if (label === 'css' || label === 'scss' || label === 'less') {
-            return new cssWorker();
+            return new cssWorker()
           }
           if (label === 'html' || label === 'handlebars' || label === 'razor') {
-            return new htmlWorker();
+            return new htmlWorker()
           }
           if (label === 'typescript' || label === 'javascript') {
-            return new tsWorker();
+            return new tsWorker()
           }
-          return new editorWorker();
+          return new editorWorker()
         },
-      };
+      }
 
-      Monaco = await import('monaco-editor');
+      Monaco = await import('monaco-editor')
       editor = Monaco.editor.create(divEl, {
-        value: ['console.log("Write your code here :-)");'].join('\n'),
+        // value: ['console.log("Write your code here :-)");'].join('\n'),
+        value: initialValue,
         language: 'javascript',
         theme: 'vs-dark',
         wordWrap: 'on',
@@ -46,12 +50,20 @@
         fontSize: 16,
         scrollBeyondLastLine: false,
         automaticLayout: true,
-      });
+      })
+
+      console.log('Editor text when mounted: ', editor.getModel().getValue())
+      editor.getModel().onDidChangeContent(onChange(editor.getModel().getValue))
 
       return () => {
-        editor.dispose();
-      };
-    });
+        editor.dispose()
+      }
+    })
+  }
+
+  function printShit() {
+    console.log('event triggerede mutherfucker ')
+    console.log('editor text triggerede: ', editor.getValue())
   }
 
   /* THIS IS ANOTHER EXAMPLE */
