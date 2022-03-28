@@ -8,6 +8,7 @@ export const createBlogPosts = async () => {
         data: {
             title: 'A public blog post by ' + userMatti.firstName,
             public: true,
+            content: '<h1>Content</h1>',
             authors: {
                 create: [
                     {
@@ -59,6 +60,7 @@ export const createBlogPosts = async () => {
         data: {
             title: 'A public blog post by ' + userMatti.firstName + ' (main author) and ' + userJen.firstName,
             public: true,
+            content: '<h1>Content</h1>',
             authors: {
                 create: [
                     {
@@ -141,6 +143,7 @@ export const createBlogPosts = async () => {
     await prisma.post.create({
         data: {
             title: 'A private blog post by ' + userMatti.firstName,
+            content: '<h1>Content</h1>',
             authors: {
                 create: [
                     {
