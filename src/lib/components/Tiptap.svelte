@@ -4,11 +4,12 @@
   import StarterKit from '@tiptap/starter-kit'
   import Image from '@tiptap/extension-image'
 
-  let element
-  let editor
-  $: content = null
+  let element: Element
+  let editor: Editor
+  $: content = ''
 
   onMount(() => {
+    console.log('Mounting markdown editor..')
     editor = new Editor({
       element: element,
       extensions: [StarterKit, Image],
@@ -23,7 +24,7 @@
         editor = editor
       },
     })
-    console.log(editor.getHTML())
+    console.log('Markdown editor mounted successfully')
   })
 
   onDestroy(() => {
@@ -32,28 +33,27 @@
     }
   })
 
-  $: if (editor) {
-    content = editor.getHTML()
-  }
-
-  function showContent() {
-    console.log(editor)
-    console.log(element)
-  }
-
   function addImage() {
     const url = window.prompt('URL')
     const altTag = window.prompt('Alt Tag')
     const title = window.prompt('Title')
 
     if (url) {
-      editor.chain().focus().setImage({ src: url }).run()
-      editor.commands.setImage({
-        src: url,
-        alt: altTag,
-        title: title,
-      })
+      editor
+        .chain()
+        .focus()
+        .setImage({
+          src: url,
+          alt: altTag,
+          title: title,
+        })
+        .run()
     }
+  }
+
+  // Just used to test how the content is rendered from the getHTML() function
+  $: if (editor) {
+    content = editor.getHTML()
   }
 </script>
 
@@ -85,7 +85,7 @@
       Bullet list
     </button>
     <button
-      on:click={editor.chain().focus().toggleOrderedList().run()}
+      on:click={() => editor.chain().focus().toggleOrderedList().run()}
       class:active={editor.isActive('orderedList')}
     >
       Ordered list
@@ -93,8 +93,9 @@
   </div>
 {/if}
 
-<div bind:this={element} on:change={showContent} />
-<button on:click={showContent}>Tryk her Jen</button>
+<!-- binding the editor to a div element -->
+<div bind:this={element} />
+<!-- Preview stuff for testing -->
 <article class="prose prose-pre:text-white">
   {@html content}
 </article>
