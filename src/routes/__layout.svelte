@@ -1,6 +1,24 @@
-<script lang="ts">
-  import Header from '$lib/components/header/Header.svelte'
+<script context="module">
+  import Header from '$lib/components/header/index.svelte'
+  import { supabase } from '$lib/db/supabaseClient'
+  import { authUser } from '$lib/stores'
   import '../app.css'
+
+  export const load = async ({ fetch }) => {
+    let user = supabase.auth.user()
+    if (user) {
+      let userId = user.id
+      const dataRaw = await fetch(`/api/user/${userId}`)
+      const data = await dataRaw.json()
+      authUser.set(data.user)
+      return {
+        props: {
+          data,
+        },
+      }
+    }
+    return { props: { message: 'No user logged in' } }
+  }
 </script>
 
 <Header />

@@ -33,7 +33,7 @@ export const get: RequestHandler = async ({ locals }) => {
 	/*if (response.status === 404) {
 		// user hasn't created a todo list.
 		// start with an empty array
-		return {
+		return { 
 			body: {
 				todos: []
 			}

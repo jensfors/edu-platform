@@ -1,14 +1,16 @@
-<script>
+<script lang="ts">
   import { supabase } from '$lib/db/supabaseClient'
   import { getCourseIcon } from '$lib/utils/courseIcon'
   import { getLevels, getUserLevel } from '$lib/utils/levels'
+  import type { XP } from '$lib/utils/stringTypes'
+  import type { Course } from '@prisma/client'
 
-  import { authUser } from '../stores'
+  import { authUser } from '../lib/stores'
+  console.log('Main')
 
   let hmm = supabase.auth.user()
-  console.log('nou', hmm)
-  console.log(getUserLevel())
-  const userXP = getUserLevel()
+  export let userXP: XP
+  export let courses: Course[]
 
   // your script goes here
   const avatars = [
@@ -125,10 +127,10 @@
         <h1 class="text-2xl pl-8 py-4 text-white">Courses</h1>
       </div>
       <div class="flex py-8 pr-8">
-        {#each avatars as avatar}
+        {#each courses as course}
           <figure class="flex flex-col pl-8">
-            <img class="rounded-2xl" src={getCourseIcon()} alt={avatar.name} />
-            <p class="absolute top-3/4 text-white text-xl font-bold">{avatar.name}</p>
+            <img class="rounded-2xl" src={getCourseIcon()} alt={course.title} />
+            <p class="absolute top-3/4 text-white text-xl font-bold">{course.title}</p>
           </figure>
         {/each}
       </div>

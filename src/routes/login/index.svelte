@@ -1,5 +1,6 @@
 <script>
   import { supabase } from '$lib/db/supabaseClient'
+  import { authUser } from '$lib/stores'
 
   let loading = false
   let email, password
@@ -22,6 +23,13 @@
           console.log('Yikes an fucking error occured')
           // Upload failed
         })
+      // Puts user in localStorage
+      if (user) {
+        let userId = user.id
+        const dataRaw = await fetch(`/api/user/${userId}`)
+        const data = await dataRaw.json()
+        authUser.set(data.user)
+      }
       message = { success: true, display: 'Successfully logged in!' }
     } catch (error) {
       let errorMsg = error.error_description || error.message

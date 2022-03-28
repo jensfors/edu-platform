@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { supabase } from '$lib/db/supabaseClient'
+  import { authUser } from '$lib/stores'
   import { HomeIcon, SearchIcon } from 'svelte-feather-icons'
-  let authUser = supabase.auth.user()
 </script>
 
 <!-- The header looks ass on less than 400px, and should be fixed with an entire other menu -->
@@ -30,7 +29,7 @@
     </ul>
   </div>
   <div class="navbar-end">
-    {#if authUser}
+    {#if $authUser}
       <div class="dropdown dropdown-end">
         <div tabindex="0" class="btn btn-ghost btn-circle avatar">
           <div type="text" class="w-10 rounded-full">
@@ -43,7 +42,7 @@
         >
           <li>
             <a sveltekit:prefetch href="/dymmy-url" class="justify-between">
-              Profile {authUser.id}
+              Profile {$authUser.firstName}
               <span class="badge">New</span>
             </a>
           </li>
