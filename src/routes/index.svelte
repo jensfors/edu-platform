@@ -1,16 +1,15 @@
 <script lang="ts">
-  import { supabase } from '$lib/db/supabaseClient'
   import { getCourseIcon } from '$lib/utils/courseIcon'
-  import { getLevels, getUserLevel } from '$lib/utils/levels'
   import type { XP } from '$lib/utils/stringTypes'
-  import type { Course } from '@prisma/client'
+  import type { Course, WCAGPrinciple } from '@prisma/client'
 
   import { authUser } from '../lib/stores'
-  console.log('Main')
 
-  let hmm = supabase.auth.user()
   export let userXP: XP
   export let courses: Course[]
+  export let coursePrinciples: { id: string; principles: WCAGPrinciple[] }[]
+  export let solvedExercises: number
+  export let readBlogPosts: number
 
   // your script goes here
   const avatars = [
@@ -129,7 +128,16 @@
       <div class="flex py-8 pr-8">
         {#each courses as course}
           <figure class="flex flex-col pl-8">
-            <img class="rounded-2xl" src={getCourseIcon()} alt={course.title} />
+            <!-- Finds the correct course image -->
+            <img
+              class="rounded-2xl"
+              src={getCourseIcon(
+                coursePrinciples.find(function (o) {
+                  return o.id === course.id
+                }).principles
+              )}
+              alt={`The course: ${course.title}`}
+            />
             <p class="absolute top-3/4 text-white text-xl font-bold">{course.title}</p>
           </figure>
         {/each}
@@ -138,32 +146,39 @@
   </div>
 
   <!-- Profile card  -->
-  <div class="card w-96 bg-base-100 shadow-xl">
-    <div class="flex w-full bg-primary">
-      <h1 class="text-2xl pl-8 py-4 text-white">Profile</h1>
-    </div>
-    <figure class="px-8 pt-8">
-      <img src="https://api.lorem.space/image/face?w=400&h=225" alt="profile" class="rounded-xl" />
-    </figure>
-    <div class="card-body items-center text-center">
-      <div class="w-full relative">
-        <progress
-          class="progress progress-primary w-full h-10"
-          value={userXP.progressXP}
-          max={userXP.nextLevelXP}
+  {#if $authUser}
+    <div class="card w-96 bg-base-100 shadow-xl">
+      <div class="flex w-full bg-primary">
+        <h1 class="text-2xl pl-8 py-4 text-white">Profile</h1>
+      </div>
+      <figure class="px-8 pt-8">
+        <img
+          src="https://api.lorem.space/image/face?w=400&h=225"
+          alt="profile"
+          class="rounded-xl"
         />
-        <p class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-xl">
-          Level {userXP.level}
-        </p>
+      </figure>
+      <div class="card-body items-center text-center">
+        <div class="w-full relative">
+          <progress
+            class="progress progress-primary w-full h-10"
+            value={userXP.progressXP}
+            max={userXP.nextLevelXP}
+          />
+          <p class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-xl">
+            Level {userXP.level}
+          </p>
+        </div>
+        <div class="flex w-full justify-evenly">
+          {#each badges as badge}
+            <img class="rounded-xl h-10 w-10" src={badge.url} alt="WCAG badges" />
+          {/each}
+        </div>
+        <h2 class="card-title">Solved exercises</h2>
+        <p>{solvedExercises}</p>
+        <h2 class="card-title">Blog posts read</h2>
+        <p>{readBlogPosts}</p>
       </div>
-      <div class="flex w-full justify-evenly">
-        {#each badges as badge}
-          <img class="rounded-xl h-10 w-10" src={badge.url} alt="WCAG badges" />
-        {/each}
-      </div>
-      <h2 class="card-title">Solved exercises</h2>
-      <p>{528}</p>
-      <h2 class="card-ass">{JSON.stringify($authUser)}</h2>
     </div>
-  </div>
+  {/if}
 </div>

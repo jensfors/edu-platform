@@ -1,12 +1,10 @@
 import type { WCAGPrinciple } from "@prisma/client";
 import { Principle } from '$lib/utils/stringTypes';
 
-export function getCourseIcon(): string {
-    const principles: WCAGPrinciple[] = [{ name: 'Operable', id: '1', number: 1, description: '', link: '', color: '', icon: '' }, { name: 'Understandable', id: '1', number: 1, description: '', link: '', color: '', icon: '' }]
-
-    if (principles.length === 1) {
-        return `static/principles/${principles[0].name}.jpg`
-    } else if (1 < principles.length && principles.length < 5) {
+export function getCourseIcon(principles: WCAGPrinciple[]): string {
+    // TODO: Remove dummy data
+    //const principles: WCAGPrinciple[] = [{ name: 'Operable', id: '1', number: 1, description: '', link: '', color: '', icon: '' }, { name: 'Understandable', id: '1', number: 1, description: '', link: '', color: '', icon: '' }]
+    if (0 < principles.length && principles.length < 5) {
         return `static/principles/${combineLetters(principles)}.jpg`
     }
     return 'static/principles/POUR.jpg' // TODO: default image for no principles

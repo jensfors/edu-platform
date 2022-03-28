@@ -1,23 +1,46 @@
 import { getPopularCourses, getWCAGPrinciplesForCourse } from "$lib/db/courses";
+import { userJen, userKasper, userMatti, userSimon } from "$lib/db/dummy/data";
+import { getAmountOfReadPosts, getAmountOfSolvedExercises } from "$lib/db/user";
+import { authUser } from "$lib/stores";
 import { getUserLevel } from "$lib/utils/levels";
-import type { XP } from "$lib/utils/stringTypes";
-import type { Course, WCAGPrinciple } from "@prisma/client";
+import { PostType, XP } from "$lib/utils/stringTypes";
+import type { Course, User, WCAGPrinciple } from "@prisma/client";
+import { get as getStore } from 'svelte/store';
 
 export async function get() {
     console.log("GET MAIN")
-    const userXP: XP = getUserLevel()
     const courses = await getPopularCourses(5, 100)
+
+    let userXP: XP = { level: 0, nextLevelXP: 0, progressXP: 0 }
+    let solvedExercises: number = 0
+    let readBlogPosts: number = 0
+
+
     let coursePrinciples: { id: string, principles: WCAGPrinciple[] }[] = []
     for (const course of courses) {
         let principles: WCAGPrinciple[] = await getWCAGPrinciplesForCourse(course)
         coursePrinciples.push({ id: course.id, principles: principles })
     }
+    let user: User
+    authUser.subscribe(value => {
+        console.log('value', value)
+        user = value
+    });
+    console.log(getStore(authUser))
+    if (user) {
+        solvedExercises = await getAmountOfSolvedExercises(user)
+        readBlogPosts = await getAmountOfReadPosts(user, PostType.Blog)
+        userXP = getUserLevel()
 
+    }
 
     return {
         body: {
             userXP,
-            courses
+            courses,
+            coursePrinciples,
+            solvedExercises,
+            readBlogPosts
         }
     };
 };

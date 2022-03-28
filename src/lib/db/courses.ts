@@ -79,7 +79,6 @@ export async function getAuthoredCourses(): Promise<Course[]> {
 // Gets the principles for a course, which the exercises involve
 export async function getWCAGPrinciplesForCourse(course: Course): Promise<WCAGPrinciple[]> {
     const result: WCAGPrinciple[] = await prisma.$queryRaw`SELECT DISTINCT "WCAGPrinciple".* FROM "Course" JOIN "Exercise" ON ${course.id} = "Exercise"."courseId" JOIN "ExerciseHasCriteria" ON "Exercise".id = "ExerciseHasCriteria"."exerciseId" JOIN "WCAGCriteria" ON "ExerciseHasCriteria"."criteriaId" = "WCAGCriteria".id JOIN "WCAGPrinciple" ON "WCAGCriteria"."principleId" = "WCAGPrinciple".id`
-    console.log(result)
     return result
 }
 
