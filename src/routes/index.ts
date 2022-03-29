@@ -1,14 +1,13 @@
 import { getPopularCourses, getWCAGPrinciplesForCourse } from "$lib/db/courses";
 import { getAmountOfReadPosts, getAmountOfSolvedExercises } from "$lib/db/user";
-import { authUser } from "$lib/stores";
 import { getUserLevel } from "$lib/utils/levels";
 import { PostType, XP } from "$lib/utils/stringTypes";
 import type { Course, User, WCAGPrinciple } from "@prisma/client";
-import { get as getStore } from 'svelte/store';
 
-export async function get() {
+export async function get(/*{ url }*/) {
     console.log("GET MAIN")
-    const courses = await getPopularCourses(5, 100)
+    let courses: Course[] = []
+    courses = await getPopularCourses(5, 100)
 
     let userXP: XP = { level: 0, nextLevelXP: 0, progressXP: 0 }
     let solvedExercises: number = 0

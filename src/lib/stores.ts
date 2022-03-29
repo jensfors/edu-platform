@@ -8,4 +8,3 @@ export const authUser = writable(browser && storedUser);
 authUser.subscribe(
     (val) => browser && (localStorage.authUser = JSON.stringify(val))
 );
-

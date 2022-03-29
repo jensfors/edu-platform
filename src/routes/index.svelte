@@ -1,3 +1,20 @@
+<script context="module">
+  const searchUrl = '/'
+
+  /*
+  export async function load({ url, params, fetch }) {
+    const id = userMatti.id
+    const searchResult = await (await fetch(`${searchUrl}?q=${id}`)).json()
+
+    return {
+      status: 200,
+      props: {
+        searchResult: searchResult,
+      },
+    }
+  } */
+</script>
+
 <script lang="ts">
   import { getCourseIcon } from '$lib/utils/courseIcon'
   import type { XP } from '$lib/utils/stringTypes'
@@ -12,6 +29,16 @@
   export let solvedExercises: number
   export let readBlogPosts: number
 
+  import { page } from '$app/stores'
+  import { supabase } from '$lib/db/supabaseClient'
+  import { userMatti } from '$lib/db/dummy/data'
+  /*
+  $page.url.searchParams.append('userid', $authUser.id)
+  const isBeta = $page.url.searchParams.has('userid')
+
+  $page.url.searchParams.forEach((param) => console.log(param))
+  console.log('Beta', isBeta)
+*/
   // your script goes here
   const avatars = [
     {
