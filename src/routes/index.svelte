@@ -2,6 +2,7 @@
   import { getCourseIcon } from '$lib/utils/courseIcon'
   import type { XP } from '$lib/utils/stringTypes'
   import type { Course, WCAGPrinciple } from '@prisma/client'
+  import { get } from 'svelte/store'
 
   import { authUser } from '../lib/stores'
 

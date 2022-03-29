@@ -10,7 +10,6 @@ export async function getAmountOfSolvedExercises(user: User): Promise<number> {
             userId: user.id
         }
     })
-    console.log(result)
     return result
 }
 
@@ -23,7 +22,6 @@ export async function getAmountOfReadPosts(user: User, type: PostType): Promise<
             }
         }
     })
-    console.log(result)
     return result
 }
 

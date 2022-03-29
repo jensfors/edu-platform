@@ -1,3 +1,5 @@
+import { authUser } from "$lib/stores";
+import { get } from "svelte/store";
 import type { XP } from "./stringTypes";
 
 //import type { User } from "@prisma/client";

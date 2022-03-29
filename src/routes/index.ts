@@ -1,5 +1,4 @@
 import { getPopularCourses, getWCAGPrinciplesForCourse } from "$lib/db/courses";
-import { userJen, userKasper, userMatti, userSimon } from "$lib/db/dummy/data";
 import { getAmountOfReadPosts, getAmountOfSolvedExercises } from "$lib/db/user";
 import { authUser } from "$lib/stores";
 import { getUserLevel } from "$lib/utils/levels";
@@ -15,24 +14,20 @@ export async function get() {
     let solvedExercises: number = 0
     let readBlogPosts: number = 0
 
-
     let coursePrinciples: { id: string, principles: WCAGPrinciple[] }[] = []
     for (const course of courses) {
         let principles: WCAGPrinciple[] = await getWCAGPrinciplesForCourse(course)
         coursePrinciples.push({ id: course.id, principles: principles })
     }
-    let user: User
-    authUser.subscribe(value => {
-        console.log('value', value)
-        user = value
-    });
-    console.log(getStore(authUser))
-    if (user) {
+    let user: User = null
+
+    if (user !== null) {
+        console.log('in here', user)
         solvedExercises = await getAmountOfSolvedExercises(user)
         readBlogPosts = await getAmountOfReadPosts(user, PostType.Blog)
         userXP = getUserLevel()
-
     }
+
 
     return {
         body: {

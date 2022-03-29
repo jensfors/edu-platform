@@ -1,6 +1,7 @@
 <script>
   import { supabase } from '$lib/db/supabaseClient'
   import { authUser } from '$lib/stores'
+  import { get } from 'svelte/store'
 
   let loading = false
   let email, password
