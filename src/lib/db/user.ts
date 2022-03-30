@@ -43,8 +43,6 @@ export async function getXP(user: User): Promise<number> {
     for (let post of result.readPosts) {
         xp += post.xp
     }
-
-    console.log(xp)
     return xp
 }
 

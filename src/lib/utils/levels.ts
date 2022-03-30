@@ -1,5 +1,3 @@
-import { authUser } from "$lib/stores";
-import { get } from "svelte/store";
 import type { XP } from "./stringTypes";
 
 //import type { User } from "@prisma/client";
@@ -20,12 +18,11 @@ export function getLevels(): { level: number, xp: number }[] {
     return levels
 }
 
-export function getUserLevel(): XP {
+export function getUserLevel(progressXP: number): XP {
     const levels = getLevels()
 
     // TODO: get XP from db
-    //const xp = getXP(user)
-    let xp: XP = { level: 0, nextLevelXP: 0, progressXP: 15300 }
+    let xp: XP = { level: 0, nextLevelXP: 0, progressXP: progressXP }
 
     // New user = level 0
     if (xp.progressXP === 0) {

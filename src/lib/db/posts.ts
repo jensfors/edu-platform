@@ -11,8 +11,18 @@ export async function getLatestBlogPosts(amount: number): Promise<Post[]> {
     // `SELECT * FROM "public"."Post" WHERE public = true AND "type" = 'Blog' ORDER BY "createdAt" DESC LIMIT ${amount}`
     const result: Post[] = await prisma.post.findMany({
         where: {
-            public: true,    // only public posts
+            public: true,           // only public posts
             type: PostType.Blog     // only Blog posts
+        },
+        include: {
+            authors: {
+                select: {
+                    user: true
+                },
+                orderBy: {
+                    mainAuthor: 'desc',
+                }
+            },
         },
         orderBy: {
             createdAt: 'desc' // Sort by newest

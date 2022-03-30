@@ -12,9 +12,7 @@
       const data = await dataRaw.json()
       authUser.set(data.user)
       return {
-        props: {
-          data,
-        },
+        props: { message: 'User was stored locally' },
       }
     }
     return { props: { message: 'No user logged in' } }

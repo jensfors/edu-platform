@@ -8,7 +8,6 @@ export const get: RequestHandler = async ({ request }) => {
     let user: User
     try {
         user = await getUser(supabase.auth.user().id)
-        console.log('dabber', user)
     }
     catch (e) {
         console.log(e.message)
