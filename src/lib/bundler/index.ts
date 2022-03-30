@@ -4,7 +4,7 @@ import { fetchPlugin } from '$lib/bundler/fetch-plugin'
 
 let serviceStarted = false
 
-export async function bundle(rawCode: string): Promise<string> {
+export async function bundle(rawCode: string) {
   console.log('rawCode: ', rawCode)
 
   // Initialize the service if it's not already initialized
@@ -18,20 +18,30 @@ export async function bundle(rawCode: string): Promise<string> {
     serviceStarted = true
   }
 
-  // Bundle the code and return the output used for the iFrame
-  const result = await esbuild.build({
-    entryPoints: ['index.js'],
-    bundle: true,
-    write: false,
-    plugins: [unpkgPathPlugin(), fetchPlugin(rawCode)],
-    define: {
-      // I think Svelte might do this it self since it self-corrects
-      // depending on if it's run in prod or dev mode... hmm?
-      // AND there is no error in the console like there was in the Next.js app
-      // 'process.env.NODE_ENV': '"production"',
-      global: 'window',
-    },
-  })
+  try {
+    // Bundle the code and return the output used for the iFrame
+    const result = await esbuild.build({
+      entryPoints: ['index.js'],
+      bundle: true,
+      write: false,
+      plugins: [unpkgPathPlugin(), fetchPlugin(rawCode)],
+      define: {
+        // I think Svelte might do this it self since it self-corrects
+        // depending on if it's run in prod or dev mode... hmm?
+        // AND there is no error in the console like there was in the Next.js app
+        // 'process.env.NODE_ENV': '"production"',
+        global: 'window',
+      },
+    })
 
-  return result.outputFiles[0].text
+    return {
+      code: result.outputFiles[0].text,
+      error: '',
+    }
+  } catch (error) {
+    return {
+      code: '',
+      error: error.message,
+    }
+  }
 }
