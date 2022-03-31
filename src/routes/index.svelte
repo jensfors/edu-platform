@@ -100,19 +100,24 @@
       </div>
       <div class="flex py-8 pr-8">
         {#each courses as course}
-          <figure class="flex flex-col pl-8">
-            <!-- Finds the correct course image -->
-            <img
-              class="rounded-2xl"
-              src={getCourseIcon(
-                coursePrinciples.find(function (o) {
-                  return o.id === course.id
-                }).principles
-              )}
-              alt={`The course: ${course.title}`}
-            />
-            <p class="absolute top-3/4 text-white text-xl font-bold">{course.title}</p>
-          </figure>
+          <div>
+            <figure class="flex flex-col pl-8">
+              <!-- Finds the correct course image -->
+              <img
+                class="rounded-2xl"
+                src={getCourseIcon(
+                  coursePrinciples.find(function (o) {
+                    return o.id === course.id
+                  }).principles
+                )}
+                on:click={() => goto(`/course/${course.id}`)}
+                alt={`The course: ${course.title}`}
+              />
+              <!-- <p class="absolute top-3/4 text-white text-xl font-bold">{course.title}</p> -->
+            </figure>
+            <a sveltekit:prefetch href={`/course/${course.id}`}>{course.title}</a>
+            <!-- <h2 class="text-1xl pl-8 py-4 text-black">{course.title}</h2> -->
+          </div>
         {/each}
       </div>
     </div>

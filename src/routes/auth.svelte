@@ -3,7 +3,6 @@
   import Signup from './signup/index.svelte'
 
   let currentTab = 'Login'
-
   const changeTab = (tab) => {
     currentTab = tab
   }

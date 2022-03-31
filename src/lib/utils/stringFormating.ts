@@ -15,7 +15,8 @@ export function createAuthorsString(authors: { user: User }[]) {
     return authorString
 }
 
-export function formatDate(date: Date) {
+export function formatDate(dateString: string) {
+    let date: Date = new Date(dateString)
     let month = '' + (date.getMonth() + 1),
         day = '' + date.getDate(),
         year = date.getFullYear();

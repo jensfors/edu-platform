@@ -45,10 +45,13 @@ export async function getCourse(courseId: string): Promise<Course> {
                         }
                     }
                 },
-                authors: true,
+                authors: {
+                    include: {
+                        user: true
+                    }
+                },
             }
         })
-        console.log(result)
         return result
     }
     catch (PrismaClientKnownRequestError) {

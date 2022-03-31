@@ -1,6 +1,7 @@
 <script lang="ts">
   import { authUser } from '$lib/stores'
   import { HomeIcon, SearchIcon } from 'svelte-feather-icons'
+  import { goto } from '$app/navigation'
 </script>
 
 <!-- The header looks ass on less than 400px, and should be fixed with an entire other menu -->
@@ -57,9 +58,7 @@
         </ul>
       </div>
     {:else}
-      <button class="btn btn-secondary">
-        <a sveltekit:prefetch href="/auth">login</a>
-      </button>
+      <button class="btn btn-secondary" on:click={() => goto('/auth')}>Login</button>
     {/if}
   </div>
 
