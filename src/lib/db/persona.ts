@@ -5,7 +5,11 @@ import { userJen, userKasper, userMatti } from './dummy/data';
 const prisma = new PrismaClient();
 
 export async function getAllPersonas(): Promise<Persona[]> {
-    const result: Persona[] = await prisma.persona.findMany()
+    const result: Persona[] = await prisma.persona.findMany(/*{
+        where: {
+            private: false
+        }
+    }*/)
     return result
 }
 

@@ -1,5 +1,5 @@
 import PrismaClient from '$lib/prisma';
-import { PostType } from '$lib/utils/stringTypes';
+import type { PostType } from '$lib/utils/stringTypes';
 import type { User } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -10,7 +10,6 @@ export async function getAmountOfSolvedExercises(user: User): Promise<number> {
             userId: user.id
         }
     })
-    console.log(result)
     return result
 }
 
@@ -23,7 +22,6 @@ export async function getAmountOfReadPosts(user: User, type: PostType): Promise<
             }
         }
     })
-    console.log(result)
     return result
 }
 
@@ -45,7 +43,37 @@ export async function getXP(user: User): Promise<number> {
     for (let post of result.readPosts) {
         xp += post.xp
     }
-
-    console.log(xp)
     return xp
+}
+
+export async function createUser(id: string, email: string, firstName: string, lastName: string, avatarURL?: string): Promise<User> {
+    const result: User = await prisma.user.create({
+        data: {
+            id: id,
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            avatarURL: avatarURL,
+        }
+    })
+    return result
+}
+
+export async function getUser(id: string): Promise<User> {
+    try {
+        const result: User = await prisma.user.findUnique({
+            where: { id: id },
+            include: {
+                solvedExercises: true,
+                readPosts: true,
+                personas: true,
+                posts: true,
+                courses: true
+            }
+        })
+        return result;
+    }
+    catch (PrismaClientKnownRequestError) {
+        console.log(`User with id ${id} does not exist`)
+    }
 }

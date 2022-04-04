@@ -22,12 +22,12 @@ model Todo {
 model User {
   id              String               @id @default(cuid())
   email           String               @unique
-  password        String
-  avatarURL       String
+  password        String?
+  avatarURL       String?
   firstName       String
   lastName        String
   createdAt       DateTime             @default(now())
-  role            String // Normal, Creator, Admin // Some role to create news?
+  role            String               @default("Normal") // Normal, Creator, Admin // Some role to create news?
   courses         UserHasCourse[]
   solvedExercises UserSolvesExercise[]
   personas        Persona[]
