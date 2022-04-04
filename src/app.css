@@ -11,7 +11,7 @@ main {
 } */
 
 /* example of how to apply extra styles we want */
-/* @layer base {
+@layer base {
   h1 {
     @apply text-2xl;
   }
@@ -21,7 +21,7 @@ main {
   h3 {
     @apply text-lg;
   }
-} */
+}
 
 /* ********* keep for inspiration if we have to make global styles */
 /* :root {
