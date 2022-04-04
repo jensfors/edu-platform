@@ -11,6 +11,25 @@
   let error = ''
   let timer: ReturnType<typeof setTimeout> | null = null
 
+  let initialCode = `
+    function css(styles) {\
+      var styleSheet = document.createElement("style");\
+      styleSheet.innerText = styles;\
+      document.head.appendChild(styleSheet);\
+    }\
+    function show(value) {\
+      const root = document.querySelector('#root');\
+      if (typeof value === 'object') {\
+        if (value.$$typeof && value.props) {\
+          ReactDOM.render(value, root);\
+        } else {\
+          root.innerHTML = JSON.stringify(value);\
+        }\
+      } else {\
+        root.innerHTML = value;\
+      }\
+    };\ `
+
   $: debouncing(inputCode)
 
   // Throttle code execution to prevent it from being called too often
@@ -24,7 +43,7 @@
 
       // The timer waits 1 second with bundling the code AFTER the user is done typing
       timer = setTimeout(async () => {
-        const bundleOutput = await bundle(inputCode)
+        const bundleOutput = await bundle(`${initialCode} ${inputCode}`)
         outputCode = bundleOutput.code
         error = bundleOutput.error
       }, 750) // This is just 750ms, but it's a good value to give some time to the user to finish typing
@@ -37,10 +56,9 @@
   }
 </script>
 
-<h2 class="text-3xl font-bold underline">HERE COMES THE EDITOR COMPONENT</h2>
 <div class="flex h-[600px] w-full gap-16">
   <Editor
-    initialValue={`let testVar= "hello there"`}
+    initialValue={`let testVar= "Should be the value from the exercise"`}
     onChange={(value) => (inputCode = value)}
     class="w-1/2"
   />
@@ -49,32 +67,6 @@
 <div class="pt-10">
   <button class="btn btn-primary" on:click={onClick}> Bundle code </button>
 </div>
-<h1>Pre tag output code</h1>
-<pre>{outputCode}</pre>
-<!-- <SplitPane minWidth={50}>
-  <div id="blue" slot="left" class="w-96">
-    <Editor initialValue={`let testVar= "hello there"`} onChange={(value) => (inputCode = value)} />
-  </div>
-  <div id="red" slot="right">
-    <Preview code={outputCode} />
-  </div>
-</SplitPane> -->
-<!--   Delete if not using -->
-<!-- <textarea bind:value={inputCode} /> -->
-<!-- <textarea bind:value={inputCode} on:input={({ target }) => (inputCode = target.value)} /> -->
 
-<!-- <textarea bind:value={inputCode} on:input={({ value }) => (inputCode = value)} /> -->
 <style>
-  /* div {
-    height: 100%;
-    right: 100%;
-    display: grid;
-    place-items: center;
-  }
-  #blue {
-    background-color: lightseagreen;
-  }
-  #red {
-    background-color: tomato;
-  } */
 </style>

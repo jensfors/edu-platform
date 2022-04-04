@@ -48,8 +48,6 @@
         <\/script>
       </body>
     </html>`
-
-  console.log('error in preview', error)
 </script>
 
 <div class="mockup-window border bg-base-300 border-base-300 {parentStyles}">
