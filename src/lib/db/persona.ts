@@ -13,6 +13,18 @@ export async function getAllPersonas(): Promise<Persona[]> {
     return result
 }
 
+export async function getPersona(id: string): Promise<Persona> {
+    const result: Persona = await prisma.persona.findUnique({
+        where: {
+            id: id
+        },
+        include: {
+            author: true
+        }
+    })
+    return result
+}
+
 export async function getAllOfficialPersonas(): Promise<Persona[]> {
     const result: Persona[] = await prisma.persona.findMany({
         where: {

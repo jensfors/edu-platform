@@ -85,8 +85,13 @@
       </div>
       <div class="flex py-8 pr-8">
         {#each personas as persona}
-          <figure class="flex flex-col pl-8">
-            <img class="rounded-2xl" src={persona.avatarUrl} alt={persona.name} />
+          <figure class="img flex flex-col pl-8">
+            <img
+              class="rounded-2xl"
+              src={persona.avatarUrl}
+              alt={persona.name}
+              on:click={() => goto(`/persona/${persona.id}`)}
+            />
             <p class="absolute top-3/4 text-white text-xl font-bold">{persona.name}</p>
           </figure>
         {/each}
@@ -163,3 +168,12 @@
     </div>
   {/if}
 </div>
+
+<style>
+  .img {
+    float: left;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+  }
+</style>
