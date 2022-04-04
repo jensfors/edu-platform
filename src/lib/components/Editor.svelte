@@ -9,15 +9,14 @@
   import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
   import prettier, { Options } from 'prettier'
   import parser from 'prettier/parser-babel'
-  import { parse } from 'cookie'
 
   export let initialValue: string
   export let onChange: (value: string) => string
+  let parentStyles = $$props.class // use $$props to access the parent's props which has the normal styles
 
   let divEl: HTMLDivElement = null
   let editor: monaco.editor.IStandaloneCodeEditor
   let options: monaco.editor.IStandaloneEditorConstructionOptions = {
-    // value: ['console.log("Write your code here :-)");'].join('\n'),
     value: initialValue,
     language: 'javascript',
     theme: 'vs-dark',
@@ -159,22 +158,24 @@
 <!-- <section> -->
 <!-- <div bind:this={divEl} class="h-screen" style="height: 500px; width: 500px;" /> -->
 <!-- <div bind:this={divEl} style="height: 500px; width: 500px;" /> -->
-<div class="editor-wrapper">
+<div class=" editor-wrapper mockup-code {parentStyles}">
+  <div class="min-h-full" bind:this={divEl} />
   <button
-    class="button-format btn btn-secondary absolute top-1 right-1 z-20 opacity-0 hover:opacity-100 duration-300"
+    class="button-format btn btn-outline btn-secondary btn-sm absolute top-1 right-1 z-20 opacity-0 hover:opacity-100 duration-300"
     on:click={formatOnClick}>Format</button
   >
-  <div bind:this={divEl} class="h-screen" style="height: 500px; width: 500px;" />
 </div>
 
 <!-- </section> -->
 <style>
   .editor-wrapper {
+    /* Use this if we want height to be auto instead of set from consuming parent */
     @apply relative h-full;
+    /* @apply relative; */
   }
 
   .editor-wrapper .button-format {
-    @apply absolute top-1 right-1 z-20 opacity-0 duration-300;
+    @apply absolute top-2 right-2 z-20 opacity-0 duration-300;
   }
 
   .editor-wrapper:hover .button-format {
