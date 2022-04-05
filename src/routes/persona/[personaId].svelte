@@ -1,8 +1,10 @@
 <script lang="ts">
-  import type { Persona } from '@prisma/client'
+  import type { Course, Persona, WCAGPrinciple } from '@prisma/client'
   import Author from '$lib/components/Author.svelte'
+  import ContentCard from '$lib/components/ContentCard.svelte'
 
   export let persona: Persona
+  export let courses: Course[]
 </script>
 
 <div class="flex">
@@ -10,37 +12,40 @@
     <figure class="img ">
       <img class="rounded-2xl" src={persona.avatarUrl} alt={persona.name} />
     </figure>
-    <div>Age: 25</div>
+    <div class="flex gap-5">
+      <div class="flex flex-col">
+        <b>Name: </b>
+        <b>Age: </b>
+        {#if persona.disability}
+          <b>Disability</b>
+        {/if}
+      </div>
+      <div class="flex flex-col">
+        <p>{persona.name}</p>
+        <p>{persona.age}</p>
+        {#if persona.disability}
+          <p>{persona.disability}</p>
+        {/if}
+      </div>
+    </div>
   </div>
 
   <div class="flex flex-col items-center gap-2">
     <h1>
-      {`${persona.name} (${persona.age})`}
+      {persona.name}
     </h1>
-    {#if persona.official}<span class="badge badge-lg">OFFCICIAL</span>{/if}
+    {#if persona.official}
+      <span title="This is an official persona" class="badge badge-secondary">OFFICIAL</span>
+    {/if}
 
     <Author author={persona.author} />
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-      labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-      laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-      voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-      non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor
-      sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-      aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-      esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-      sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet,
-      consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-      aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-      ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-      qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur
-      adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-      minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-      consequat. Duis aute irure
+      {persona.description}
     </p>
   </div>
+</div>
+<div class="pt-4">
+  <ContentCard data={courses} />
 </div>
 
 <style>

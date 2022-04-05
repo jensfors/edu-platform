@@ -14,6 +14,6 @@
       />
     </div>
     <!-- TODO: Goto an author page to see courses and personas made by the author-->
-    <a href="/"><i>{`${author.firstName} ${author.lastName}`}</i></a>
+    <a href="/dummy-profile-page"><i>{`${author.firstName} ${author.lastName}`}</i></a>
   </div>
 {/if}

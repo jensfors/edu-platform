@@ -1,5 +1,5 @@
 import PrismaClient from '$lib/prisma';
-import type { Exercise, Persona } from '@prisma/client';
+import type { Course, Exercise, Persona } from '@prisma/client';
 import { userJen, userKasper, userMatti } from './dummy/data';
 
 const prisma = new PrismaClient();
@@ -112,10 +112,47 @@ export async function deletePersona(persona: Persona): Promise<boolean> {
 export async function findAllExercisesWithPersona(persona: Persona): Promise<Exercise[]> {
     const result: Exercise[] = await prisma.exercise.findMany({
         where: {
-            personaId: 'personaid4'
-        }
+            personaId: persona.id
+        },
+        /*
+        include: {
+            course: true
+        } */
     })
     return result
 }
 
-
+export async function findAllCoursesWithPersona(persona: Persona): Promise<Course[]> {
+    const result: { course: Course; }[] = await prisma.exercise.findMany({
+        where: {
+            personaId: persona.id,
+            public: true
+        },
+        select: {
+            course: {
+                include: {
+                    exercises: {
+                        include: {
+                            criteria: {
+                                include: {
+                                    criteria: {
+                                        include: {
+                                            principle: true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    })
+    let courses: Course[] = []
+    result.forEach((course) => {
+        if (course.course.public) {
+            courses.push(course.course)
+        }
+    })
+    return courses
+}
