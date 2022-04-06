@@ -13,10 +13,10 @@
     editor = new Editor({
       element: element,
       extensions: [StarterKit, Image],
-      content: '<p>Hello World! 🌍️ </p>',
+      content: '<p>Please write your exercise text here</p>',
       editorProps: {
         attributes: {
-          class: 'prose',
+          class: 'prose outline rounded p-4',
         },
       },
       onTransaction: () => {
@@ -57,52 +57,65 @@
   }
 </script>
 
-{#if editor}
-  <div class="flex gap-4">
-    <button
-      on:click={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-      class:active={editor.isActive('heading', { level: 1 })}
-    >
-      H1
-    </button>
-    <button
-      on:click={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-      class:active={editor.isActive('heading', { level: 2 })}
-    >
-      H2
-    </button>
-    <button
-      on:click={() => editor.chain().focus().setParagraph().run()}
-      class:active={editor.isActive('paragraph')}
-    >
-      P
-    </button>
-    <button on:click={addImage}> Image </button>
-    <button
-      on:click={() => editor.chain().focus().toggleBulletList().run()}
-      class:active={editor.isActive('bulletList')}
-    >
-      Bullet list
-    </button>
-    <button
-      on:click={() => editor.chain().focus().toggleOrderedList().run()}
-      class:active={editor.isActive('orderedList')}
-    >
-      Ordered list
-    </button>
+<div class="flex flex-col gap-4">
+  {#if editor}
+    <div class="flex">
+      <div class="btn-group">
+        <button
+          class="btn btn-sm btn-outline btn-accent"
+          on:click={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+          class:active={editor.isActive('heading', { level: 1 })}
+        >
+          H1
+        </button>
+        <button
+          class="btn btn-sm btn-outline btn-accent"
+          on:click={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          class:active={editor.isActive('heading', { level: 2 })}
+        >
+          H2
+        </button>
+        <button
+          class="btn btn-sm btn-outline btn-accent"
+          on:click={() => editor.chain().focus().setParagraph().run()}
+          class:active={editor.isActive('paragraph')}
+        >
+          P
+        </button>
+        <button
+          class="btn btn-sm btn-outline btn-accent"
+          on:click={() => editor.chain().focus().toggleBulletList().run()}
+          class:active={editor.isActive('bulletList')}
+        >
+          Bullet list
+        </button>
+        <button
+          class="btn btn-sm btn-outline btn-accent"
+          on:click={() => editor.chain().focus().toggleOrderedList().run()}
+          class:active={editor.isActive('orderedList')}
+        >
+          Ordered list
+        </button>
+        <button class="btn btn-sm btn-outline btn-accent" on:click={addImage}> Image </button>
+      </div>
+    </div>
+  {/if}
+  <div class="flex">
+    <!-- binding the editor to a div element -->
+    <div class="w-full" bind:this={element} />
   </div>
-{/if}
-
-<!-- binding the editor to a div element -->
-<div bind:this={element} />
-<!-- Preview stuff for testing -->
-<article class="prose prose-pre:text-white">
-  {@html content}
-</article>
+  <!-- Preview stuff for testing -->
+  <!-- <article class="prose prose-pre:text-white">
+    {@html content}
+  </article> -->
+</div>
 
 <style>
   button.active {
-    background: black;
+    background: #131325;
     color: white;
+  }
+  .ProseMirror  {
+    @apply w-full;
   }
 </style>
