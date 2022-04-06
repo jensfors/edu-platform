@@ -11,23 +11,35 @@
   let exerciseType: string
   let exerciseTitle: string
   let exerciseQuestion: string
-  let inputCode: 'console.log("Hello world and 123")'
-  let initialValue = `let testVar123= "Should be the value from codecell"`
-  let disablePublish
+  let codeExercise: string
+  let codeSolution: string
+  let initialCodeExercise = `let testVar123= "Should be the value from codecell"`
+  let initialCodeSolution = `let testVar123= "Should be the value from codecell"`
+  let disablePublish = true
 
   $: disableSave = exerciseTitle ? false : true
 
-  $: if (exerciseTitle && exerciseQuestion) {
+  $: if (
+    exerciseType === 'Code' &&
+    exerciseTitle &&
+    exerciseQuestion &&
+    codeExercise &&
+    codeSolution
+  ) {
     disablePublish = false
   } else {
     disablePublish = true
   }
-  /* PUBLISH:
-    1. Title
-    2. Assignment question (Add a text input to get this fella as well)
-    3. Code
-    4. Code solution
-  */
+
+  function onSave() {
+    // Write the stuff here to make post request that saves exercise
+    console.log('Trying to save the exercise homie')
+  }
+
+  function onPublish() {
+    // Write the stuff here to make post request that publish exercise
+    console.log('Trying to publish a book here... Sign up for my newsletter ')
+  }
 </script>
 
 <div class="block mx-auto max-w-2xl">
@@ -111,13 +123,13 @@
       />
     </div>
     <h2 class="pb-8 pl-2">Add your coding exercise in the editor below</h2>
-    <CodeCell {initialValue} {inputCode} />
+    <CodeCell initialValue={initialCodeExercise} bind:inputCode={codeExercise} />
     <h2 class="pb-8 pt-16  pl-2">Add your solution to the coding exercise in the editor below</h2>
-    <CodeCell />
+    <CodeCell initialValue={initialCodeSolution} bind:inputCode={codeSolution} />
   </div>
 {/if}
 <!-- The save and publish buttons -->
 <div class="flex justify-center pt-14 gap-8">
-  <button class="btn" disabled={disableSave}>Save</button>
-  <button class="btn btn-secondary" disabled={disablePublish}>Publish</button>
+  <button class="btn" disabled={disableSave} on:click={onSave}>Save</button>
+  <button class="btn btn-secondary" disabled={disablePublish} on:click={onPublish}>Publish</button>
 </div>

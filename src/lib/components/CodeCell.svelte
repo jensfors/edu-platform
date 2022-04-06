@@ -6,9 +6,8 @@
   import { bundle } from '$lib/bundler'
   import { browser } from '$app/env'
 
-  // export let exerciseCode = inputCode
   export let initialValue: string
-  let inputCode = ''
+  export let inputCode = ''
   let outputCode = ''
   let error = ''
   let timer: ReturnType<typeof setTimeout> | null = null
