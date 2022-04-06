@@ -14,6 +14,11 @@ export async function getExercise(exerciseId: string): Promise<Exercise> {
                     select: {
                         criteriaId: true
                     }
+                },
+                assignments: {
+                    include: {
+                        answers: true
+                    }
                 }
             }
         })
@@ -54,7 +59,7 @@ export async function giveExerciseCategoryAndAnswers(exercise: Exercise, criteri
                     question: assignment.question,
                     exercise: {
                         connect: { id: exercise.id }
-                    }
+                    },
                 }
             })
             for (let answer of assignment.answers) {
@@ -69,7 +74,6 @@ export async function giveExerciseCategoryAndAnswers(exercise: Exercise, criteri
                 })
             }
         }
-        console.log('dab')
         return true
     }
     catch (PrismaClientKnownRequestError) {
@@ -77,7 +81,24 @@ export async function giveExerciseCategoryAndAnswers(exercise: Exercise, criteri
         return false
     }
 }
+/*
+export async function updateExercise(exercise: Exercise): Promise<Exercise> {
+    try {
+        const result: Exercise = await prisma.exercise.update({
+            where: {
+                id: exercise.id
+            },
+            data: {
 
+            }
+        })
+        return result
+    }
+    catch (PrismaClientKnownRequestError) {
+        console.log(`Could not update exercise with id: ${exercise.id}`)
+    }
+}
+*/
 
 
 // TODO: Delte exercise
