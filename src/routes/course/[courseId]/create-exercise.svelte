@@ -7,6 +7,7 @@
   export let course: Course
   export let principles: WCAGPrinciple[]
   export let personas: Persona[]
+  export let criteria: WCAGCriteria[]
 
   let exerciseType: string
   let exerciseTitle: string

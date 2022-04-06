@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Course, Persona, WCAGPrinciple } from '@prisma/client'
+  import type { Course, Persona, WCAGPrinciple, WCAGCriteria } from '@prisma/client'
   import { page } from '$app/stores'
 
   export let course: Course
