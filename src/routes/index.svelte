@@ -85,15 +85,22 @@
       </div>
       <div class="flex py-8 pr-8">
         {#each personas as persona}
-          <figure class="img flex flex-col pl-8">
-            <img
-              class="rounded-2xl"
-              src={persona.avatarUrl}
-              alt={persona.name}
-              on:click={() => goto(`/persona/${persona.id}`)}
-            />
-            <p class="absolute top-3/4 text-white text-xl font-bold">{persona.name}</p>
-          </figure>
+          <div>
+            <figure class="img flex flex-col pl-8">
+              <div class="flex h-28 w-28">
+                <img
+                  style="cursor: pointer"
+                  class="rounded-2xl"
+                  src={persona.avatarUrl}
+                  alt={persona.name}
+                  on:click={() => goto(`/persona/${persona.id}`)}
+                />
+              </div>
+              <a style="text-align:center" sveltekit:prefetch href={`/persona/${persona.id}`}
+                >{persona.name}</a
+              >
+            </figure>
+          </div>
         {/each}
       </div>
     </div>
@@ -108,19 +115,24 @@
           <div>
             <figure class="flex flex-col pl-8">
               <!-- Finds the correct course image -->
-              <img
-                class="rounded-2xl"
-                src={getCourseIcon(
-                  coursePrinciples.find(function (o) {
-                    return o.id === course.id
-                  }).principles
-                )}
-                on:click={() => goto(`/course/${course.id}`)}
-                alt={`The course: ${course.title}`}
-              />
+              <div class="flex h-28 w-28">
+                <img
+                  class="rounded-2xl"
+                  style="cursor: pointer"
+                  src={getCourseIcon(
+                    coursePrinciples.find(function (o) {
+                      return o.id === course.id
+                    }).principles
+                  )}
+                  on:click={() => goto(`/course/${course.id}`)}
+                  alt={`The course: ${course.title}`}
+                />
+              </div>
               <!-- <p class="absolute top-3/4 text-white text-xl font-bold">{course.title}</p> -->
+              <a style="text-align:center" sveltekit:prefetch href={`/course/${course.id}`}
+                >{course.title}</a
+              >
             </figure>
-            <a sveltekit:prefetch href={`/course/${course.id}`}>{course.title}</a>
             <!-- <h2 class="text-1xl pl-8 py-4 text-black">{course.title}</h2> -->
           </div>
         {/each}
@@ -135,11 +147,8 @@
         <h1 class="text-2xl pl-8 py-4 text-white">Profile</h1>
       </div>
       <figure class="px-8 pt-8">
-        <!-- TODO: Add default profile picture -->
         <img
-          src={$authUser.avatarURL
-            ? $authUser.avatarURL
-            : 'https://api.lorem.space/image/face?hash=33791'}
+          src={$authUser.avatarURL ? $authUser.avatarURL : '/static/defaults/DefaultProfile.png'}
           alt="profile"
           class="rounded-xl"
         />

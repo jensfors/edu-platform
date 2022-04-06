@@ -7,7 +7,7 @@ export function getCourseIcon(principles: WCAGPrinciple[]): string {
     if (0 < principles.length && principles.length < 5) {
         return `/static/principles/${combineLetters(principles)}.jpg`
     }
-    return '/static/principles/POUR.jpg' // TODO: default image for no principles
+    return '/static/defaults/DefaultCourse.png' // TODO: default image for no principles
 }
 
 function combineLetters(principles: WCAGPrinciple[]): string {

@@ -34,11 +34,10 @@
       <div class="dropdown dropdown-end">
         <div tabindex="0" class="btn btn-ghost btn-circle avatar">
           <div type="text" class="w-10 rounded-full">
-            <!-- TODO: Add default profile picture -->
             <img
               src={$authUser.avatarURL
                 ? $authUser.avatarURL
-                : 'https://api.lorem.space/image/face?hash=33791'}
+                : '/static/defaults/DefaultProfile.png'}
               alt="profile"
             />
           </div>

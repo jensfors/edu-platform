@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Course, Persona, WCAGPrinciple } from '@prisma/client'
+  import type { Course, Persona } from '@prisma/client'
   import Author from '$lib/components/Author.svelte'
   import ContentCard from '$lib/components/ContentCard.svelte'
 
@@ -9,10 +9,10 @@
 
 <div class="flex">
   <div class="flex flex-col">
-    <figure class="img ">
+    <figure class="img">
       <img class="rounded-2xl" src={persona.avatarUrl} alt={persona.name} />
     </figure>
-    <div class="flex gap-5">
+    <div class="flex gap-5 p-1">
       <div class="flex flex-col">
         <b>Name: </b>
         <b>Age: </b>
@@ -30,7 +30,7 @@
     </div>
   </div>
 
-  <div class="flex flex-col items-center gap-2">
+  <div class="flex flex-col items-center gap-2 pl-2">
     <h1>
       {persona.name}
     </h1>
@@ -44,7 +44,7 @@
     </p>
   </div>
 </div>
-<div class="pt-4">
+<div class="pt-8 flex justify-center">
   <ContentCard data={courses} />
 </div>
 
