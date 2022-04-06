@@ -7,7 +7,6 @@ import { PostType, XP } from "$lib/utils/stringTypes";
 import type { Course, Persona, Post, User, WCAGPrinciple } from "@prisma/client";
 
 export async function get({ url }) {
-    console.log("GET MAIN")
     let courses: Course[] = []
     let userXP: XP = { level: 0, nextLevelXP: 0, progressXP: 0 }
     let solvedExercises: number = 0
@@ -16,10 +15,6 @@ export async function get({ url }) {
     let blogPosts: Post[] = []
 
     const userId: string = url.searchParams.get('userId')
-    console.log('-------------------')
-    console.log(userId)
-    console.log('-------------------')
-
 
     // Getting courses for main page
     courses = await getLatestCourses(5)
