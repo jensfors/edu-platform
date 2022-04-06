@@ -22,7 +22,6 @@ model Todo {
 model User {
   id              String               @id @default(cuid())
   email           String               @unique
-  password        String?
   avatarURL       String?
   firstName       String
   lastName        String

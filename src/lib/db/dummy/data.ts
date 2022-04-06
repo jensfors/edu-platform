@@ -5,7 +5,6 @@ export const userMatti: User = {
     email: 'mkra17@student.aau.dk',
     firstName: 'Mathias',
     lastName: 'Rasmussen',
-    password: 'lort1234',
     role: 'Creator',
     avatarURL: 'https://avatars.githubusercontent.com/u/34272381?v=4',
     createdAt: new Date("Wed, 27 July 2016 13:30:00")
@@ -16,7 +15,6 @@ export const userJen: User = {
     email: 'jnan17@student.aau.dk',
     firstName: 'Jen',
     lastName: 'Andersen',
-    password: 'lort1234',
     role: 'Creator',
     avatarURL: 'https://avatars.githubusercontent.com/u/34272473?v=4',
     createdAt: new Date("Wed, 27 July 2016 13:30:00")
@@ -27,7 +25,6 @@ export const userKasper: User = {
     email: 'kjepse17@student.aau.dk',
     firstName: 'Per',
     lastName: 'Jepsen',
-    password: 'lort1234',
     role: 'Normal',
     avatarURL: 'https://cdn.discordapp.com/attachments/363271799594811394/950673688137695322/Kaswer.PNG',
     createdAt: new Date("Wed, 27 July 2016 13:30:00")
@@ -38,7 +35,6 @@ export const userSimon: User = {
     email: 'sabj17@student.aau.dk',
     firstName: 'Simon',
     lastName: 'Anielski',
-    password: 'lort1234',
     role: 'Normal',
     avatarURL: 'https://cdn.discordapp.com/attachments/363271799594811394/950673188247994398/simonbaby.jpg',
     createdAt: new Date("Wed, 27 July 2016 13:30:00")
