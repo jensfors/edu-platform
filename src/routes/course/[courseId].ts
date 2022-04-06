@@ -8,21 +8,18 @@ export async function get({ params }) {
     let course: Course = null
     let principles: WCAGPrinciple[] = []
     let personas: Persona[] = []
-    let criteria: WCAGCriteria[] = []
+
     if (courseId) {
         course = await getCourse(courseId)
         principles = await getWCAGPrinciplesForCourse(course)
         personas = await getAllPersonasForCourse(course)
     }
-
-    criteria = await getAllCriteria()
     //console.log('get', course)
     return {
         body: {
             course,
             principles,
             personas,
-            criteria,
         }
     };
 }

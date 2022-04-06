@@ -5,7 +5,6 @@
   export let course: Course
   export let principles: WCAGPrinciple[]
   export let personas: Persona[]
-  export let criteria: WCAGCriteria[]
 </script>
 
 <div class="flex gap-20 pb-20">
