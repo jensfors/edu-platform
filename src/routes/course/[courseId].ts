@@ -14,7 +14,6 @@ export async function get({ params }) {
         principles = await getWCAGPrinciplesForCourse(course)
         personas = await getAllPersonasForCourse(course)
     }
-    //console.log('get', course)
     return {
         body: {
             course,

@@ -5,9 +5,9 @@ export function getCourseIcon(principles: WCAGPrinciple[]): string {
     // TODO: Remove dummy data
     //const principles: WCAGPrinciple[] = [{ name: 'Operable', id: '1', number: 1, description: '', link: '', color: '', icon: '' }, { name: 'Understandable', id: '1', number: 1, description: '', link: '', color: '', icon: '' }]
     if (0 < principles.length && principles.length < 5) {
-        return `static/principles/${combineLetters(principles)}.jpg`
+        return `/static/principles/${combineLetters(principles)}.jpg`
     }
-    return 'static/principles/POUR.jpg' // TODO: default image for no principles
+    return '/static/principles/POUR.jpg' // TODO: default image for no principles
 }
 
 function combineLetters(principles: WCAGPrinciple[]): string {
