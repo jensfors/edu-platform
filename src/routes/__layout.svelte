@@ -25,11 +25,8 @@
   <slot />
 </main>
 
-<footer class="flex flex-col justify-center items-center py-10 sm:p-10">
-  <p>
-    visit <a class="font-bold" href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit
-  </p>
-</footer>
+<!-- TODO: Make a footer -->
+<footer class="flex flex-col justify-center items-center py-10 sm:p-10" />
 
 <style>
 </style>
