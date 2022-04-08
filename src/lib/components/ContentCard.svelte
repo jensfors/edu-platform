@@ -1,9 +1,10 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
+  import { authUser } from '$lib/stores'
 
   import { getCourseIcon, getPrinciples } from '$lib/utils/courseIcon'
 
-  import type { Course, Exercise, Persona } from '@prisma/client'
+  import type { Course, Exercise, Persona, UserSolvesExercise } from '@prisma/client'
   export let data: Course[] | Persona[] | Exercise[]
   let type: string = ''
 
@@ -18,6 +19,13 @@
     } else if (data[0].hasOwnProperty('name')) {
       type = 'Persona'
     }
+  }
+
+  function userHasSolvedExercise(exercise: Exercise): boolean {
+    if ($authUser) {
+      return exercise.usersSolved.some((user) => user.userId === 'someid3') // TODO: change to $authUser.id
+    }
+    return false
   }
 </script>
 
@@ -47,7 +55,39 @@
               >{course.title}</a
             >
           </figure>
-          <!-- <h2 class="text-1xl pl-8 py-4 text-black">{course.title}</h2> -->
+        </div>
+      {/each}
+    </div>
+  </div>
+{/if}
+
+{#if type === 'Exercises'}
+  <div class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[1120px] w-full">
+    <div class="flex w-full bg-primary">
+      <h1 class="text-2xl pl-8 py-4 text-white">{type}</h1>
+    </div>
+    <div class="flex flex-wrap p-4">
+      {#each data as exercise, index}
+        <div class="p-4">
+          <div
+            class="card w-96 bg-base-100 shadow-xl h-full max-w-[185px] max-h-[450px]"
+            on:click={() => goto(`/course/exercise/${exercise.id}`)}
+            style="cursor: pointer"
+          >
+            <figure class="px-10 pt-10">
+              <div class="flex h-28 w-28">
+                <img src={exercise.persona.avatarUrl} alt="Shoes" class="rounded-xl" />
+              </div>
+            </figure>
+            <div class="card-body items-center text-center">
+              <h2 class="card-title">
+                Exercise {index + 1}
+                {userHasSolvedExercise(exercise) ? 'Solved' : ''}
+                <!-- TODO: Make something else -->
+              </h2>
+              <p>{exercise.title}</p>
+            </div>
+          </div>
         </div>
       {/each}
     </div>

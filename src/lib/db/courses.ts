@@ -1,5 +1,5 @@
 import PrismaClient from '$lib/prisma';
-import type { Course, Persona, Post, User, WCAGPrinciple } from '@prisma/client';
+import type { Course, Persona, Post, User, UserSolvesExercise, WCAGPrinciple } from '@prisma/client';
 import { userMatti } from './dummy/data';
 
 const prisma = new PrismaClient();
@@ -42,7 +42,8 @@ export async function getCourse(courseId: string): Promise<Course> {
                             include: {
                                 answers: true
                             }
-                        }
+                        },
+                        usersSolved: true,
                     }
                 },
                 authors: {
