@@ -1,13 +1,14 @@
 module.exports = {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
-    colors: {
-      operable: '#89C33E',
-      perceivable: '#8AEFFF',
-      robust: '#DC0F44',
-      understandable: '#AA83D8',
+    extend: {
+      colors: {
+        operable: '#89C33E',
+        perceivable: '#8AEFFF',
+        robust: '#DC0F44',
+        understandable: '#AA83D8',
+      },
     },
-    extend: {},
   },
   plugins: [require('@tailwindcss/typography'), require('daisyui')],
   daisyui: {
