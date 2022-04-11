@@ -1,10 +1,11 @@
 <script lang="ts">
-  import type { Course, Persona, WCAGPrinciple, WCAGCriteria } from '@prisma/client'
+  import type { Course, Persona, WCAGPrinciple, WCAGCriteria, User } from '@prisma/client'
   import { page } from '$app/stores'
   import { getCourseIcon } from '$lib/utils/courseIcon'
   import { goto } from '$app/navigation'
   import ContentCard from '$lib/components/ContentCard.svelte'
   import { authUser } from '$lib/stores'
+  import Author from '$lib/components/Author.svelte'
 
   export let course: Course
   export let principles: WCAGPrinciple[]
@@ -20,9 +21,10 @@
     personaButton[persona.id] = 'Expand'
   })
 
-  course.exercises.forEach((exercise) => {
-    course.exercises.push(exercise)
-    course.exercises.push(exercise)
+  let authors: User[] = []
+
+  course.authors.forEach((author) => {
+    authors.push(author.user)
   })
 
   function userIsAuthor(): boolean {
@@ -71,7 +73,11 @@
     <div class="pl-8 flex flex-row">
       {#each principles as principle}
         <div class="pr-2 pt-2">
-          <span title={principle.description} class="badge badge-ghost badge-lg WCAG-color">
+          <span
+            title={principle.description}
+            class="badge badge-ghost badge-lg"
+            style:background-color={principle.color}
+          >
             <img
               class="h-5 w-5"
               src={getCourseIcon([principle])}
@@ -84,6 +90,9 @@
     </div>
     <div class="pl-8 pt-1 pr-8 pb-4">
       <p>{course.description}</p>
+      <div class="flex justify-center">
+        <Author {authors} />
+      </div>
     </div>
   </div>
 </div>

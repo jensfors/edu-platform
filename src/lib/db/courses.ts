@@ -33,7 +33,7 @@ export async function getCourse(courseId: string): Promise<Course> {
             include: {
                 exercises: {
                     orderBy: {
-                        createdAt: 'desc'
+                        createdAt: 'asc'
                     },
                     include: {
                         persona: true,
