@@ -71,7 +71,7 @@
     <div class="pl-8 flex flex-row">
       {#each principles as principle}
         <div class="pr-2 pt-2">
-          <span title={principle.description} class="badge badge-ghost badge-lg bg-[#8AEFFF]">
+          <span title={principle.description} class="badge badge-ghost badge-lg WCAG-color">
             <img
               class="h-5 w-5"
               src={getCourseIcon([principle])}
@@ -90,7 +90,7 @@
 <!-- Persona card -->
 {#if personas.length > 0}
   <div class="pt-8 flex justify-center">
-    <div class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[1120px]">
+    <div class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[1120px] w-full">
       <div class="flex w-full bg-primary">
         <h1 class="text-2xl pl-8 py-4 text-white">
           Persona{personas.length > 1 ? 's' : ''}
