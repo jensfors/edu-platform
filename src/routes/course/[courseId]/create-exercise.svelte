@@ -1,13 +1,16 @@
 <script lang="ts">
-  import type { Course, Persona, WCAGPrinciple } from '@prisma/client'
+  import type { Course, Persona, WCAGCriteria, WCAGPrinciple } from '@prisma/client'
   import Tiptap from '$lib/components/Tiptap.svelte'
   import { ExerciseType } from '$lib/utils/stringTypes'
   import CodeCell from '$lib/components/CodeCell.svelte'
+  import ModalBoxWcag from '$lib/components/ModalBoxWcag.svelte'
 
   export let course: Course
   export let principles: WCAGPrinciple[]
   export let personas: Persona[]
   export let criteria: WCAGCriteria[]
+
+  console.log('this is some crietrie mother fucker', criteria)
 
   let exerciseType: string
   let exerciseTitle: string
@@ -32,6 +35,50 @@
     disablePublish = true
   }
 
+  function getPerceivableCriteria() {
+    let perceivableCriteria: WCAGCriteria[] = []
+    criteria.forEach((criteria) => {
+      // @ts-ignore
+      if (criteria.principle.name === 'Perceivable') {
+        perceivableCriteria.push(criteria)
+      }
+    })
+    return perceivableCriteria
+  }
+
+  function getOperableCriteria() {
+    let operableCriteria: WCAGCriteria[] = []
+    criteria.forEach((criteria) => {
+      // @ts-ignore
+      if (criteria.principle.name === 'Operable') {
+        operableCriteria.push(criteria)
+      }
+    })
+    return operableCriteria
+  }
+
+  function getUnderstandableCriteria() {
+    let understandableCriteria: WCAGCriteria[] = []
+    criteria.forEach((criteria) => {
+      // @ts-ignore
+      if (criteria.principle.name === 'Understandable') {
+        understandableCriteria.push(criteria)
+      }
+    })
+    return understandableCriteria
+  }
+
+  function getRobustCriteria() {
+    let robustCriteria: WCAGCriteria[] = []
+    criteria.forEach((criteria) => {
+      // @ts-ignore
+      if (criteria.principle.name === 'Robust') {
+        robustCriteria.push(criteria)
+      }
+    })
+    return robustCriteria
+  }
+
   function onSave() {
     // Write the stuff here to make post request that saves exercise
     console.log('Trying to save the exercise homie')
@@ -47,6 +94,19 @@
   <div class="flex justify-center w-full pb-10">
     <h1 class="text-3xl">Create exercise</h1>
   </div>
+  <!-- WCAG Criteria -->
+  <label for="my-modal-3" class="btn modal-button">Select WCAG criteria(s)</label>
+  <input type="checkbox" id="my-modal-3" class="modal-toggle" />
+  <div class="modal">
+    <div class="modal-box relative w-11/12 max-w-5xl max-h-[500px]">
+      <label for="my-modal-3" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+      <ModalBoxWcag criterias={getPerceivableCriteria()} />
+      <ModalBoxWcag criterias={getOperableCriteria()} />
+      <ModalBoxWcag criterias={getUnderstandableCriteria()} />
+      <ModalBoxWcag criterias={getRobustCriteria()} />
+    </div>
+  </div>
+  <!--  WCAG criteria end  -->
   <div class="form-control w-full max-w-xs pb-4">
     <label for="Please select a persone for your exercise" class="label">
       <span class="label-text">Please select a persona for your exercise</span>
