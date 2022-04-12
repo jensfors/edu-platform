@@ -1,13 +1,12 @@
 <script lang="ts">
-  import { getCourseIcon } from '$lib/utils/courseIcon'
-  import type { XP } from '$lib/utils/stringTypes'
-  import type { Course, Persona, Post, User, WCAGPrinciple } from '@prisma/client'
-  import { get } from 'svelte/store'
-  import { page } from '$app/stores'
   import { goto } from '$app/navigation'
-  import { authUser } from '../lib/stores'
+  import { page } from '$app/stores'
+  import { getCourseIcon } from '$lib/utils/courseIcon'
   import { createAuthorsString, formatDate } from '$lib/utils/stringFormating'
-  import ContentCard from '$lib/components/ContentCard.svelte'
+  import type { XP } from '$lib/utils/stringTypes'
+  import type { Course, Persona, Post, WCAGPrinciple } from '@prisma/client'
+  import { get } from 'svelte/store'
+  import { authUser } from '../lib/stores'
 
   export let userXP: XP
   export let courses: Course[]

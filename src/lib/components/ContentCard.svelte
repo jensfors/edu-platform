@@ -1,10 +1,8 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
   import { authUser } from '$lib/stores'
-
   import { getCourseIcon, getPrinciples } from '$lib/utils/courseIcon'
-
-  import type { Course, Exercise, Persona, UserSolvesExercise } from '@prisma/client'
+  import type { Course, Exercise, Persona } from '@prisma/client'
   export let data: Course[] | Persona[] | Exercise[]
   let type: string = ''
 

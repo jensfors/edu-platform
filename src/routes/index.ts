@@ -1,5 +1,5 @@
-import { getLatestCourses, getPopularCourses, getWCAGPrinciplesForCourse } from "$lib/db/courses";
-import { getAllPersonas, getAmountOfPersonas } from "$lib/db/persona";
+import { getLatestCourses, getWCAGPrinciplesForCourse } from "$lib/db/courses";
+import { getAmountOfPersonas } from "$lib/db/persona";
 import { getLatestBlogPosts } from "$lib/db/posts";
 import { getAmountOfReadPosts, getAmountOfSolvedExercises, getUser, getXP } from "$lib/db/user";
 import { getUserLevel } from "$lib/utils/levels";
