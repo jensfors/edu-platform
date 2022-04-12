@@ -1,6 +1,5 @@
 import PrismaClient from '$lib/prisma';
-import type { Course, Persona, Post, User, UserSolvesExercise, WCAGPrinciple } from '@prisma/client';
-import { userMatti } from './dummy/data';
+import type { Course, Persona, User, WCAGPrinciple } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -32,6 +31,9 @@ export async function getCourse(courseId: string): Promise<Course> {
             },
             include: {
                 exercises: {
+                    where: {
+                        public: true
+                    },
                     orderBy: {
                         createdAt: 'asc'
                     },
@@ -60,13 +62,13 @@ export async function getCourse(courseId: string): Promise<Course> {
     }
 }
 
-export async function getAuthoredCourses(): Promise<Course[]> {
+export async function getAuthoredCourses(userId: string): Promise<Course[]> {
     try {
         const result: Course[] = await prisma.course.findMany({
             where: {
                 authors: {
                     some: {
-                        userId: userMatti.id // TODO: Local storage
+                        userId: userId
                     }
                 }
             }
@@ -86,7 +88,7 @@ export async function getWCAGPrinciplesForCourse(course: Course): Promise<WCAGPr
     return result
 }
 
-export async function createCourse(title: string, description: string): Promise<Course> {
+export async function createCourse(title: string, description: string, userId: string): Promise<Course> {
     const result: Course = await prisma.course.create({
         data: {
             title: title,
@@ -94,7 +96,7 @@ export async function createCourse(title: string, description: string): Promise<
             authors: {
                 create: {
                     user: {
-                        connect: { id: userMatti.id } // TODO: Change to local storage
+                        connect: { id: userId }
                     },
                     mainAuthor: true
                 }
@@ -108,7 +110,18 @@ export async function createCourse(title: string, description: string): Promise<
 // TODO: Turn into prisma
 // Returns a list of the Personas which are in exercises for a given course
 export async function getAllPersonasForCourse(course: Course): Promise<Persona[]> {
-    const result: Persona[] = await prisma.$queryRaw`SELECT DISTINCT "Persona".* FROM "Course" JOIN "Exercise" ON ${course.id} = "Exercise"."courseId" JOIN "Persona" ON "Exercise"."personaId" = "Persona".id`
+    //const result: Persona[] = await prisma.$queryRaw`SELECT DISTINCT "Persona".* FROM "Course" JOIN "Exercise" ON ${course.id} = "Exercise"."courseId" JOIN "Persona" ON "Exercise"."personaId" = "Persona".id`
+    const result: Persona[] = await prisma.persona.findMany({
+        where: {
+            exercises: {
+                some: {
+                    courseId: course.id,
+                    public: true
+                }
+            }
+        },
+        distinct: ['id']
+    })
     return result;
 }
 

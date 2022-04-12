@@ -1,15 +1,9 @@
-import type { RequestHandler } from '@sveltejs/kit';
+import { getExercise } from '$lib/db/exercises';
+import { getAmountOfReadPosts } from '$lib/db/user';
 import PrismaClient from '$lib/prisma';
-import { v4 as uuidv4 } from 'uuid';
-import { likeComment, removelikeFromComment } from '$lib/db/comments';
-import { getPost } from '$lib/db/posts';
-import { deletePersona, findAllExercisesWithPersona, getAllOfficialPersonas, getAllPersonas, getUsablePersonas, getUsersPersonas } from '$lib/db/persona';
-import { mattiMovement, userJen, userKasper, userMatti, userSimon } from '$lib/db/dummy/data';
-import { getExercise, giveExerciseCategoryAndAnswers } from '$lib/db/exercises';
-import { createCourse, getAllPersonasForCourse, getAuthoredCourses, getCourse, getWCAGPrinciplesForCourse } from '$lib/db/courses';
-import type { Course } from '@prisma/client';
-import { getAmountOfReadPosts, getAmountOfSolvedExercises, getXP } from '$lib/db/user';
 import { PostType } from '$lib/utils/stringTypes';
+import type { RequestHandler } from '@sveltejs/kit';
+import { v4 as uuidv4 } from 'uuid';
 
 type Todo = {
 	uid: string;

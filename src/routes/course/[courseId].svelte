@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Course, Persona, WCAGPrinciple, WCAGCriteria, User } from '@prisma/client'
+  import type { Course, Persona, WCAGPrinciple, User } from '@prisma/client'
   import { page } from '$app/stores'
   import { getCourseIcon } from '$lib/utils/courseIcon'
   import { goto } from '$app/navigation'
@@ -15,14 +15,13 @@
   let personaTexts = []
   let personaButton = []
   const personaTextChars: number = 200
-
   personas.forEach((persona) => {
     personaTexts[persona.id] = persona.description.substring(0, personaTextChars)
     personaButton[persona.id] = 'Expand'
   })
 
+  // Creates the list of authors
   let authors: User[] = []
-
   course.authors.forEach((author) => {
     authors.push(author.user)
   })
@@ -53,11 +52,13 @@
     }
   }
 
+  // Check if persona description is longer than "personaTextChars"
   function displayPersonaButton(persona: Persona): boolean {
     return !(persona.description === persona.description.substring(0, personaTextChars))
   }
 </script>
 
+<!-- Content creator options -->
 {#if userIsAuthor()}
   <button>
     <a href={`${$page.url.pathname}/create-exercise`}> Create exercise motherfucker </a>
@@ -147,6 +148,7 @@
   </div>
 {/if}
 
+<!-- Displaying the exercises -->
 <div class="pt-8 flex justify-center">
   <ContentCard data={course.exercises} />
 </div>

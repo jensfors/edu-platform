@@ -7,6 +7,7 @@
   import { goto } from '$app/navigation'
   import { authUser } from '../lib/stores'
   import { createAuthorsString, formatDate } from '$lib/utils/stringFormating'
+  import ContentCard from '$lib/components/ContentCard.svelte'
 
   export let userXP: XP
   export let courses: Course[]
@@ -79,61 +80,74 @@
 <div class="flex gap-20">
   <div class="flex flex-col gap-20">
     <!-- Persona card -->
-    <div class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[792px]">
+    <div
+      class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[792px] w-full justify-center"
+    >
       <div class="flex w-full bg-primary">
         <h1 class="text-2xl pl-8 py-4 text-white">Personas</h1>
       </div>
-      <div class="flex py-8 pr-8">
+      <div class="flex flex-wrap p-4">
         {#each personas as persona}
-          <div>
-            <figure class="img flex flex-col pl-8">
-              <div class="flex h-28 w-28">
-                <img
-                  style="cursor: pointer"
-                  class="rounded-2xl"
-                  src={persona.avatarUrl}
-                  alt={persona.name}
-                  on:click={() => goto(`/persona/${persona.id}`)}
-                />
+          <div class="p-2 items-center">
+            <div
+              class="card w-96 bg-base-100 shadow-xl h-full max-w-[160px] max-h-[450px] items-center"
+              on:click={() => goto(`/persona/${persona.id}`)}
+              style="cursor: pointer"
+            >
+              <figure class="px-3 pt-4">
+                <div class="flex h-28 w-28">
+                  <img
+                    class="rounded-2xl"
+                    src={persona.avatarUrl}
+                    alt={'Avatar of ' + persona.name}
+                  />
+                </div>
+              </figure>
+              <div class="card-body items-center text-center p-2 pb-4">
+                <h2 class="card-title text-base">
+                  {persona.name}
+                </h2>
               </div>
-              <a style="text-align:center" sveltekit:prefetch href={`/persona/${persona.id}`}
-                >{persona.name}</a
-              >
-            </figure>
+            </div>
           </div>
         {/each}
       </div>
     </div>
 
     <!-- Courses Card -->
-    <div class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[792px]">
+    <div
+      class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[792px] w-full justify-center"
+    >
       <div class="flex w-full bg-primary">
         <h1 class="text-2xl pl-8 py-4 text-white">Courses</h1>
       </div>
-      <div class="flex py-8 pr-8">
+      <div class="flex flex-wrap p-4">
         {#each courses as course}
-          <div>
-            <figure class="flex flex-col pl-8">
-              <!-- Finds the correct course image -->
-              <div class="flex h-28 w-28">
-                <img
-                  class="rounded-2xl"
-                  style="cursor: pointer"
-                  src={getCourseIcon(
-                    coursePrinciples.find(function (o) {
-                      return o.id === course.id
-                    }).principles
-                  )}
-                  on:click={() => goto(`/course/${course.id}`)}
-                  alt={`The course: ${course.title}`}
-                />
+          <div class="p-2 items-center">
+            <div
+              class="card w-96 bg-base-100 shadow-xl h-full max-w-[160px] max-h-[450px] items-center"
+              on:click={() => goto(`/course/${course.id}`)}
+              style="cursor: pointer"
+            >
+              <figure class="px-3 pt-4">
+                <div class="flex h-28 w-28">
+                  <img
+                    class="rounded-2xl"
+                    src={getCourseIcon(
+                      coursePrinciples.find(function (o) {
+                        return o.id === course.id
+                      }).principles
+                    )}
+                    alt={`The course: ${course.title}`}
+                  />
+                </div>
+              </figure>
+              <div class="card-body items-center text-center p-2 pb-4">
+                <h2 class="card-title text-base">
+                  {course.title}
+                </h2>
               </div>
-              <!-- <p class="absolute top-3/4 text-white text-xl font-bold">{course.title}</p> -->
-              <a style="text-align:center" sveltekit:prefetch href={`/course/${course.id}`}
-                >{course.title}</a
-              >
-            </figure>
-            <!-- <h2 class="text-1xl pl-8 py-4 text-black">{course.title}</h2> -->
+            </div>
           </div>
         {/each}
       </div>

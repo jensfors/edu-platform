@@ -29,32 +29,35 @@
   }
 </script>
 
-<!-- TODO: Make for Personas and exercises -->
+<!-- TODO: Make for Personas -->
 {#if type === 'Courses'}
   <div class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[1120px] w-full">
     <div class="flex w-full bg-primary">
       <h1 class="text-2xl pl-8 py-4 text-white">{type}</h1>
     </div>
-    <div class="flex flex-wrap">
+    <div class="flex flex-wrap p-4">
       {#each data as course}
-        <div class="p-2">
-          <figure class="flex flex-col w-36 p-2">
-            <!-- Finds the correct course image -->
-            <div class="flex h-28 w-28">
-              <img
-                class="rounded-2xl"
-                style="cursor: pointer"
-                src={getCourseIcon(getPrinciples(course))}
-                on:click={() => goto(`/course/${course.id}`)}
-                alt={`The course: ${course.title}`}
-              />
+        <div class="p-4">
+          <div
+            class="card w-96 bg-base-100 shadow-xl h-full max-w-[185px] max-h-[450px]"
+            on:click={() => goto(`/course/${course.id}`)}
+            style="cursor: pointer"
+          >
+            <figure class="px-3 pt-4">
+              <div class="flex h-28 w-28">
+                <img
+                  class="rounded-2xl"
+                  src={getCourseIcon(getPrinciples(course))}
+                  alt={`The course: ${course.title}`}
+                />
+              </div>
+            </figure>
+            <div class="card-body items-center text-center p-2 pb-4">
+              <h2 class="card-title text-base">
+                {course.title}
+              </h2>
             </div>
-
-            <!-- <p class="absolute top-3/4 text-white text-xl font-bold">{course.title}</p> -->
-            <a style="text-align:center" sveltekit:prefetch href={`/course/${course.id}`}
-              >{course.title}</a
-            >
-          </figure>
+          </div>
         </div>
       {/each}
     </div>
@@ -74,7 +77,7 @@
             on:click={() => goto(`/course/exercise/${exercise.id}`)}
             style="cursor: pointer"
           >
-            <figure class="px-10 pt-10">
+            <figure class="px-3 pt-4">
               <div class="flex h-28 w-28">
                 <img
                   src={exercise.persona.avatarUrl}
@@ -86,7 +89,7 @@
                 {/if}
               </div>
             </figure>
-            <div class="card-body items-center text-center">
+            <div class="card-body items-center text-center p-2 pb-4">
               <h2 class="card-title">
                 Exercise {index + 1}
               </h2>

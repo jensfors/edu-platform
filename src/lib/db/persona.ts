@@ -1,6 +1,5 @@
 import PrismaClient from '$lib/prisma';
 import type { Course, Exercise, Persona } from '@prisma/client';
-import { userJen, userKasper, userMatti } from './dummy/data';
 
 const prisma = new PrismaClient();
 
@@ -10,6 +9,19 @@ export async function getAllPersonas(): Promise<Persona[]> {
             private: false
         }
     }*/)
+    return result
+}
+
+export async function getAmountOfPersonas(amount: number): Promise<Persona[]> {
+    const result: Persona[] = await prisma.persona.findMany({
+        where: {
+            private: false,     // only public courses
+        },
+        orderBy: {
+            official: 'desc'
+        }, // Sort by official
+        take: amount          // Amount to return
+    })
     return result
 }
 
@@ -34,20 +46,20 @@ export async function getAllOfficialPersonas(): Promise<Persona[]> {
     return result
 }
 
-export async function getUsersPersonas(): Promise<Persona[]> {
+export async function getUsersPersonas(userId: string): Promise<Persona[]> {
     const result: Persona[] = await prisma.persona.findMany({
         where: {
-            authorId: userMatti.id // TODO: Local storage
+            authorId: userId
         }
     })
     return result
 }
 
-export async function getUsablePersonas(): Promise<Persona[]> {
+export async function getUsablePersonas(userId: string): Promise<Persona[]> {
     const result: Persona[] = await prisma.persona.findMany({
         where: {
             OR: [{
-                authorId: userMatti.id // TODO: Local storage
+                authorId: userId
             }, {
                 private: false
             }]
@@ -56,7 +68,7 @@ export async function getUsablePersonas(): Promise<Persona[]> {
     return result
 }
 
-export async function createPersona(name: string, age: number, description: string, avatarUrl: string, _private: boolean): Promise<Persona> {
+export async function createPersona(name: string, age: number, description: string, avatarUrl: string, _private: boolean, userId: string): Promise<Persona> {
     const result: Persona = await prisma.persona.create({
         data: {
             name: name,
@@ -66,7 +78,7 @@ export async function createPersona(name: string, age: number, description: stri
             private: _private,
             author: {
                 connect: {
-                    id: userMatti.id // TODO: Local storage
+                    id: userId
                 }
             }
         }
@@ -132,6 +144,9 @@ export async function findAllCoursesWithPersona(persona: Persona): Promise<Cours
             course: {
                 include: {
                     exercises: {
+                        where: {
+                            public: true
+                        },
                         include: {
                             criteria: {
                                 include: {
