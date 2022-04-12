@@ -4,8 +4,8 @@
   import { getCourseIcon, getPrinciples } from '$lib/utils/courseIcon'
   import type { Course, Exercise, Persona } from '@prisma/client'
   export let data: Course[] | Persona[] | Exercise[]
+  export let width: string
   let type: string = ''
-
   if (data && data.length > 0) {
     if (data[0].hasOwnProperty('title')) {
       if (data[0].hasOwnProperty('description')) {
@@ -21,7 +21,7 @@
 
   function userHasSolvedExercise(exercise: Exercise): boolean {
     if ($authUser) {
-      return exercise.usersSolved.some((user) => user.userId === 'someid3') // TODO: change to $authUser.id
+      return exercise.usersSolved.some((user) => user.userId === $authUser.id) // TODO: change to $authUser.id
     }
     return false
   }
@@ -29,7 +29,7 @@
 
 <!-- TODO: Make for Personas -->
 {#if type === 'Courses'}
-  <div class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[1120px] w-full">
+  <div class="card lg:card-side flex-wrap bg-base-100 shadow-xl {'max-w-[' + width + ']'} w-full">
     <div class="flex w-full bg-primary">
       <h1 class="text-2xl pl-8 py-4 text-white">{type}</h1>
     </div>
@@ -63,7 +63,7 @@
 {/if}
 
 {#if type === 'Exercises'}
-  <div class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[1120px] w-full">
+  <div class="card lg:card-side flex-wrap bg-base-100 shadow-xl {'max-w-[' + width + ']'} w-full">
     <div class="flex w-full bg-primary">
       <h1 class="text-2xl pl-8 py-4 text-white">{type}</h1>
     </div>

@@ -45,7 +45,7 @@
   </div>
 </div>
 <div class="pt-8 flex justify-center">
-  <ContentCard data={courses} />
+  <ContentCard data={courses} width={'1120px'} />
 </div>
 
 <style>

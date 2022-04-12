@@ -150,5 +150,5 @@
 
 <!-- Displaying the exercises -->
 <div class="pt-8 flex justify-center">
-  <ContentCard data={course.exercises} />
+  <ContentCard data={course.exercises} width={'1120px'} />
 </div>
