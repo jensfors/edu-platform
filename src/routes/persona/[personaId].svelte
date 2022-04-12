@@ -38,7 +38,7 @@
       <span title="This is an official persona" class="badge badge-secondary">OFFICIAL</span>
     {/if}
 
-    <Author author={persona.author} />
+    <Author authors={[persona.author]} />
     <p>
       {persona.description}
     </p>

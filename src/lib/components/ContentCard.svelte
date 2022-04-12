@@ -76,14 +76,19 @@
           >
             <figure class="px-10 pt-10">
               <div class="flex h-28 w-28">
-                <img src={exercise.persona.avatarUrl} alt="Shoes" class="rounded-xl" />
+                <img
+                  src={exercise.persona.avatarUrl}
+                  alt="Avatar of {exercise.persona.name}"
+                  class="rounded-xl"
+                />
+                {#if userHasSolvedExercise(exercise)}
+                  <span style="color:green;font-size:40px;" title="Exercise solved">&#10003;</span>
+                {/if}
               </div>
             </figure>
             <div class="card-body items-center text-center">
               <h2 class="card-title">
                 Exercise {index + 1}
-                {userHasSolvedExercise(exercise) ? 'Solved' : ''}
-                <!-- TODO: Make something else -->
               </h2>
               <p>{exercise.title}</p>
             </div>
