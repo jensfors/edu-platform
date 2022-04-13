@@ -2,6 +2,7 @@
   import type { WCAGCriteria } from '@prisma/client'
 
   export let criterias: WCAGCriteria[]
+  export let selections: WCAGCriteria[]
   // @ts-ignore
   let titleNumber = criterias[0].principle.number
   // @ts-ignore
@@ -16,7 +17,12 @@
         {#if i < criterias.length / 2}
           <div class="form-control">
             <label class="label cursor-pointer justify-start gap-4">
-              <input type="checkbox" checked="checked" class="checkbox checkbox-xs" />
+              <input
+                type="checkbox"
+                bind:group={selections}
+                value={criterion}
+                class="checkbox checkbox-xs"
+              />
               <span class="label-text">{criterion.number}</span>
               <span class="label-text">{criterion.conformance}</span>
               <span class="label-text">{criterion.name}</span>
@@ -30,7 +36,12 @@
         {#if i > criterias.length / 2}
           <div class="form-control">
             <label class="label cursor-pointer justify-start gap-4">
-              <input type="checkbox" checked="checked" class="checkbox checkbox-xs" />
+              <input
+                type="checkbox"
+                bind:group={selections}
+                value={criterion}
+                class="checkbox checkbox-xs"
+              />
               <span class="label-text">{criterion.number}</span>
               <span class="label-text">{criterion.conformance}</span>
               <span class="label-text">{criterion.name}</span>
