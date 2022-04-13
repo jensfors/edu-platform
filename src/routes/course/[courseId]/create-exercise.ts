@@ -27,3 +27,14 @@ export async function get({ params }) {
     },
   }
 }
+
+/** @type {import('./course/[courseId]').RequestHandler} */
+export async function post({ request }) {
+  let data = await request.json()
+  console.log('we entered the end point daddy', data)
+  return {
+    body: {
+      message: 'Yyayayayayya',
+    },
+  }
+}

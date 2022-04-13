@@ -4,13 +4,13 @@
   import { ExerciseType } from '$lib/utils/stringTypes'
   import CodeCell from '$lib/components/CodeCell.svelte'
   import ModalBoxWcag from '$lib/components/ModalBoxWcag.svelte'
+  import { authUser } from '$lib/stores'
+  import { page } from '$app/stores'
 
   export let course: Course
   export let principles: WCAGPrinciple[]
   export let personas: Persona[]
   export let criteria: WCAGCriteria[]
-
-  console.log('this is some crietrie mother fucker', criteria)
 
   let exerciseType: string
   let exerciseTitle: string
@@ -20,6 +20,12 @@
   let initialCodeExercise = `let testVar123= "Should be the value from codecell"`
   let initialCodeSolution = `let testVar123= "Should be the value from codecell"`
   let disablePublish = true
+  let perceivableWcagSelections: WCAGCriteria[] = []
+  let operableWcagSelections: WCAGCriteria[] = []
+  let understandableWcagSelections: WCAGCriteria[] = []
+  let robustWcagSelections: WCAGCriteria[] = []
+  let personaSelected: Persona
+  let userId
 
   $: disableSave = exerciseTitle ? false : true
 
@@ -33,6 +39,10 @@
     disablePublish = false
   } else {
     disablePublish = true
+  }
+
+  if ($authUser) {
+    userId = $authUser.id
   }
 
   function getPerceivableCriteria() {
@@ -79,9 +89,29 @@
     return robustCriteria
   }
 
-  function onSave() {
-    // Write the stuff here to make post request that saves exercise
-    console.log('Trying to save the exercise homie')
+  async function onSave() {
+    const res = await fetch(`${$page.url.pathname}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        exerciseType,
+        exerciseTitle,
+        exerciseQuestion,
+        codeExercise,
+        codeSolution,
+        disablePublish,
+        perceivableWcagSelections,
+        operableWcagSelections,
+        understandableWcagSelections,
+        robustWcagSelections,
+        personaSelected,
+        userId,
+      }),
+    })
+
+    const json = await res.json()
+    let result = JSON.stringify(json)
+
+    console.log('result: ', result)
   }
 
   function onPublish() {
@@ -94,19 +124,56 @@
   <div class="flex justify-center w-full pb-10">
     <h1 class="text-3xl">Create exercise</h1>
   </div>
-  <!-- WCAG Criteria -->
-  <label for="my-modal-3" class="btn modal-button">Select WCAG criteria(s)</label>
-  <input type="checkbox" id="my-modal-3" class="modal-toggle" />
-  <div class="modal">
-    <div class="modal-box relative w-11/12 max-w-5xl max-h-[500px]">
-      <label for="my-modal-3" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-      <ModalBoxWcag criterias={getPerceivableCriteria()} />
-      <ModalBoxWcag criterias={getOperableCriteria()} />
-      <ModalBoxWcag criterias={getUnderstandableCriteria()} />
-      <ModalBoxWcag criterias={getRobustCriteria()} />
+  <div>
+    <!-- WCAG Criteria -->
+    <label for="my-modal-3" class="btn modal-button">Select WCAG criteria(s)</label>
+    <input type="checkbox" id="my-modal-3" class="modal-toggle" />
+    <div class="modal">
+      <div class="modal-box relative w-11/12 max-w-5xl max-h-[500px]">
+        <label for="my-modal-3" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+        <ModalBoxWcag
+          criterias={getPerceivableCriteria()}
+          bind:selections={perceivableWcagSelections}
+        />
+        <ModalBoxWcag criterias={getOperableCriteria()} bind:selections={operableWcagSelections} />
+        <ModalBoxWcag
+          criterias={getUnderstandableCriteria()}
+          bind:selections={understandableWcagSelections}
+        />
+        <ModalBoxWcag criterias={getRobustCriteria()} bind:selections={robustWcagSelections} />
+      </div>
+    </div>
+    <!--  WCAG criteria end  -->
+  </div>
+  <div>
+    <label for="my-modal-4" class="btn modal-button">Select a persona</label>
+    <input type="checkbox" id="my-modal-4" class="modal-toggle" />
+    <div class="modal">
+      <div class="modal-box relative w-11/12 max-w-5xl max-h-[500px]">
+        <label for="my-modal-4" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+        <div class="p-4">
+          <h3 class="text-lg font-bold pb-2">Select a persona</h3>
+          <div class="border rounded-lg p-4 flex flex-wrap w-full">
+            <div class="flex flex-col w-1/2">
+              {#each personas as persona}
+                <div class="form-control">
+                  <label class="label cursor-pointer justify-start gap-4">
+                    <input
+                      type="radio"
+                      bind:group={personaSelected}
+                      value={persona}
+                      class="radio"
+                    />
+                    <span class="label-text">{persona.name}</span>
+                  </label>
+                </div>
+              {/each}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <!--  WCAG criteria end  -->
   <div class="form-control w-full max-w-xs pb-4">
     <label for="Please select a persone for your exercise" class="label">
       <span class="label-text">Please select a persona for your exercise</span>
@@ -124,7 +191,6 @@
         <label class="label-text" for="Exercise options">Select type of exercise</label>
       </div>
       {#each Object.entries(ExerciseType) as [key, value]}
-        <!-- <li>{key} - {value}</li> -->
         <div class="form-control flex-row">
           <label class="label cursor-pointer pr-2">
             <input class="radio" type="radio" bind:group={exerciseType} {value} checked />
@@ -133,24 +199,6 @@
         </div>
       {/each}
     </div>
-    <!-- <div class="label">
-      <label class="label-text" for="Exercise options">Select type of exercise</label>
-    </div>
-    <div class="border rounded-lg w-80">
-      <div class="form-control pl-2">
-        <label class="label cursor-pointer pr-2">
-          <span class="label-text">Coding</span>
-          <input type="radio" name="radio-6" class="radio" checked />
-        </label>
-      </div>
-      <div class="divider -my-2 p-0" />
-      <div class="form-control pl-2">
-        <label class="label cursor-pointer pr-2">
-          <span class="label-text">Quiz</span>
-          <input type="radio" name="radio-6" class="radio" checked />
-        </label>
-      </div>
-    </div> -->
   </div>
   <div class="form-control w-full max-w-xs pb-10">
     <label class="label" for="What is the title of the exercise?">
