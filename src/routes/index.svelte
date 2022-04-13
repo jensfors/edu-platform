@@ -209,12 +209,3 @@
     </div>
   {/if}
 </div>
-
-<style>
-  .img {
-    float: left;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-  }
-</style>

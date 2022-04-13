@@ -6,9 +6,9 @@
   import ModalBoxWcag from '$lib/components/ModalBoxWcag.svelte'
   import { authUser } from '$lib/stores'
   import { page } from '$app/stores'
+  import { goto } from '$app/navigation'
 
   export let course: Course
-  export let principles: WCAGPrinciple[]
   export let personas: Persona[]
   export let criteria: WCAGCriteria[]
 
@@ -43,6 +43,8 @@
 
   if ($authUser) {
     userId = $authUser.id
+    $page.url.searchParams.set('userId', userId)
+    goto(`?${$page.url.searchParams.toString()}`)
   }
 
   function getPerceivableCriteria() {
@@ -105,6 +107,7 @@
         robustWcagSelections,
         personaSelected,
         userId,
+        course,
       }),
     })
 

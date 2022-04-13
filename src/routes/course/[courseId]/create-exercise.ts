@@ -1,27 +1,26 @@
 import { getAllPersonasForCourse, getCourse, getWCAGPrinciplesForCourse } from '$lib/db/courses'
-import { getAllPersonas } from '$lib/db/persona'
+import { createExercise } from '$lib/db/exercises'
+import { getAllPersonas, getUsablePersonas } from '$lib/db/persona'
 import { getAllCriteria } from '$lib/db/wcag'
-import type { Course, Persona, WCAGCriteria, WCAGPrinciple } from '@prisma/client'
+import { Difficulty } from '$lib/utils/stringTypes'
+import type { Course, Exercise, Persona, WCAGCriteria, WCAGPrinciple } from '@prisma/client'
 
-export async function get({ params }) {
+export async function get({ params, url }) {
+  const userId: string = url.searchParams.get('userId')
   const { courseId } = params
   let course: Course = null
-  let principles: WCAGPrinciple[] = []
   let personas: Persona[] = []
   let criteria: WCAGCriteria[] = []
-  if (courseId) {
+  if (courseId && userId) {
     course = await getCourse(courseId)
-    principles = await getWCAGPrinciplesForCourse(course)
-    personas = await getAllPersonas()
+    personas = await getUsablePersonas(userId)
   }
-
   criteria = await getAllCriteria()
 
   //console.log('get', course)
   return {
     body: {
       course,
-      principles,
       personas,
       criteria,
     },
@@ -32,6 +31,7 @@ export async function get({ params }) {
 export async function post({ request }) {
   let data = await request.json()
   console.log('we entered the end point daddy', data)
+  let exercise: Exercise = await createExercise(data.exerciseTitle, 'this is the content', data.exerciseType, Difficulty.Beginner, data.personaSelected, data.course)
   return {
     body: {
       message: 'Yyayayayayya',

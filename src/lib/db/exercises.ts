@@ -1,4 +1,5 @@
 import PrismaClient from '$lib/prisma';
+import type { Difficulty, ExerciseType } from '$lib/utils/stringTypes';
 import type { Assignment, Course, Exercise, Persona, WCAGCriteria } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -29,20 +30,24 @@ export async function getExercise(exerciseId: string): Promise<Exercise> {
     }
 }
 
-export async function createExercise(title: string, content: string, persona: Persona, course: Course): Promise<Exercise> {
-    const result: Exercise = await prisma.exercise.create({
+export async function createExercise(title: string, content: string, type: ExerciseType, difficulty: Difficulty, persona: Persona, course: Course): Promise<Exercise> {
+    console.log(title, content, type, difficulty, persona, course)
+    /* const result: Exercise = await prisma.exercise.create({
         data: {
             title: title,
             content: content,
+            type: type,
+            difficulty: difficulty,
+            persona: {
+                connect: { id: persona.id }
+            },
             course: {
                 connect: { id: course.id }
             },
-            persona: {
-                connect: { id: persona.id }
-            }
         }
     })
-    return result
+    return result */
+    return null
 }
 
 export async function giveExerciseCategoryAndAnswers(exercise: Exercise, criteria: WCAGCriteria[], assignments: { question: string, answers: { text: string, isSolution: boolean }[] }[]): Promise<boolean> {
