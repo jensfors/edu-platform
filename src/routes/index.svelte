@@ -108,7 +108,7 @@
               style="cursor: pointer"
             >
               <figure class="px-3 pt-4">
-                <div class="flex h-28 w-28">
+                <div class="flex h-28 w-28 justify-center">
                   <img
                     class="rounded-2xl"
                     src={persona.avatarUrl}

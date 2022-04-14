@@ -131,7 +131,13 @@
                     >
                   {/if}
                 </h2>
-                <p>{personaTexts[persona.id]}</p>
+                {#if persona.disability}
+                  <p><b>Disability: </b>{persona.disability}</p>
+                {/if}
+                <p>
+                  {personaTexts[persona.id]}
+                </p>
+
                 <div class="card-actions justify-end">
                   {#if displayPersonaButton(persona)}
                     <button class="btn btn-primary" on:click={() => toggleReadMore(persona)}
