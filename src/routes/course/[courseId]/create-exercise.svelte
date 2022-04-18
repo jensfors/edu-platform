@@ -96,18 +96,19 @@
     const res = await fetch(`${$page.url.pathname}`, {
       method: 'POST',
       body: JSON.stringify({
-        exerciseType,
-        exerciseTitle,
-        exerciseQuestion,
         codeExercise,
         codeSolution,
-        perceivableWcagSelections,
-        operableWcagSelections,
-        understandableWcagSelections,
-        robustWcagSelections,
-        personaSelected,
-        userId,
         course,
+        exerciseContent,
+        exerciseQuestion,
+        exerciseTitle,
+        exerciseType,
+        operableWcagSelections,
+        perceivableWcagSelections,
+        personaSelected,
+        robustWcagSelections,
+        understandableWcagSelections,
+        userId,
       }),
     })
 
