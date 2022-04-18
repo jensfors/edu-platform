@@ -6,7 +6,7 @@
 
   let element: Element
   let editor: Editor
-  $: content = ''
+  export let content: string
 
   onMount(() => {
     console.log('Mounting markdown editor..')
@@ -33,6 +33,11 @@
     }
   })
 
+  // Change the content when the html in the editor changes
+  $: if (editor) {
+    content = editor.getHTML()
+  }
+
   function addImage() {
     const url = window.prompt('URL')
     const altTag = window.prompt('Alt Tag')
@@ -49,11 +54,6 @@
         })
         .run()
     }
-  }
-
-  // Just used to test how the content is rendered from the getHTML() function
-  $: if (editor) {
-    content = editor.getHTML()
   }
 </script>
 
@@ -115,7 +115,7 @@
     background: #131325;
     color: white;
   }
-  .ProseMirror  {
+  .ProseMirror {
     @apply w-full;
   }
 </style>
