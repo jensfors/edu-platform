@@ -12,19 +12,20 @@
   export let personas: Persona[]
   export let criteria: WCAGCriteria[]
 
-  let exerciseType: string
-  let exerciseTitle: string
-  let exerciseQuestion: string
   let codeExercise: string
   let codeSolution: string
+  let disablePublish = true
+  let exerciseContent
+  let exerciseQuestion: string
+  let exerciseTitle: string
+  let exerciseType: string
   let initialCodeExercise = `let testVar123= "Should be the value from codecell"`
   let initialCodeSolution = `let testVar123= "Should be the value from codecell"`
-  let disablePublish = true
-  let perceivableWcagSelections: WCAGCriteria[] = []
   let operableWcagSelections: WCAGCriteria[] = []
-  let understandableWcagSelections: WCAGCriteria[] = []
-  let robustWcagSelections: WCAGCriteria[] = []
+  let perceivableWcagSelections: WCAGCriteria[] = []
   let personaSelected: Persona
+  let robustWcagSelections: WCAGCriteria[] = []
+  let understandableWcagSelections: WCAGCriteria[] = []
   let userId
 
   $: disableSave = exerciseTitle ? false : true
@@ -95,26 +96,23 @@
     const res = await fetch(`${$page.url.pathname}`, {
       method: 'POST',
       body: JSON.stringify({
-        exerciseType,
-        exerciseTitle,
-        exerciseQuestion,
         codeExercise,
         codeSolution,
-        disablePublish,
-        perceivableWcagSelections,
-        operableWcagSelections,
-        understandableWcagSelections,
-        robustWcagSelections,
-        personaSelected,
-        userId,
         course,
+        exerciseContent,
+        exerciseQuestion,
+        exerciseTitle,
+        exerciseType,
+        operableWcagSelections,
+        perceivableWcagSelections,
+        personaSelected,
+        robustWcagSelections,
+        understandableWcagSelections,
+        userId,
       }),
     })
 
-    const json = await res.json()
-    let result = JSON.stringify(json)
-
-    console.log('result: ', result)
+    console.log(res)
   }
 
   function onPublish() {
@@ -215,7 +213,7 @@
     />
   </div>
   <div class="w-[655px]">
-    <Tiptap />
+    <Tiptap bind:content={exerciseContent} />
   </div>
 </div>
 
