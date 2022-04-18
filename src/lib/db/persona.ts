@@ -64,7 +64,7 @@ export async function getUsablePersonas(userId: string): Promise<Persona[]> {
                 }, {
                     private: false
                 }],
-                official: true
+                private: false
             }]
         }
     })

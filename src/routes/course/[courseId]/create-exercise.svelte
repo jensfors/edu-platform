@@ -173,17 +173,6 @@
       </div>
     </div>
   </div>
-  <div class="form-control w-full max-w-xs pb-4">
-    <label for="Please select a persone for your exercise" class="label">
-      <span class="label-text">Please select a persona for your exercise</span>
-    </label>
-    <select class="select select-bordered">
-      <option disabled selected>Select a persona</option>
-      {#each personas as persona}
-        <option class="bg-red-500">{persona.name}</option>
-      {/each}
-    </select>
-  </div>
   <div class="pb-4">
     <div class="w-80">
       <div class="label">

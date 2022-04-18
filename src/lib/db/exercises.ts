@@ -12,8 +12,12 @@ export async function getExercise(exerciseId: string): Promise<Exercise> {
             },
             include: {
                 criteria: {
-                    select: {
-                        criteriaId: true
+                    include: {
+                        criteria: {
+                            include: {
+                                principle: true
+                            }
+                        }
                     }
                 },
                 assignments: {
