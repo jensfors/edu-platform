@@ -111,8 +111,6 @@
         userId,
       }),
     })
-
-    console.log(res)
   }
 
   function onPublish() {

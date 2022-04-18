@@ -31,13 +31,13 @@ export async function getExercise(exerciseId: string): Promise<Exercise> {
 }
 
 export async function createExercise(title: string, content: string, type: ExerciseType, difficulty: Difficulty, persona: Persona, course: Course): Promise<Exercise> {
-    console.log(title, content, type, difficulty, persona, course)
-    /* const result: Exercise = await prisma.exercise.create({
+    const result: Exercise = await prisma.exercise.create({
         data: {
             title: title,
             content: content,
             type: type,
             difficulty: difficulty,
+            public: true, // TODO: Change so it depends on save/publish
             persona: {
                 connect: { id: persona.id }
             },
@@ -46,8 +46,7 @@ export async function createExercise(title: string, content: string, type: Exerc
             },
         }
     })
-    return result */
-    return null
+    return result
 }
 
 export async function giveExerciseCategoryAndAnswers(exercise: Exercise, criteria: WCAGCriteria[], assignments: { question: string, answers: { text: string, isSolution: boolean }[] }[]): Promise<boolean> {

@@ -28,7 +28,7 @@
 
   function userIsAuthor(): boolean {
     if ($authUser) {
-      return course.authors.some((user) => user.userId === 'someid1') // TODO: change to $authUser.id
+      return course.authors.some((user) => user.userId === $authUser.id)
     }
     return false
   }
@@ -36,7 +36,7 @@
   // TODO: Use for inviting other content creators
   function userIsMainAuthor(): boolean {
     if ($authUser) {
-      return course.authors.some((user) => user.userId === 'someid1' && user.mainAuthor === true) // TODO: change to $authUser.id
+      return course.authors.some((user) => user.userId === $authUser.id && user.mainAuthor === true)
     }
     return false
   }

@@ -20,7 +20,7 @@ export const get: RequestHandler = async ({ locals }) => {
 	// locals.userid comes from src/hooks.js
 	const response = await prisma.todo.findMany();
 	console.log("GET")
-	getAmountOfReadPosts(userKasper, PostType.Blog)
+	//getAmountOfReadPosts(userKasper, PostType.Blog)
 	let ass = getExercise('cl0jgn8t30117l4v66axko0vj')
 	let something: { question: string, answers: { text: string, isSolution: boolean }[] }[] = [{ question: 'q1', answers: [{ text: 'q1a1', isSolution: true }, { text: 'q1a2', isSolution: false }] }, { question: 'q2', answers: [{ text: 'q2a1', isSolution: false }] }]
 	//giveExerciseCategoryAndAnswers(await ass, [], something)
