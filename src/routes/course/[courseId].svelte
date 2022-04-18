@@ -71,27 +71,29 @@
     <div class="flex w-full bg-primary">
       <h1 class="text-2xl pl-8 py-4 text-white">{course.title}</h1>
     </div>
-    <div class="pl-8 flex flex-row">
-      {#each principles as principle}
-        <div class="pr-2 pt-2">
-          <span
-            title={principle.description}
-            class="badge badge-ghost badge-lg"
-            style:background-color={principle.color}
-          >
-            <img
-              class="h-5 w-5"
-              src={getCourseIcon([principle])}
-              alt="The icon of {principle.name}"
-            />
-            {principle.name}
-          </span>
-        </div>
-      {/each}
-    </div>
-    <div class="pl-8 pt-1 pr-8 pb-4">
-      <p>{course.description}</p>
-      <div class="flex justify-center">
+    <div class="pl-8 pr-8 flex flex-col ">
+      <div class="flex flex-row">
+        {#each principles as principle}
+          <div class="pr-2 pt-2">
+            <span
+              title={principle.description}
+              class="badge badge-ghost badge-lg"
+              style:background-color={principle.color}
+            >
+              <img
+                class="h-5 w-5"
+                src={getCourseIcon([principle])}
+                alt="The icon of {principle.name}"
+              />
+              {principle.name}
+            </span>
+          </div>
+        {/each}
+      </div>
+      <div class="pt-1 pb-1">
+        <p>{course.description}</p>
+      </div>
+      <div class="flex justify-center pb-3">
         <Author {authors} />
       </div>
     </div>
