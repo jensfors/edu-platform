@@ -11,6 +11,7 @@ export async function getExercise(exerciseId: string): Promise<Exercise> {
                 id: exerciseId
             },
             include: {
+                persona: true,
                 criteria: {
                     include: {
                         criteria: {
