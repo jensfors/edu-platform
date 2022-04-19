@@ -39,6 +39,7 @@
     "@supabase/supabase-js": "^1.31.1",
     "@tiptap/core": "^2.0.0-beta.174",
     "@tiptap/extension-bullet-list": "^2.0.0-beta.26",
+    "@tiptap/extension-code-block-lowlight": "^2.0.0-beta.68",
     "@tiptap/extension-image": "^2.0.0-beta.27",
     "@tiptap/extension-list-item": "^2.0.0-beta.20",
     "@tiptap/extension-ordered-list": "^2.0.0-beta.27",

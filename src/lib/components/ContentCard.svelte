@@ -1,11 +1,15 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
+  import { page } from '$app/stores'
   import { authUser } from '$lib/stores'
   import { getCourseIcon, getPrinciples } from '$lib/utils/courseIcon'
   import type { Course, Exercise, Persona } from '@prisma/client'
+
   export let data: Course[] | Persona[] | Exercise[]
   export let width: string
+
   let type: string = ''
+
   if (data && data.length > 0) {
     if (data[0].hasOwnProperty('title')) {
       if (data[0].hasOwnProperty('description')) {
@@ -25,6 +29,8 @@
     }
     return false
   }
+
+  console.log('url: ', $page.url.pathname)
 </script>
 
 <!-- TODO: Make for Personas -->
@@ -72,7 +78,7 @@
         <div class="p-4">
           <div
             class="card w-96 bg-base-100 shadow-xl h-full max-w-[185px] max-h-[450px]"
-            on:click={() => goto(`/course/exercise/${exercise.id}`)}
+            on:click={() => goto(`${$page.url.pathname}/exercise/${exercise.id}`)}
             style="cursor: pointer"
           >
             <figure class="px-3 pt-4">
