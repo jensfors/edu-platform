@@ -3,6 +3,7 @@
   import { Editor } from '@tiptap/core'
   import StarterKit from '@tiptap/starter-kit'
   import Image from '@tiptap/extension-image'
+  import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 
   let element: Element
   let editor: Editor
@@ -12,7 +13,7 @@
     console.log('Mounting markdown editor..')
     editor = new Editor({
       element: element,
-      extensions: [StarterKit, Image],
+      extensions: [StarterKit, Image, CodeBlockLowlight],
       content: '<p>Please write your exercise text here</p>',
       editorProps: {
         attributes: {
@@ -95,6 +96,13 @@
           class:active={editor.isActive('orderedList')}
         >
           Ordered list
+        </button>
+        <button
+          class="btn btn-sm btn-outline btn-accent"
+          on:click={() => editor.chain().focus().toggleCodeBlock().run()}
+          class:active={editor.isActive('codeBlock')}
+        >
+          Code Block
         </button>
         <button class="btn btn-sm btn-outline btn-accent" on:click={addImage}> Image </button>
       </div>
