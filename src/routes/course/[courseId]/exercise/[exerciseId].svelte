@@ -2,24 +2,38 @@
   import type { Exercise } from '@prisma/client'
   import { getCourseIcon } from '$lib/utils/courseIcon'
   import CodeCell from '$lib/components/CodeCell.svelte'
+
   export let exercise: Exercise
 
   let showSolution = false
   // @ts-ignore
   let criteria = exercise.criteria
   // @ts-ignore
+  let persona = exercise.persona
+  // @ts-ignore
   let codeExercise = exercise.assignments[0].answers[0].text
   // @ts-ignore
   let codeSolution = exercise.assignments[0].answers[1].text
 
   console.log('execise: ', exercise)
-  console.log('execise: ', exercise.assignments)
-  console.log('Coderino: ', exercise.assignments[0].answers[0].text)
-  // console.log('criteria: ', criteria)
+  console.log('hmmm: ', exercise.persona)
 </script>
 
 <div class="flex justify-center">
   <h1>{exercise.title}</h1>
+</div>
+<div class="flex p-1 justify-center items-center">
+  <div class="h-16 w-16">
+    <img
+      class="h-full w-auto mask mask-squircle -ml-1"
+      src={persona.avatarUrl}
+      alt={`Picture for the persona: ${persona.name}`}
+    />
+  </div>
+  <div class="flex flex-col gap-1">
+    <span>{persona.name} ({persona.age} years)</span>
+    <span>Disability: {persona.disability}</span>
+  </div>
 </div>
 <div class="pl-8 flex flex-row justify-center">
   {#each criteria as criterion}
