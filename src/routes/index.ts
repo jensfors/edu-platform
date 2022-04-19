@@ -1,5 +1,5 @@
-import { getLatestCourses, getPopularCourses, getWCAGPrinciplesForCourse } from "$lib/db/courses";
-import { getAllPersonas } from "$lib/db/persona";
+import { getLatestCourses, getWCAGPrinciplesForCourse } from "$lib/db/courses";
+import { getAmountOfPersonas } from "$lib/db/persona";
 import { getLatestBlogPosts } from "$lib/db/posts";
 import { getAmountOfReadPosts, getAmountOfSolvedExercises, getUser, getXP } from "$lib/db/user";
 import { getUserLevel } from "$lib/utils/levels";
@@ -17,7 +17,7 @@ export async function get({ url }) {
     const userId: string = url.searchParams.get('userId')
 
     // Getting courses for main page
-    courses = await getLatestCourses(5)
+    courses = await getLatestCourses(4)
     // TODO: Change to popular when many courses
     // courses = await getPopularCourses(5, 100)
     let coursePrinciples: { id: string, principles: WCAGPrinciple[] }[] = []
@@ -27,7 +27,7 @@ export async function get({ url }) {
     }
 
     // Getting personas for main page
-    personas = await getAllPersonas()
+    personas = await getAmountOfPersonas(4)
 
     // Getting blog posts for main page
     blogPosts = await getLatestBlogPosts(3)

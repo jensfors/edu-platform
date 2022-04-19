@@ -8,7 +8,7 @@
 </script>
 
 <div class="flex">
-  <div class="flex flex-col">
+  <div class="flex-col">
     <figure class="img">
       <img class="rounded-2xl" src={persona.avatarUrl} alt={persona.name} />
     </figure>
@@ -17,7 +17,7 @@
         <b>Name: </b>
         <b>Age: </b>
         {#if persona.disability}
-          <b>Disability</b>
+          <b>Disability:</b>
         {/if}
       </div>
       <div class="flex flex-col">
@@ -30,7 +30,7 @@
     </div>
   </div>
 
-  <div class="flex flex-col items-center gap-2 pl-2">
+  <div class="flex flex-col items-center gap-2 pl-4">
     <h1>
       {persona.name}
     </h1>
@@ -38,21 +38,20 @@
       <span title="This is an official persona" class="badge badge-secondary">OFFICIAL</span>
     {/if}
 
-    <Author author={persona.author} />
+    <Author authors={[persona.author]} />
     <p>
       {persona.description}
     </p>
   </div>
 </div>
 <div class="pt-8 flex justify-center">
-  <ContentCard data={courses} />
+  <ContentCard data={courses} width={'1120px'} />
 </div>
 
 <style>
   .img {
     float: left;
     width: 250px;
-    height: 250px;
     background-size: cover;
   }
 </style>

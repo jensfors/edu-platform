@@ -1,4 +1,4 @@
-import { findAllCoursesWithPersona, findAllExercisesWithPersona, getPersona } from "$lib/db/persona";
+import { findAllCoursesWithPersona, getPersona } from "$lib/db/persona";
 import type { Course, Persona } from "@prisma/client";
 
 export async function get({ params }) {

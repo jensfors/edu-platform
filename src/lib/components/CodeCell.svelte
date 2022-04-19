@@ -6,8 +6,9 @@
   import { bundle } from '$lib/bundler'
   import { browser } from '$app/env'
 
-  let inputCode = 'console.log("demo input")'
-  let outputCode = 'console.log(12345)'
+  export let initialValue: string
+  export let inputCode = ''
+  let outputCode = ''
   let error = ''
   let timer: ReturnType<typeof setTimeout> | null = null
 
@@ -57,16 +58,12 @@
 </script>
 
 <div class="flex h-[600px] w-full gap-16">
-  <Editor
-    initialValue={`let testVar= "Should be the value from the exercise"`}
-    onChange={(value) => (inputCode = value)}
-    class="w-1/2"
-  />
+  <Editor {initialValue} onChange={(value) => (inputCode = value)} class="w-1/2" />
   <Preview code={outputCode} {error} class="w-1/2" />
 </div>
-<div class="pt-10">
-  <button class="btn btn-primary" on:click={onClick}> Bundle code </button>
-</div>
 
+<!-- <div class="pt-10">
+  <button class="btn btn-primary" on:click={onClick}> Bundle code </button>
+</div> -->
 <style>
 </style>

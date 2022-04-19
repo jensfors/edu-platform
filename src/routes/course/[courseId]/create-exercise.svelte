@@ -1,0 +1,232 @@
+<script lang="ts">
+  import type { Course, Persona, WCAGCriteria, WCAGPrinciple } from '@prisma/client'
+  import Tiptap from '$lib/components/Tiptap.svelte'
+  import { ExerciseType } from '$lib/utils/stringTypes'
+  import CodeCell from '$lib/components/CodeCell.svelte'
+  import ModalBoxWcag from '$lib/components/ModalBoxWcag.svelte'
+  import { authUser } from '$lib/stores'
+  import { page } from '$app/stores'
+  import { goto } from '$app/navigation'
+
+  export let course: Course
+  export let personas: Persona[]
+  export let criteria: WCAGCriteria[]
+
+  let codeExercise: string
+  let codeSolution: string
+  let disablePublish = true
+  let exerciseContent
+  let exerciseQuestion: string
+  let exerciseTitle: string
+  let exerciseType: string
+  let initialCodeExercise = `let testVar123= "Should be the value from codecell"`
+  let initialCodeSolution = `let testVar123= "Should be the value from codecell"`
+  let operableWcagSelections: WCAGCriteria[] = []
+  let perceivableWcagSelections: WCAGCriteria[] = []
+  let personaSelected: Persona
+  let robustWcagSelections: WCAGCriteria[] = []
+  let understandableWcagSelections: WCAGCriteria[] = []
+  let userId
+
+  $: disableSave = exerciseTitle ? false : true
+
+  $: if (
+    exerciseType === 'Code' &&
+    exerciseTitle &&
+    exerciseQuestion &&
+    codeExercise &&
+    codeSolution
+  ) {
+    disablePublish = false
+  } else {
+    disablePublish = true
+  }
+
+  if ($authUser) {
+    userId = $authUser.id
+    $page.url.searchParams.set('userId', userId)
+    goto(`?${$page.url.searchParams.toString()}`)
+  }
+
+  function getPerceivableCriteria() {
+    let perceivableCriteria: WCAGCriteria[] = []
+    criteria.forEach((criteria) => {
+      // @ts-ignore
+      if (criteria.principle.name === 'Perceivable') {
+        perceivableCriteria.push(criteria)
+      }
+    })
+    return perceivableCriteria
+  }
+
+  function getOperableCriteria() {
+    let operableCriteria: WCAGCriteria[] = []
+    criteria.forEach((criteria) => {
+      // @ts-ignore
+      if (criteria.principle.name === 'Operable') {
+        operableCriteria.push(criteria)
+      }
+    })
+    return operableCriteria
+  }
+
+  function getUnderstandableCriteria() {
+    let understandableCriteria: WCAGCriteria[] = []
+    criteria.forEach((criteria) => {
+      // @ts-ignore
+      if (criteria.principle.name === 'Understandable') {
+        understandableCriteria.push(criteria)
+      }
+    })
+    return understandableCriteria
+  }
+
+  function getRobustCriteria() {
+    let robustCriteria: WCAGCriteria[] = []
+    criteria.forEach((criteria) => {
+      // @ts-ignore
+      if (criteria.principle.name === 'Robust') {
+        robustCriteria.push(criteria)
+      }
+    })
+    return robustCriteria
+  }
+
+  async function onSave() {
+    const res = await fetch(`${$page.url.pathname}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        codeExercise,
+        codeSolution,
+        course,
+        exerciseContent,
+        exerciseQuestion,
+        exerciseTitle,
+        exerciseType,
+        operableWcagSelections,
+        perceivableWcagSelections,
+        personaSelected,
+        robustWcagSelections,
+        understandableWcagSelections,
+        userId,
+      }),
+    })
+  }
+
+  function onPublish() {
+    // Write the stuff here to make post request that publish exercise
+    console.log('Trying to publish a book here... Sign up for my newsletter ')
+  }
+</script>
+
+<div class="block mx-auto max-w-2xl">
+  <div class="flex justify-center w-full pb-10">
+    <h1 class="text-3xl">Create exercise</h1>
+  </div>
+  <div>
+    <!-- WCAG Criteria -->
+    <label for="my-modal-3" class="btn modal-button">Select WCAG criteria(s)</label>
+    <input type="checkbox" id="my-modal-3" class="modal-toggle" />
+    <div class="modal">
+      <div class="modal-box relative w-11/12 max-w-5xl max-h-[500px]">
+        <label for="my-modal-3" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+        <ModalBoxWcag
+          criterias={getPerceivableCriteria()}
+          bind:selections={perceivableWcagSelections}
+        />
+        <ModalBoxWcag criterias={getOperableCriteria()} bind:selections={operableWcagSelections} />
+        <ModalBoxWcag
+          criterias={getUnderstandableCriteria()}
+          bind:selections={understandableWcagSelections}
+        />
+        <ModalBoxWcag criterias={getRobustCriteria()} bind:selections={robustWcagSelections} />
+      </div>
+    </div>
+    <!--  WCAG criteria end  -->
+  </div>
+  <div>
+    <label for="my-modal-4" class="btn modal-button">Select a persona</label>
+    <input type="checkbox" id="my-modal-4" class="modal-toggle" />
+    <div class="modal">
+      <div class="modal-box relative w-11/12 max-w-5xl max-h-[500px]">
+        <label for="my-modal-4" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+        <div class="p-4">
+          <h3 class="text-lg font-bold pb-2">Select a persona</h3>
+          <div class="border rounded-lg p-4 flex flex-wrap w-full">
+            <div class="flex flex-col w-1/2">
+              {#each personas as persona}
+                <div class="form-control">
+                  <label class="label cursor-pointer justify-start gap-4">
+                    <input
+                      type="radio"
+                      bind:group={personaSelected}
+                      value={persona}
+                      class="radio"
+                    />
+                    <span class="label-text">{persona.name}</span>
+                  </label>
+                </div>
+              {/each}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pb-4">
+    <div class="w-80">
+      <div class="label">
+        <label class="label-text" for="Exercise options">Select type of exercise</label>
+      </div>
+      {#each Object.entries(ExerciseType) as [key, value]}
+        <div class="form-control flex-row">
+          <label class="label cursor-pointer pr-2">
+            <input class="radio" type="radio" bind:group={exerciseType} {value} checked />
+            <span class="label-text pl-2">{value}</span>
+          </label>
+        </div>
+      {/each}
+    </div>
+  </div>
+  <div class="form-control w-full max-w-xs pb-10">
+    <label class="label" for="What is the title of the exercise?">
+      <span class="label-text">What is the title of the exercise?</span>
+    </label>
+    <input
+      class="input input-bordered w-full max-w-xs"
+      type="text"
+      placeholder="Type here"
+      bind:value={exerciseTitle}
+    />
+  </div>
+  <div class="w-[655px]">
+    <Tiptap bind:content={exerciseContent} />
+  </div>
+</div>
+
+<!-- This shows if a "code" execise has been chosen -->
+{#if exerciseType === 'Code'}
+  <div class="divider py-10" />
+  <div class="px-10">
+    <div class="form-control w-full max-w-xs pb-10">
+      <label class="label" for="What is the the exercise question?">
+        <span class="label-text">What is the exercise question?</span>
+      </label>
+      <input
+        class="input input-bordered w-full max-w-xs"
+        type="text"
+        placeholder="Type here"
+        bind:value={exerciseQuestion}
+      />
+    </div>
+    <h2 class="pb-8 pl-2">Add your coding exercise in the editor below</h2>
+    <CodeCell initialValue={initialCodeExercise} bind:inputCode={codeExercise} />
+    <h2 class="pb-8 pt-16  pl-2">Add your solution to the coding exercise in the editor below</h2>
+    <CodeCell initialValue={initialCodeSolution} bind:inputCode={codeSolution} />
+  </div>
+{/if}
+<!-- The save and publish buttons -->
+<div class="flex justify-center pt-14 gap-8">
+  <button class="btn" disabled={disableSave} on:click={onSave}>Save</button>
+  <button class="btn btn-secondary" disabled={disablePublish} on:click={onPublish}>Publish</button>
+</div>

@@ -117,8 +117,7 @@ export async function getUserBlogPost(userId: string): Promise<Post[]> {
 }
 
 // Can update a post if you are an author and returns true
-export async function updatePost(post: Post): Promise<boolean> {
-    const userId: string = userMatti.id // TODO: Change to localstorage
+export async function updatePost(post: Post, userId: string): Promise<boolean> {
     try {
         const result = await prisma.userHasPost.update({
             where: {
@@ -146,9 +145,7 @@ export async function updatePost(post: Post): Promise<boolean> {
 }
 
 // Create a post
-export async function createPost(title: string, content: string, _public: boolean, type: PostType): Promise<Post> {
-    const userId: string = userMatti.id // TODO: Change to localstorage
-
+export async function createPost(title: string, content: string, _public: boolean, type: PostType, userId: string): Promise<Post> {
     const result: Post = await prisma.post.create({
         data: {
             title: title,

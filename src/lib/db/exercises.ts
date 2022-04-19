@@ -1,4 +1,5 @@
 import PrismaClient from '$lib/prisma';
+import type { Difficulty, ExerciseType } from '$lib/utils/stringTypes';
 import type { Assignment, Course, Exercise, Persona, WCAGCriteria } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -10,9 +11,19 @@ export async function getExercise(exerciseId: string): Promise<Exercise> {
                 id: exerciseId
             },
             include: {
+                persona: true,
                 criteria: {
-                    select: {
-                        criteriaId: true
+                    include: {
+                        criteria: {
+                            include: {
+                                principle: true
+                            }
+                        }
+                    }
+                },
+                assignments: {
+                    include: {
+                        answers: true
                     }
                 }
             }
@@ -24,17 +35,20 @@ export async function getExercise(exerciseId: string): Promise<Exercise> {
     }
 }
 
-export async function createExercise(title: string, content: string, persona: Persona, course: Course): Promise<Exercise> {
+export async function createExercise(title: string, content: string, type: ExerciseType, difficulty: Difficulty, persona: Persona, course: Course): Promise<Exercise> {
     const result: Exercise = await prisma.exercise.create({
         data: {
             title: title,
             content: content,
+            type: type,
+            difficulty: difficulty,
+            public: true, // TODO: Change so it depends on save/publish
+            persona: {
+                connect: { id: persona.id }
+            },
             course: {
                 connect: { id: course.id }
             },
-            persona: {
-                connect: { id: persona.id }
-            }
         }
     })
     return result
@@ -54,7 +68,7 @@ export async function giveExerciseCategoryAndAnswers(exercise: Exercise, criteri
                     question: assignment.question,
                     exercise: {
                         connect: { id: exercise.id }
-                    }
+                    },
                 }
             })
             for (let answer of assignment.answers) {
@@ -69,7 +83,6 @@ export async function giveExerciseCategoryAndAnswers(exercise: Exercise, criteri
                 })
             }
         }
-        console.log('dab')
         return true
     }
     catch (PrismaClientKnownRequestError) {
@@ -77,7 +90,24 @@ export async function giveExerciseCategoryAndAnswers(exercise: Exercise, criteri
         return false
     }
 }
+/*
+export async function updateExercise(exercise: Exercise): Promise<Exercise> {
+    try {
+        const result: Exercise = await prisma.exercise.update({
+            where: {
+                id: exercise.id
+            },
+            data: {
 
+            }
+        })
+        return result
+    }
+    catch (PrismaClientKnownRequestError) {
+        console.log(`Could not update exercise with id: ${exercise.id}`)
+    }
+}
+*/
 
 
 // TODO: Delte exercise

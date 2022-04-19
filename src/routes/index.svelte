@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { getCourseIcon } from '$lib/utils/courseIcon'
-  import type { XP } from '$lib/utils/stringTypes'
-  import type { Course, Persona, Post, User, WCAGPrinciple } from '@prisma/client'
-  import { get } from 'svelte/store'
-  import { page } from '$app/stores'
   import { goto } from '$app/navigation'
-  import { authUser } from '../lib/stores'
+  import { page } from '$app/stores'
+  import { getCourseIcon } from '$lib/utils/courseIcon'
   import { createAuthorsString, formatDate } from '$lib/utils/stringFormating'
+  import type { XP } from '$lib/utils/stringTypes'
+  import type { Course, Persona, Post, WCAGPrinciple } from '@prisma/client'
+  import { get } from 'svelte/store'
+  import { authUser } from '../lib/stores'
 
   export let userXP: XP
   export let courses: Course[]
@@ -55,18 +55,27 @@
 <div class="flex gap-20 pb-20">
   <div class="card lg:card-side flex-wrap bg-white shadow-xl max-w-[792px]">
     <div class="flex w-full bg-primary">
-      <h1 class="text-2xl px-8 py-4 text-white">Blog Posts</h1>
+      <h1 class="text-2xl px-8 py-4 text-white">
+        <a sveltekit:prefetch href={`/posts`}>
+          <!-- TODO: Make page-->
+          Blog Posts
+        </a>
+      </h1>
     </div>
-    <div class="flex py-8 px-8 gap-8">
+    <div class="flex py-6 px-8 gap-8">
       {#each blogPosts as blogPost}
-        <div class="card w-50 bg-base-100 shadow-xl w-1/3">
-          <div class="card-body justify-between">
-            <h2 class="card-title w-2/3">
+        <div
+          class="card w-50 bg-base-100 shadow-xl w-1/3"
+          on:click={() => goto(`/blogs/${blogPost.id}`)}
+          style="cursor: pointer"
+        >
+          <div class="card-body justify-between p-6">
+            <h2 class="card-title text-lg">
               {blogPost.title}
             </h2>
-            <div class="h-1/3">
+            <div class="h-1/2">
               <p class="font-semibold">{getPostAuthor(blogPost)}</p>
-              <p class="text-gray-500">{formatDate(blogPost.createdAt)}</p>
+              <p class="text-gray-500">{formatDate(blogPost.createdAt.toString())}</p>
             </div>
           </div>
         </div>
@@ -79,61 +88,84 @@
 <div class="flex gap-20">
   <div class="flex flex-col gap-20">
     <!-- Persona card -->
-    <div class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[792px]">
+    <div
+      class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[792px] w-full justify-center"
+    >
       <div class="flex w-full bg-primary">
-        <h1 class="text-2xl pl-8 py-4 text-white">Personas</h1>
+        <h1 class="text-2xl pl-8 py-4 text-white">
+          <a sveltekit:prefetch href={`/personas`}>
+            <!-- TODO: Make page-->
+            Personas
+          </a>
+        </h1>
       </div>
-      <div class="flex py-8 pr-8">
+      <div class="flex flex-wrap p-4">
         {#each personas as persona}
-          <div>
-            <figure class="img flex flex-col pl-8">
-              <div class="flex h-28 w-28">
-                <img
-                  style="cursor: pointer"
-                  class="rounded-2xl"
-                  src={persona.avatarUrl}
-                  alt={persona.name}
-                  on:click={() => goto(`/persona/${persona.id}`)}
-                />
+          <div class="p-2 items-center">
+            <div
+              class="card w-96 bg-base-100 shadow-xl h-full max-w-[160px] max-h-[450px] items-center"
+              on:click={() => goto(`/persona/${persona.id}`)}
+              style="cursor: pointer"
+            >
+              <figure class="px-3 pt-4">
+                <div class="flex h-28 w-28 justify-center">
+                  <img
+                    class="rounded-2xl"
+                    src={persona.avatarUrl}
+                    alt={'Avatar of ' + persona.name}
+                  />
+                </div>
+              </figure>
+              <div class="card-body items-center text-center p-2 pb-4">
+                <h2 class="card-title text-base">
+                  {persona.name}
+                </h2>
               </div>
-              <a style="text-align:center" sveltekit:prefetch href={`/persona/${persona.id}`}
-                >{persona.name}</a
-              >
-            </figure>
+            </div>
           </div>
         {/each}
       </div>
     </div>
 
     <!-- Courses Card -->
-    <div class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[792px]">
+    <div
+      class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[792px] w-full justify-center"
+    >
       <div class="flex w-full bg-primary">
-        <h1 class="text-2xl pl-8 py-4 text-white">Courses</h1>
+        <h1 class="text-2xl pl-8 py-4 text-white">
+          <a sveltekit:prefetch href={`/courses`}>
+            <!-- TODO: Make page-->
+            Courses
+          </a>
+        </h1>
       </div>
-      <div class="flex py-8 pr-8">
+      <div class="flex flex-wrap p-4">
         {#each courses as course}
-          <div>
-            <figure class="flex flex-col pl-8">
-              <!-- Finds the correct course image -->
-              <div class="flex h-28 w-28">
-                <img
-                  class="rounded-2xl"
-                  style="cursor: pointer"
-                  src={getCourseIcon(
-                    coursePrinciples.find(function (o) {
-                      return o.id === course.id
-                    }).principles
-                  )}
-                  on:click={() => goto(`/course/${course.id}`)}
-                  alt={`The course: ${course.title}`}
-                />
+          <div class="p-2 items-center">
+            <div
+              class="card w-96 bg-base-100 shadow-xl h-full max-w-[160px] max-h-[450px] items-center"
+              on:click={() => goto(`/course/${course.id}`)}
+              style="cursor: pointer"
+            >
+              <figure class="px-3 pt-4">
+                <div class="flex h-28 w-28">
+                  <img
+                    class="rounded-2xl"
+                    src={getCourseIcon(
+                      coursePrinciples.find(function (o) {
+                        return o.id === course.id
+                      }).principles
+                    )}
+                    alt={`The course: ${course.title}`}
+                  />
+                </div>
+              </figure>
+              <div class="card-body items-center text-center p-2 pb-4">
+                <h2 class="card-title text-base">
+                  {course.title}
+                </h2>
               </div>
-              <!-- <p class="absolute top-3/4 text-white text-xl font-bold">{course.title}</p> -->
-              <a style="text-align:center" sveltekit:prefetch href={`/course/${course.id}`}
-                >{course.title}</a
-              >
-            </figure>
-            <!-- <h2 class="text-1xl pl-8 py-4 text-black">{course.title}</h2> -->
+            </div>
           </div>
         {/each}
       </div>
@@ -177,12 +209,3 @@
     </div>
   {/if}
 </div>
-
-<style>
-  .img {
-    float: left;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-  }
-</style>
