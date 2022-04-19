@@ -58,6 +58,8 @@ export async function getUsersPersonas(userId: string): Promise<Persona[]> {
 export async function getUsablePersonas(userId: string): Promise<Persona[]> {
     const result: Persona[] = await prisma.persona.findMany({
         where: {
+            private: false
+            /*
             OR: [{
                 AND: [{
                     authorId: userId
@@ -65,7 +67,7 @@ export async function getUsablePersonas(userId: string): Promise<Persona[]> {
                     private: false
                 }],
                 private: false
-            }]
+            }]*/
         }
     })
     return result
