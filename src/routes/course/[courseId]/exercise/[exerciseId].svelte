@@ -18,6 +18,8 @@
   let codeExercise = exercise.assignments[0].answers[0].text
   // @ts-ignore
   let codeSolution = exercise.assignments[0].answers[1].text
+  // @ts-ignore
+  let exerciseQuestion = exercise.assignments[0].question
 
   function isLastExercise(): boolean {
     // @ts-ignore
@@ -91,6 +93,9 @@
   </article>
 </div>
 
+<div class="divider pt-14 pb-7">Exercise</div>
+
+<p class="pb-6 text-xl font-semibold">{exerciseQuestion}</p>
 <CodeCell initialValue={codeExercise} />
 
 <div class="flex justify-center gap-20 py-16">
