@@ -1,22 +1,20 @@
-import { getAllPersonasForCourse, getCourse, getWCAGPrinciplesForCourse } from '$lib/db/courses'
-import { createExercise, getExercise } from '$lib/db/exercises'
+import { getCourseFromExercise, getExercise } from '$lib/db/exercises'
+import type { Course, Exercise } from '@prisma/client'
 
-import { getAllPersonas, getUsablePersonas } from '$lib/db/persona'
-import { getAllCriteria } from '$lib/db/wcag'
-import { Difficulty } from '$lib/utils/stringTypes'
-import type { Course, Exercise, Persona, WCAGCriteria, WCAGPrinciple } from '@prisma/client'
 
 export async function get({ params }) {
   const { exerciseId } = params
   let exercise: Exercise = null
+  let course: Course = null
   if (exerciseId) {
     exercise = await getExercise(exerciseId)
+    course = await getCourseFromExercise(exercise)
   }
 
-  // console.log('get exerboy: ', exercise)
   return {
     body: {
       exercise,
+      course,
     },
   }
 }
