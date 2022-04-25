@@ -2,7 +2,7 @@
   import type { Course, Persona, WCAGCriteria, WCAGPrinciple } from '@prisma/client'
   import Tiptap from '$lib/components/Tiptap.svelte'
   import { ExerciseType } from '$lib/utils/stringTypes'
-  import CodeCell from '$lib/components/CodeCell.svelte'
+  import CodeCell from '$lib/components/old-editor/Old-CodeCell.svelte'
   import ModalBoxWcag from '$lib/components/ModalBoxWcag.svelte'
   import { authUser } from '$lib/stores'
   import { page } from '$app/stores'
