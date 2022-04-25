@@ -2,11 +2,11 @@
   import type { Course, Persona, WCAGCriteria, WCAGPrinciple } from '@prisma/client'
   import Tiptap from '$lib/components/Tiptap.svelte'
   import { ExerciseType } from '$lib/utils/stringTypes'
-  import CodeCell from '$lib/components/old-editor/Old-CodeCell.svelte'
   import ModalBoxWcag from '$lib/components/ModalBoxWcag.svelte'
   import { authUser } from '$lib/stores'
   import { page } from '$app/stores'
   import { goto } from '$app/navigation'
+  import CodeCell from '$lib/components/editor/CodeCell.svelte'
 
   export let course: Course
   export let personas: Persona[]
@@ -19,7 +19,7 @@
   let exerciseQuestion: string
   let exerciseTitle: string
   let exerciseType: string
-  let initialCodeExercise = `let testVar123= "Should be the value from codecell"`
+  let initialCodeExercise = `<h1>Hello world</h1>`
   let initialCodeSolution = `let testVar123= "Should be the value from codecell"`
   let operableWcagSelections: WCAGCriteria[] = []
   let perceivableWcagSelections: WCAGCriteria[] = []
@@ -115,6 +115,8 @@
 
   function onPublish() {
     // Write the stuff here to make post request that publish exercise
+    console.log('CodeExercise: ', codeExercise)
+    console.log('CodeSolution: ', codeSolution)
     console.log('Trying to publish a book here... Sign up for my newsletter ')
   }
 </script>
@@ -220,9 +222,11 @@
       />
     </div>
     <h2 class="pb-8 pl-2">Add your coding exercise in the editor below</h2>
-    <CodeCell initialValue={initialCodeExercise} bind:inputCode={codeExercise} />
+    <!-- <CodeCell initialValue={initialCodeExercise} bind:inputCode={codeExercise} /> -->
+    <CodeCell initialHtml={initialCodeExercise} bind:inputHtml={codeExercise} />
     <h2 class="pb-8 pt-16  pl-2">Add your solution to the coding exercise in the editor below</h2>
-    <CodeCell initialValue={initialCodeSolution} bind:inputCode={codeSolution} />
+    <!-- <CodeCell initialValue={initialCodeSolution} bind:inputCode={codeSolution} /> -->
+    <CodeCell initialHtml={initialCodeExercise} bind:inputHtml={codeSolution} />
   </div>
 {/if}
 <!-- The save and publish buttons -->

@@ -2,11 +2,11 @@
   import Editor from './Editor.svelte'
   import Preview from './Preview.svelte'
 
-  export let initialHtml: string = '<p>Hello, world!</p>'
-  let initialCss: string = 'p { color: red; }'
-  let initialJs: string = 'console.log("javascript goes here")'
+  export let initialHtml: string = '<h1>Hello, world!</h1>'
+  let initialCss: string = 'h1 { color: CornflowerBlue; }'
+  let initialJs: string = 'console.log("Check the console and you will see this message :-)")'
 
-  let inputHtml: string = initialHtml
+  export let inputHtml: string = initialHtml
   let inputCss: string = initialCss
   let inputJs: string = initialJs
 
@@ -62,11 +62,19 @@
         >
       </div>
       {#if htmlTab}
-        <Editor initialValue={inputHtml} language="html" onChange={(value) => (inputHtml = value)} />
+        <Editor
+          initialValue={inputHtml}
+          language="html"
+          onChange={(value) => (inputHtml = value)}
+        />
       {:else if cssTab}
         <Editor initialValue={inputCss} language="css" onChange={(value) => (inputCss = value)} />
       {:else if jsTab}
-        <Editor initialValue={inputJs} language="javascript" onChange={(value) => (inputJs = value)} />
+        <Editor
+          initialValue={inputJs}
+          language="javascript"
+          onChange={(value) => (inputJs = value)}
+        />
       {/if}
     </div>
     <Preview bind:html={inputHtml} css={inputCss} js={inputJs} class="w-1/2" />
