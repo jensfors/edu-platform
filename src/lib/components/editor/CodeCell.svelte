@@ -3,7 +3,11 @@
   import Preview from './Preview.svelte'
 
   export let initialHtml: string = '<h1>Hello, world!</h1>'
-  let initialCss: string = 'h1 { color: CornflowerBlue; }'
+  let initialCss: string = ` /* Remove this comment to apply the CSS
+  h1 {
+    color: CornflowerBlue;
+  }
+  */`
   let initialJs: string = 'console.log("Check the console and you will see this message :-)")'
 
   export let inputHtml: string = initialHtml
@@ -32,12 +36,6 @@
       cssTab = false
       jsTab = true
     }
-  }
-
-  $: {
-    // console.log(inputHtml)
-    // console.log(inputCss)
-    // console.log(inputJs)
   }
 </script>
 
