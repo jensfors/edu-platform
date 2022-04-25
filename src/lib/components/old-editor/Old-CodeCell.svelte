@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Editor from '$lib/components/Editor.svelte'
-  import Preview from '$lib/components/Preview.svelte'
+  import Editor from '$lib/components/old-editor/Old-Editor.svelte'
+  import Preview from '$lib/components/old-editor/Old-Preview.svelte'
   import SplitPane from '$lib/components/SplitPane.svelte'
 
   import { bundle } from '$lib/bundler'

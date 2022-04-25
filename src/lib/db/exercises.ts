@@ -35,6 +35,27 @@ export async function getExercise(exerciseId: string): Promise<Exercise> {
     }
 }
 
+export async function getCourseFromExercise(exercise: Exercise): Promise<Course> {
+    try {
+        const result: Course = await prisma.course.findUnique({
+            where: {
+                id: exercise.courseId
+            },
+            include: {
+                exercises: {
+                    orderBy: {
+                        createdAt: 'asc'
+                    }
+                }
+            }
+        })
+        return result
+    }
+    catch (PrismaClientKnownRequestError) {
+        console.log(`Something went wrong (getCourseFromExercise)`)
+    }
+}
+
 export async function createExercise(title: string, content: string, type: ExerciseType, difficulty: Difficulty, persona: Persona, course: Course): Promise<Exercise> {
     const result: Exercise = await prisma.exercise.create({
         data: {

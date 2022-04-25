@@ -1,11 +1,15 @@
 <script lang="ts">
-  import type { Exercise } from '@prisma/client'
+  import type { Course, Exercise } from '@prisma/client'
   import { getCourseIcon } from '$lib/utils/courseIcon'
-  import CodeCell from '$lib/components/CodeCell.svelte'
+  import CodeCell from '$lib/components/editor/CodeCell.svelte'
+  import { goto } from '$app/navigation'
+  import { onMount } from 'svelte'
+  import { page } from '$app/stores'
 
   export let exercise: Exercise
+  export let course: Course
 
-  let showSolution = false
+  let showSolution: boolean = false
   // @ts-ignore
   let criteria = exercise.criteria
   // @ts-ignore
@@ -17,8 +21,36 @@
   // @ts-ignore
   let exerciseQuestion = exercise.assignments[0].question
 
-  console.log('execise: ', exercise)
-  console.log('hmmm: ', exercise.persona)
+  function isLastExercise(): boolean {
+    // @ts-ignore
+    return currentExIndex === course.exercises.length - 1
+  }
+
+  function isFirstExercise(): boolean {
+    // @ts-ignore
+    return currentExIndex === 0
+  }
+
+  function getExerciseIndex(): number {
+    let index: number = 0
+    // @ts-ignore
+    for (let ex of course.exercises) {
+      if (ex.id === exercise.id) {
+        break
+      }
+      index++
+    }
+    return index
+  }
+
+  let currentExIndex = getExerciseIndex()
+  let nextExIndex = currentExIndex + 1
+  let prevExIndex = currentExIndex - 1
+  console.log(prevExIndex, currentExIndex, nextExIndex)
+  // @ts-ignore
+  let prevExercise: Exercise = course.exercises[isFirstExercise() ? currentExIndex : prevExIndex]
+  // @ts-ignore
+  let nextExercise: Exercise = course.exercises[isLastExercise() ? currentExIndex : nextExIndex]
 </script>
 
 <div class="flex justify-center">
@@ -64,16 +96,56 @@
 <div class="divider pt-14 pb-7">Exercise</div>
 
 <p class="pb-6 text-xl font-semibold">{exerciseQuestion}</p>
-<CodeCell initialValue={codeExercise} />
+<CodeCell initialHtml={codeExercise} />
 
 <div class="flex justify-center gap-20 py-16">
-  <button class="btn btn-primary">Previous exercise</button>
-  <button class="btn btn-success" disabled={showSolution} on:click={() => (showSolution = true)}>
+  {#if isFirstExercise()}
+    <a
+      class="btn btn-primary button-width"
+      role="button"
+      sveltekit:prefetch
+      href={`/course/${course.id}`}>Go back to course</a
+    >
+  {:else}
+    <a
+      class="btn btn-primary button-width"
+      role="button"
+      sveltekit:reload
+      href={`/course/${course.id}/exercise/${prevExercise.id}`}>Previous exercise</a
+    >
+  {/if}
+  <button
+    class="btn btn-success button-width"
+    disabled={showSolution}
+    on:click={() => (showSolution = true)}
+  >
     {showSolution ? 'Answer submitted' : 'Submit answer'}</button
   >
-  <button class="btn btn-primary">Next exercise</button>
+  <div>
+    {#if isLastExercise()}
+      <a
+        class="btn btn-primary button-width"
+        role="button"
+        sveltekit:prefetch
+        href={`/course/${course.id}`}>Go back to course</a
+      >
+    {:else}
+      <a
+        class="btn btn-primary button-width"
+        role="button"
+        sveltekit:reload
+        href={`/course/${course.id}/exercise/${nextExercise.id}`}>Next exercise</a
+      >
+    {/if}
+  </div>
 </div>
 
 {#if showSolution}
-  <CodeCell initialValue={codeSolution} />
+  <CodeCell initialHtml={codeSolution} />
 {/if}
+
+<style>
+  .button-width {
+    min-width: 175px;
+  }
+</style>

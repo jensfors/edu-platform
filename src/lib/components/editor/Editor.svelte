@@ -11,6 +11,7 @@
   import parser from 'prettier/parser-babel'
 
   export let initialValue: string
+  export let language: string
   export let onChange: (value: string) => string
   let parentStyles = $$props.class // use $$props to access the parent's props which has the normal styles
 
@@ -18,7 +19,7 @@
   let editor: monaco.editor.IStandaloneCodeEditor
   let options: monaco.editor.IStandaloneEditorConstructionOptions = {
     value: initialValue,
-    language: 'javascript',
+    language: language,
     theme: 'vs-dark',
     wordWrap: 'on',
     minimap: { enabled: false },
@@ -30,7 +31,6 @@
     automaticLayout: true,
     tabSize: 2,
   }
-  let Monaco
 
   if (browser) {
     onMount(async () => {
@@ -53,7 +53,7 @@
         },
       }
 
-      Monaco = await import('monaco-editor')
+      let Monaco = await import('monaco-editor')
       editor = Monaco.editor.create(divEl, options)
 
       // Just a  console log to make sure we actually didn't break something so far
@@ -62,83 +62,11 @@
         onChange(editor.getModel().getValue())
       })
 
-      // This one logs all the content to terminal, we know this works
-      // editor.getModel().onDidChangeContent(printShit)
-
       return () => {
         editor.dispose()
       }
     })
   }
-
-  function printShit() {
-    console.log('event triggerede mutherfucker ')
-    console.log('editor text triggerede: ', editor.getValue())
-  }
-
-  // function mountEditor() {
-  //     setTimeout(() => {
-  //       import("monaco-editor").then(monaco => {
-  //         editor = monaco.editor.create(document.getElementById('monaco-container'), {
-  //           value: $userCSS.split(`
-  // `).join('\n'),
-  //           language: 'css',
-  //           roundedSelection: false,
-  //           scrollBeyondLastLine: false,
-  //           readOnly: false,
-  //           tabSize: 2,
-  //           theme: "vs-dark",
-  //           minimap: {
-  //             enabled: false
-  //             // renderCharacters: false
-  //           }
-  //         });
-  //         modelChangeSub = editor.getModel().onDidChangeContent(v => {
-  //           userCSS.set(editor.getModel().getValue())
-  //         })
-  //       })
-  //     }, 200)
-  //   }
-
-  /* THIS IS ANOTHER EXAMPLE */
-
-  // import { onMount } from 'svelte';
-  // import { browser } from '$app/env';
-  // import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker&inline';
-  // let divEl;
-
-  // if (browser) {
-  // 	onMount(async () => {
-  // 		const Monaco = await import('monaco-editor');
-
-  // 		console.log(Monaco);
-  // 		console.log('------------------s----------------');
-  // 		console.log(self);
-
-  // 		self.MonacoEnvironment = {
-  // 			getWorker: function () {
-  // 				return new jsonWorker();
-  // 			}
-  // 		};
-
-  // 		const editor = Monaco.editor.create(divEl, {
-  // 			value: JSON.stringify(
-  // 				{
-  // 					something: 123
-  // 				},
-  // 				null,
-  // 				'\t'
-  // 			),
-  // 			height: '500px',
-  // 			language: 'json',
-  // 			automaticLayout: true
-  // 		});
-
-  // 		return () => {
-  // 			editor.dispose();
-  // 		};
-  // 	});
-  // }
 
   function formatOnClick() {
     const prettierConf: Options = {
@@ -155,10 +83,7 @@
   }
 </script>
 
-<!-- <section> -->
-<!-- <div bind:this={divEl} class="h-screen" style="height: 500px; width: 500px;" /> -->
-<!-- <div bind:this={divEl} style="height: 500px; width: 500px;" /> -->
-<div class=" editor-wrapper mockup-code {parentStyles}">
+<div class="editor-wrapper">
   <div class="min-h-full" bind:this={divEl} />
   <button
     class="button-format btn btn-outline btn-secondary btn-sm absolute top-1 right-1 z-20 opacity-0 hover:opacity-100 duration-300"
@@ -166,7 +91,6 @@
   >
 </div>
 
-<!-- </section> -->
 <style>
   .editor-wrapper {
     /* Use this if we want height to be auto instead of set from consuming parent */
@@ -175,7 +99,7 @@
   }
 
   .editor-wrapper .button-format {
-    @apply absolute top-2 right-2 z-20 opacity-0 duration-300;
+    @apply absolute -top-[72px] right-2 z-20 opacity-0 duration-300;
   }
 
   .editor-wrapper:hover .button-format {

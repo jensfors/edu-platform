@@ -134,7 +134,7 @@
                   {/if}
                 </h2>
                 {#if persona.disability}
-                  <p><b>Disability: </b>{persona.disability}</p>
+                  <p><b>{persona.disability}</b></p>
                 {/if}
                 <p>
                   {personaTexts[persona.id]}
