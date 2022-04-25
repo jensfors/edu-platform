@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Exercise } from '@prisma/client'
   import { getCourseIcon } from '$lib/utils/courseIcon'
-  import CodeCell from '$lib/components/CodeCell.svelte'
+  import CodeCell from '$lib/components/editor/CodeCell.svelte'
 
   export let exercise: Exercise
 
@@ -64,7 +64,7 @@
 <div class="divider pt-14 pb-7">Exercise</div>
 
 <p class="pb-6 text-xl font-semibold">{exerciseQuestion}</p>
-<CodeCell initialValue={codeExercise} />
+<CodeCell initialHtml={codeExercise} />
 
 <div class="flex justify-center gap-20 py-16">
   <button class="btn btn-primary">Previous exercise</button>
@@ -75,5 +75,5 @@
 </div>
 
 {#if showSolution}
-  <CodeCell initialValue={codeSolution} />
+  <CodeCell initialHtml={codeSolution} />
 {/if}
