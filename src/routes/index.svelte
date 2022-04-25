@@ -52,7 +52,7 @@
 </script>
 
 <!-- Blog posts -->
-<div class="flex gap-20 pb-20">
+<div class="flex gap-20 pb-20 max-w-[792px] w-full">
   <div class="card lg:card-side flex-wrap bg-white shadow-xl max-w-[792px]">
     <div class="flex w-full bg-primary">
       <h1 class="text-2xl px-8 py-4 text-white">
@@ -62,14 +62,14 @@
         </a>
       </h1>
     </div>
-    <div class="flex py-6 px-8 gap-8">
+    <div class="flex py-4 px-6 gap-4">
       {#each blogPosts as blogPost}
         <div
           class="card w-50 bg-base-100 shadow-xl w-1/3"
           on:click={() => goto(`/blogs/${blogPost.id}`)}
           style="cursor: pointer"
         >
-          <div class="card-body justify-between p-6">
+          <div class="card-body justify-between p-4">
             <h2 class="card-title text-lg">
               {blogPost.title}
             </h2>
@@ -86,7 +86,7 @@
 
 <!-- Personas, courses, profile card -->
 <div class="flex gap-20">
-  <div class="flex flex-col gap-20">
+  <div class="flex flex-col gap-20 max-w-[792px] w-full">
     <!-- Persona card -->
     <div
       class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[792px] w-full justify-center"
