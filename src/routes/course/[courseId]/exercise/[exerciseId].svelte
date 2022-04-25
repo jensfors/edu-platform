@@ -100,14 +100,18 @@
 
 <div class="flex justify-center gap-20 py-16">
   {#if isFirstExercise()}
-    <button class="btn btn-primary button-width" on:click={() => goto(`/course/${course.id}`)}
-      >Go back to course</button
+    <a
+      class="btn btn-primary button-width"
+      role="button"
+      sveltekit:prefetch
+      href={`/course/${course.id}`}>Go back to course</a
     >
   {:else}
-    <button
+    <a
       class="btn btn-primary button-width"
-      on:click={() => goto(`/course/${course.id}/exercise/${prevExercise.id}`)}
-      >Previous exercise</button
+      role="button"
+      sveltekit:reload
+      href={`/course/${course.id}/exercise/${prevExercise.id}`}>Previous exercise</a
     >
   {/if}
   <button
@@ -119,15 +123,19 @@
   >
   <div>
     {#if isLastExercise()}
-      <button class="btn btn-primary button-width" on:click={() => goto(`/course/${course.id}`)}
-        >Go back to course</button
+      <a
+        class="btn btn-primary button-width"
+        role="button"
+        sveltekit:prefetch
+        href={`/course/${course.id}`}>Go back to course</a
       >
     {:else}
-      <button
+      <a
         class="btn btn-primary button-width"
-        on:click={() => goto(`/course/${course.id}/exercise/${nextExercise.id}`)}
-        >Next exercise
-      </button>
+        role="button"
+        sveltekit:reload
+        href={`/course/${course.id}/exercise/${nextExercise.id}`}>Next exercise</a
+      >
     {/if}
   </div>
 </div>
