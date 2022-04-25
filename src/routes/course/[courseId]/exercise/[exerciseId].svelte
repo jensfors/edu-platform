@@ -46,7 +46,7 @@
   let currentExIndex = getExerciseIndex()
   let nextExIndex = currentExIndex + 1
   let prevExIndex = currentExIndex - 1
-  console.log(prevExIndex, currentExIndex, nextExIndex)
+
   // @ts-ignore
   let prevExercise: Exercise = course.exercises[isFirstExercise() ? currentExIndex : prevExIndex]
   // @ts-ignore
