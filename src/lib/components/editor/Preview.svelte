@@ -59,6 +59,7 @@
   }
 </script>
 
+
 <div class="mockup-window border bg-base-300 border-base-300 {parentStyles}">
   <iframe title="preview" bind:this={iframe} class="bg-white w-full h-full p-2" />
 </div>
