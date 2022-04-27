@@ -56,17 +56,23 @@
 <div class="flex justify-center">
   <h1>{exercise.title}</h1>
 </div>
-<div class="flex p-1 justify-center items-center">
-  <div class="h-16 w-16">
-    <img
-      class="h-full w-auto mask mask-squircle -ml-1"
-      src={persona.avatarUrl}
-      alt={`Picture for the persona: ${persona.name}`}
-    />
-  </div>
-  <div class="flex flex-col gap-1">
-    <span>{persona.name} ({persona.age} years)</span>
-    <span>Disability: {persona.disability}</span>
+
+<div
+  class="tooltip tooltip-bottom [--tooltip-text-color:black] [--tooltip-color:#fefefe]"
+  data-tip={persona.description}
+>
+  <div class="flex p-1 justify-center items-center">
+    <div class="h-16 w-16">
+      <img
+        class="h-full w-auto mask mask-squircle -ml-1"
+        src={persona.avatarUrl}
+        alt={`Picture for the persona: ${persona.name}`}
+      />
+    </div>
+    <div class="flex flex-col gap-1">
+      <span>{persona.name} ({persona.age} years)</span>
+      <span>Disability: {persona.disability}</span>
+    </div>
   </div>
 </div>
 <div class="pl-8 flex flex-row justify-center">
@@ -147,5 +153,9 @@
 <style>
   .button-width {
     min-width: 175px;
+  }
+
+  .tooltip::before {
+    @apply border-2 border-dashed border-indigo-600;
   }
 </style>
