@@ -7,7 +7,8 @@
   import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker'
   import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
   import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
-  import prettier, { Options } from 'prettier'
+  import prettier from 'prettier'
+  import type { Options } from 'prettier'
   import parser from 'prettier/parser-babel'
 
   export let initialValue: string
