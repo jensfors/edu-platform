@@ -56,11 +56,12 @@
 <div class="flex justify-center">
   <h1>{exercise.title}</h1>
 </div>
-<div class="flex p-1 justify-center items-center">
-  <div
-    class="tooltip tooltip-bottom [--tooltip-text-color:black] [--tooltip-color:#fefefe]"
-    data-tip={persona.description}
-  >
+
+<div
+  class="tooltip tooltip-bottom [--tooltip-text-color:black] [--tooltip-color:#fefefe]"
+  data-tip={persona.description}
+>
+  <div class="flex p-1 justify-center items-center">
     <div class="h-16 w-16">
       <img
         class="h-full w-auto mask mask-squircle -ml-1"
