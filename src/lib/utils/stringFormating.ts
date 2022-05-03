@@ -1,4 +1,4 @@
-import type { User } from "@prisma/client";
+import type { User, WCAGCriteria } from "@prisma/client";
 
 export function createAuthorsString(authors: { user: User }[]) {
     let authorString: string = ``
@@ -27,4 +27,31 @@ export function formatDate(dateString: string) {
         day = '0' + day;
 
     return [day, month, year].join('-');
+}
+
+export function fixWCAGorder(input: WCAGCriteria[]) {
+    let criteria: WCAGCriteria[] = []
+    let temp: WCAGCriteria[] = []
+    let lastPrincipleNum: number = 0
+    let lastGuidelineNum: number = 0
+    let lastCritieriaNum: number = 0
+    input.forEach((criterion: WCAGCriteria) => {
+        let numbers: string[] = criterion.number.split('.')
+        let principleNum: number = parseInt(numbers[0])
+        let guidelineNum: number = parseInt(numbers[1])
+        let criteriaNum: number = parseInt(numbers[2])
+        if (criteriaNum > 9) {
+            temp.push(criterion)
+        } else if (guidelineNum > lastGuidelineNum || principleNum > lastPrincipleNum) {
+            criteria.push(...temp)
+            criteria.push(criterion)
+            temp = []
+        } else {
+            criteria.push(criterion)
+        }
+        lastPrincipleNum = principleNum
+        lastGuidelineNum = guidelineNum
+        lastCritieriaNum = criteriaNum
+    })
+    return criteria
 }

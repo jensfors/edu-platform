@@ -4,6 +4,26 @@ import type { User } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
+export async function getLeaderboard(limit: number) {
+  const result: User[] = await prisma.$queryRaw`SELECT "User".*, SUM (xp) AS totalxp FROM "UserSolvesExercise" FULL JOIN "User" ON "User".id = "UserSolvesExercise"."userId" GROUP BY "User".id ORDER BY totalxp DESC NULLS LAST, "firstName" ASC LIMIT ${limit}`
+  /*
+  // TODO: Maybe one day prisma can do this
+  const result = await prisma.userSolvesExercise.groupBy({
+    by: ['userId'],
+    _sum: {
+      xp: true
+    },
+    orderBy: {
+      _sum: {
+        xp: 'desc'
+      }
+    },
+    take: limit
+  }) */
+  console.log(result)
+  return result
+}
+
 export async function getAmountOfSolvedExercises(user: User): Promise<number> {
   const result: number = await prisma.userSolvesExercise.count({
     where: {
