@@ -168,10 +168,13 @@ export async function findAllCoursesWithPersona(persona: Persona): Promise<Cours
             }
         }
     })
+    // TODO: Change so its done in prisma
     let courses: Course[] = []
+    let ids: string[] = []
     result.forEach((course) => {
-        if (course.course.public) {
+        if (course.course.public && !ids.includes(course.course.id)) {
             courses.push(course.course)
+            ids.push(course.course.id)
         }
     })
     return courses
