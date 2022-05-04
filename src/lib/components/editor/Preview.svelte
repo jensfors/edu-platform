@@ -11,6 +11,8 @@
   let colorblindFilterCss: string = '' // Empty if no filter is selected
   let appliedFilterName: string = 'Select Filter' // Empty if no filter is selected
 
+  let triedFilter = false
+
   let iframe: HTMLIFrameElement = null
   let url
 
@@ -66,6 +68,7 @@
 
   function addFilter(filter: string) {
     console.log('hello: ', filter)
+    triedFilter = true
     colorblindFilterHtml = colorblindFilters[filter].html
     colorblindFilterCss = colorblindFilters[filter].css
     appliedFilterName = colorblindFilters[filter].name
@@ -80,24 +83,28 @@
 
 <div class="mockup-window border bg-base-300 border-base-300 {parentStyles}">
   <iframe title="preview" bind:this={iframe} class="bg-white w-full h-full p-2" />
-  <div
-    class="dropdown dropdown-left absolute top-1 right-1 z-20 w-36 reverse-button-grow-direction"
-  >
-    <label
-      tabindex="0"
-      for="colorblind-filter"
-      class="m-1 btn btn-outline btn-sm absolute hover:opacity-100 duration-300"
-      >{appliedFilterName}</label
-    >
-    <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-60">
-      {#each Object.entries(colorblindFilters) as [key, value]}
-        <li>
-          <button class="px-1 py-1 text-right text-sm" on:click={() => addFilter(value.name)}
-            >{value.description}</button
-          >
-        </li>
-      {/each}
-    </ul>
+
+  <div class="absolute top-1 right-1 z-20 flex">
+    {#if !triedFilter}
+      <div class="badge badge-secondary -mr-2">Try applying a colorblind filter</div>
+    {/if}
+    <div class="dropdown dropdown-left w-36 reverse-button-grow-direction mt-0">
+      <label
+        tabindex="0"
+        for="colorblind-filter"
+        class="m-1 btn btn-outline btn-sm absolute hover:opacity-100 duration-300"
+        >{appliedFilterName}</label
+      >
+      <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-60">
+        {#each Object.entries(colorblindFilters) as [key, value]}
+          <li>
+            <button class="px-1 py-1 text-right text-sm" on:click={() => addFilter(value.name)}
+              >{value.description}</button
+            >
+          </li>
+        {/each}
+      </ul>
+    </div>
   </div>
 </div>
 
