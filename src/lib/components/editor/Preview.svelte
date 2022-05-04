@@ -67,7 +67,6 @@
   }
 
   function addFilter(filter: string) {
-    console.log('hello: ', filter)
     triedFilter = true
     colorblindFilterHtml = colorblindFilters[filter].html
     colorblindFilterCss = colorblindFilters[filter].css
