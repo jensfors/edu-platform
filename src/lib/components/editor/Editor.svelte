@@ -58,7 +58,7 @@
       editor = Monaco.editor.create(divEl, options)
 
       // Just a  console log to make sure we actually didn't break something so far
-      console.log('Editor text when mounted: ', editor.getModel().getValue())
+      // console.log('Editor text when mounted: ', editor.getModel().getValue())
       editor.getModel().onDidChangeContent(() => {
         onChange(editor.getModel().getValue())
       })

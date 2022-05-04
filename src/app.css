@@ -24,6 +24,12 @@ main {
 }
 
 /* ********* keep for inspiration if we have to make global styles */
+
+/* body {
+  -webkit-filter: url('filters.svg#deuteranopia');
+  filter: url('filters.svg#deuteranopia');
+} */
+
 /* :root {
   font-family: Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
     Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
