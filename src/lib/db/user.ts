@@ -20,7 +20,6 @@ export async function getLeaderboard(limit: number) {
     },
     take: limit
   }) */
-  console.log(result)
   return result
 }
 

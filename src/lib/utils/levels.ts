@@ -12,7 +12,7 @@ export function getLevels(): { level: number, xp: number }[] {
     let levels: { level: number, xp: number }[] = []
     // Sick algorithm for calculating xp per level
     for (let level = 0; level <= maxLevel; level++) {
-        let xp: number = level === 0 ? 0 : intermediateXP + level * expertXP * Math.sqrt(level) * blogXPconst
+        let xp: number = level === 0 ? 0 : 20 * level + intermediateXP + (level ** 2 * 0.001)
         levels.push({ level: level, xp: Math.round(xp) })
     }
     return levels
@@ -44,6 +44,23 @@ export function getUserLevel(progressXP: number): XP {
         xp.nextLevelXP = xp.progressXP
         return xp
     }
+}
+
+export function getLevelForAUser(xp: number): number {
+    let level: number = 0
+    let enoughXP: boolean = true
+    let levels: { level: number, xp: number }[] = getLevels()
+    if (xp > getMaxLevelXP()) return maxLevel
+    else if (levels[1].xp > xp) return level
+    while (enoughXP) {
+        if (xp > levels[level + 1].xp) {
+            xp -= levels[level + 1].xp
+            level++
+        } else {
+            enoughXP = false
+        }
+    }
+    return level
 }
 
 export function getMaxLevelXP(): number {

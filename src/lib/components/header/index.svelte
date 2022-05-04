@@ -1,6 +1,6 @@
 <script lang="ts">
   import { authUser } from '$lib/stores'
-  import { HomeIcon, SearchIcon } from 'svelte-feather-icons'
+  import { HomeIcon, SearchIcon, BarChart2Icon } from 'svelte-feather-icons'
   import { goto } from '$app/navigation'
 </script>
 
@@ -8,14 +8,16 @@
 <header class="navbar bg-primary mb-20 shadow-xl rounded-b-2xl">
   <!-- <div class="navbar bg-primary mb-40 shadow-xl rounded-b-2xl"> -->
   <div class="navbar-start">
-    <a sveltekit:prefetch href="/" class="btn btn-ghost btn-circle">
+    <a sveltekit:prefetch href="/" class="btn btn-ghost btn-circle" title="Home">
       <HomeIcon size="28" class="text-base-100" />
     </a>
-
     <!-- TODO: Make this search button do stuff -->
-    <button class="btn btn-ghost btn-circle">
+    <button class="btn btn-ghost btn-circle" title="Browse">
       <SearchIcon size="28" class="text-base-100" />
     </button>
+    <a sveltekit:prefetch href="/leaderboard" class="btn btn-ghost btn-circle" title="Leaderboard">
+      <BarChart2Icon size="28" class="text-base-100" />
+    </a>
     <!-------------------------------------------->
   </div>
   <div class="navbar-center">
