@@ -4,19 +4,19 @@
 
   export let initialHtml: string = '<h1>Hello, world!</h1>'
   let initialCss: string = ` /* Remove this comment to apply the CSS
-  h1 {
-    color: CornflowerBlue;
-  }
-  */`
+    h1 {
+      color: CornflowerBlue;
+    }
+    */`
   let initialJs: string = 'console.log("Check the console and you will see this message :-)")'
 
   export let inputHtml: string = initialHtml
   let inputCss: string = initialCss
   let inputJs: string = initialJs
 
-  let outputHtml: string // TODO: figure out if i can do something smarter with output code
-  let outputCss: string // TODO: figure out if i can do something smarter with output code
-  let outputJs: string // TODO: figure out if i can do something smarter with output code
+  // let outputHtml: string // TODO: figure out if i can do something smarter with output code
+  // let outputCss: string // TODO: figure out if i can do something smarter with output code
+  // let outputJs: string // TODO: figure out if i can do something smarter with output code
 
   let htmlTab = true
   let cssTab = false
@@ -75,7 +75,7 @@
         />
       {/if}
     </div>
-    <Preview bind:html={inputHtml} css={inputCss} js={inputJs} class="w-1/2" />
+    <Preview html={inputHtml} css={inputCss} js={inputJs} class="w-1/2" />
   </div>
 </div>
 
@@ -92,5 +92,9 @@
 
   .editor-wrapper:hover .button-format {
     @apply opacity-100;
+  }
+  .deuteranopia {
+    -webkit-filter: url('filters.svg#deuteranopia');
+    filter: url('filters.svg#deuteranopia');
   }
 </style>
