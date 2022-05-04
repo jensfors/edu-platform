@@ -7,7 +7,8 @@
   import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker'
   import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
   import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
-  import prettier, { Options } from 'prettier'
+  import prettier from 'prettier'
+  import type { Options } from 'prettier'
   import parser from 'prettier/parser-babel'
 
   export let initialValue: string
@@ -57,7 +58,7 @@
       editor = Monaco.editor.create(divEl, options)
 
       // Just a  console log to make sure we actually didn't break something so far
-      console.log('Editor text when mounted: ', editor.getModel().getValue())
+      // console.log('Editor text when mounted: ', editor.getModel().getValue())
       editor.getModel().onDidChangeContent(() => {
         onChange(editor.getModel().getValue())
       })

@@ -1,12 +1,15 @@
 <script lang="ts">
-  import { browser } from '$app/env'
-
   import { afterUpdate, onMount } from 'svelte'
+  import { colorblindFilters } from '$lib/utils/colorblindFilters'
 
   let parentStyles = $$props.class // use $$props to access the parent's props which has the normal styles
   export let html: string
   export let css: string
   export let js: string
+
+  let colorblindFilterHtml: string = '' // Empty if no filter is selected
+  let colorblindFilterCss: string = '' // Empty if no filter is selected
+  let appliedFilterName: string = 'Select Filter' // Empty if no filter is selected
 
   let iframe: HTMLIFrameElement = null
   let url
@@ -20,9 +23,12 @@
   })
 
   function loadIframe() {
+    let htmlWithAppliedFilter = html + colorblindFilterHtml
+    let cssWithAppliedFilter = css + colorblindFilterCss
+
     url = getGeneratedPageURL({
-      html,
-      css,
+      html: htmlWithAppliedFilter,
+      css: cssWithAppliedFilter,
       js,
     })
 
@@ -57,9 +63,46 @@
     const blob = new Blob([code], { type })
     return URL.createObjectURL(blob)
   }
-</script>
 
+  function addFilter(filter: string) {
+    console.log('hello: ', filter)
+    colorblindFilterHtml = colorblindFilters[filter].html
+    colorblindFilterCss = colorblindFilters[filter].css
+    appliedFilterName = colorblindFilters[filter].name
+
+    if (appliedFilterName === 'removeFilter') {
+      appliedFilterName = 'Select Filter'
+    }
+
+    loadIframe()
+  }
+</script>
 
 <div class="mockup-window border bg-base-300 border-base-300 {parentStyles}">
   <iframe title="preview" bind:this={iframe} class="bg-white w-full h-full p-2" />
+  <div
+    class="dropdown dropdown-left absolute top-1 right-1 z-20 w-36 reverse-button-grow-direction"
+  >
+    <label
+      tabindex="0"
+      for="colorblind-filter"
+      class="m-1 btn btn-outline btn-sm absolute hover:opacity-100 duration-300"
+      >{appliedFilterName}</label
+    >
+    <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-60">
+      {#each Object.entries(colorblindFilters) as [key, value]}
+        <li>
+          <button class="px-1 py-1 text-right text-sm" on:click={() => addFilter(value.name)}
+            >{value.description}</button
+          >
+        </li>
+      {/each}
+    </ul>
+  </div>
 </div>
+
+<style>
+  .reverse-button-grow-direction {
+    direction: rtl;
+  }
+</style>
