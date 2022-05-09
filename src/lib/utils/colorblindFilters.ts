@@ -1,3 +1,7 @@
+// Links to read more about the filters and where they come from
+// https://developer.chrome.com/blog/cvd/
+// https://firefox-source-docs.mozilla.org/devtools-user/accessibility_inspector/simulation/index.html
+
 export const colorblindFilters = {
   // The filter grayscale matrix is based on the following research paper:
   // Rang Man Ho Nguyen and Michael S. Brown,

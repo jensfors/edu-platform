@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { afterUpdate, onMount } from 'svelte'
   import { colorblindFilters } from '$lib/utils/colorblindFilters'
+  import { afterUpdate, onMount } from 'svelte'
 
   let parentStyles = $$props.class // use $$props to access the parent's props which has the normal styles
   export let html: string
@@ -80,21 +80,21 @@
   }
 </script>
 
-<div class="mockup-window border bg-base-300 border-base-300 {parentStyles}">
-  <iframe title="preview" bind:this={iframe} class="bg-white w-full h-full p-2" />
+<div class="mockup-window border border-base-300 bg-base-300 {parentStyles}">
+  <iframe title="preview" bind:this={iframe} class="h-full w-full bg-white p-2" />
 
   <div class="absolute top-1 right-1 z-20 flex">
     {#if !triedFilter}
       <div class="badge badge-secondary -mr-2">Try applying a colorblind filter</div>
     {/if}
-    <div class="dropdown dropdown-left w-36 reverse-button-grow-direction mt-0">
+    <div class="reverse-button-grow-direction dropdown-left dropdown mt-0 w-36">
       <label
         tabindex="0"
         for="colorblind-filter"
-        class="m-1 btn btn-outline btn-sm absolute hover:opacity-100 duration-300"
+        class="btn btn-outline btn-sm absolute m-1 duration-300 hover:opacity-100"
         >{appliedFilterName}</label
       >
-      <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-60">
+      <ul tabindex="0" class="dropdown-content menu rounded-box w-60 bg-base-100 p-2 shadow">
         {#each Object.entries(colorblindFilters) as [key, value]}
           <li>
             <button class="px-1 py-1 text-right text-sm" on:click={() => addFilter(value.name)}
