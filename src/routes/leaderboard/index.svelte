@@ -1,10 +1,17 @@
 <script lang="ts">
   import { authUser } from '$lib/stores'
+  import { getLevelIcon, getWCAGMasterIcon } from '$lib/utils/levelIcon'
 
   import { formatDate } from '$lib/utils/stringFormating'
   import type { User } from '@prisma/client'
 
   export let users: User[]
+  const column1: string = 'Level'
+  const column2: string = 'Name'
+  const column3: string = 'Total XP'
+  const column4: string = 'WCAG Master'
+  const column5: string = 'Exercises solved'
+  const column6: string = 'Posts read'
 </script>
 
 <div class="flex justify-center p-5">
@@ -16,12 +23,12 @@
     <!-- head -->
     <thead>
       <tr>
-        <th class="bg-primary">Level</th>
-        <th class="bg-primary">Name</th>
-        <th class="bg-primary">Total XP</th>
-        <th class="bg-primary">WCAG Master</th>
-        <th class="bg-primary">Exercises solved</th>
-        <th class="bg-primary">Posts read</th>
+        <th class="bg-primary">{column1}</th>
+        <th class="bg-primary">{column2}</th>
+        <th class="bg-primary">{column3}</th>
+        <th class="bg-primary">{column4}</th>
+        <th class="bg-primary">{column5}</th>
+        <th class="bg-primary">{column6}</th>
         <th class="bg-primary" />
       </tr>
     </thead>
@@ -31,7 +38,11 @@
           <td>
             <div class="avatar">
               <div class="mask mask-squircle w-12 h-12">
-                <img src="" alt={user.level} />
+                <img
+                  src={getLevelIcon(user.level)}
+                  alt={'Level ' + user.level}
+                  title={'Level ' + user.level}
+                />
               </div>
             </div>
           </td>
@@ -61,7 +72,13 @@
           <td>
             <div class="avatar">
               <div class="mask mask-squircle w-12 h-12">
-                <img src="" alt={user.wcagMasterLevel} />
+                {#if user.wcagMasterLevel > 0}
+                  <img
+                    src={getWCAGMasterIcon(user.wcagMasterLevel)}
+                    alt={'WCAG Master Level ' + user.wcagMasterLevel}
+                    title={'WCAG Master Level ' + user.wcagMasterLevel}
+                  />
+                {/if}
               </div>
             </div>
           </td>
@@ -88,12 +105,12 @@
     <!-- foot -->
     <tfoot>
       <tr>
-        <th class="bg-primary">Level</th>
-        <th class="bg-primary">Name</th>
-        <th class="bg-primary">Total XP</th>
-        <th class="bg-primary">WCAG Master</th>
-        <th class="bg-primary">Exercises solved</th>
-        <th class="bg-primary">Posts read</th>
+        <th class="bg-primary">{column1}</th>
+        <th class="bg-primary">{column2}</th>
+        <th class="bg-primary">{column3}</th>
+        <th class="bg-primary">{column4}</th>
+        <th class="bg-primary">{column5}</th>
+        <th class="bg-primary">{column6}</th>
         <th class="bg-primary" />
       </tr>
     </tfoot>
