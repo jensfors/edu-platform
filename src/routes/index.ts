@@ -4,7 +4,7 @@ import { getLatestBlogPosts } from "$lib/db/posts";
 import { getAmountOfReadPosts, getAmountOfSolvedExercises, getUser, getXP } from "$lib/db/user";
 import { getAllCriteria, getAllCriteriaSolved } from "$lib/db/wcag";
 import { addSolvesToCriteria } from "$lib/utils/awards";
-import { getUserLevel } from "$lib/utils/levels";
+import { getNewUserLevel, getUserLevel } from "$lib/utils/levels";
 import { PostType, XP } from "$lib/utils/stringTypes";
 import type { Course, Persona, Post, User, WCAGCriteria, WCAGPrinciple } from "@prisma/client";
 

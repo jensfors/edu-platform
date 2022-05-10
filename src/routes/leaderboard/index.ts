@@ -1,7 +1,7 @@
 import { getAmountOfReadPosts, getAmountOfSolvedExercises, getLeaderboard } from "$lib/db/user";
 import { getAllCriteria, getAllCriteriaSolved } from "$lib/db/wcag";
 import { addSolvesToCriteria, getWCAGMasterLevel } from "$lib/utils/awards";
-import { getLevelForAUser, getLevels, getMaxLevelXP } from "$lib/utils/levels";
+import { getLevelForAUser } from "$lib/utils/levels";
 import { PostType } from "$lib/utils/stringTypes";
 import type { User, WCAGCriteria } from "@prisma/client";
 

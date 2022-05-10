@@ -2,14 +2,13 @@
   import type { Course, Exercise } from '@prisma/client'
   import { getCourseIcon } from '$lib/utils/courseIcon'
   import CodeCell from '$lib/components/editor/CodeCell.svelte'
-  import { goto } from '$app/navigation'
-  import { onMount } from 'svelte'
   import { page } from '$app/stores'
+  import { authUser } from '$lib/stores'
 
   export let exercise: Exercise
   export let course: Course
 
-  let showSolution: boolean = false
+  let showSolution: boolean = userHasSolvedExercise()
   // @ts-ignore
   let criteria = exercise.criteria
   // @ts-ignore
@@ -20,6 +19,21 @@
   let codeSolution = exercise.assignments[0].answers[1].text
   // @ts-ignore
   let exerciseQuestion = exercise.assignments[0].question
+
+  function userHasSolvedExercise(): boolean {
+    let hasSolved: boolean = false
+    // @ts-ignore
+    if ($authUser && exercise.usersSolved) {
+      // @ts-ignore
+      exercise.usersSolved.forEach((usersSolved) => {
+        if (usersSolved.userId === $authUser.id) {
+          hasSolved = true
+          return
+        }
+      })
+    }
+    return hasSolved
+  }
 
   function isLastExercise(): boolean {
     // @ts-ignore
@@ -41,6 +55,32 @@
       index++
     }
     return index
+  }
+
+  async function onSubmit() {
+    const res = await fetch(`${$page.url.pathname}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        userId: $authUser.id,
+        exerciseId: exercise.id,
+        difficulty: exercise.difficulty,
+      }),
+    })
+  }
+
+  function userIsAuthor(): boolean {
+    let isAuthor: boolean = false
+    // @ts-ignore
+    if ($authUser && course.authors) {
+      // @ts-ignore
+      course.authors.forEach((author) => {
+        if (author.userId === $authUser.id) {
+          isAuthor = true
+          return
+        }
+      })
+    }
+    return isAuthor
   }
 
   let currentExIndex = getExerciseIndex()
@@ -123,7 +163,12 @@
   <button
     class="btn btn-success button-width"
     disabled={showSolution}
-    on:click={() => (showSolution = true)}
+    on:click={() => {
+      showSolution = true
+      if (!userIsAuthor()) {
+        onSubmit()
+      }
+    }}
   >
     {showSolution ? 'Answer submitted' : 'Submit answer'}</button
   >
