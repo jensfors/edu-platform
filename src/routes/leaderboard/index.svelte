@@ -1,14 +1,21 @@
 <script lang="ts">
   import { authUser } from '$lib/stores'
+  import { getLevelIcon, getWCAGMasterIcon } from '$lib/utils/levelIcon'
 
   import { formatDate } from '$lib/utils/stringFormating'
   import type { User } from '@prisma/client'
 
   export let users: User[]
+  const column1: string = 'Level'
+  const column2: string = 'Name'
+  const column3: string = 'Total XP'
+  const column4: string = 'WCAG Master'
+  const column5: string = 'Exercises solved'
+  const column6: string = 'Posts read'
 </script>
 
 <div class="flex justify-center p-5">
-  <h1>Leaderboard</h1>
+  <h1 class="text-3xl">Leaderboard</h1>
 </div>
 
 <div class="overflow-x-auto w-full">
@@ -16,22 +23,26 @@
     <!-- head -->
     <thead>
       <tr>
-        <th class="bg-primary">Level</th>
-        <th class="bg-primary">Name</th>
-        <th class="bg-primary">Total XP</th>
-        <th class="bg-primary">WCAG Master</th>
-        <th class="bg-primary">Exercises solved</th>
-        <th class="bg-primary">Posts read</th>
+        <th class="bg-primary">{column1}</th>
+        <th class="bg-primary">{column2}</th>
+        <th class="bg-primary">{column3}</th>
+        <th class="bg-primary">{column4}</th>
+        <th class="bg-primary">{column5}</th>
+        <th class="bg-primary">{column6}</th>
         <th class="bg-primary" />
       </tr>
     </thead>
     <tbody>
       {#each users as user}
-        <tr class={user.id === $authUser.id ? 'bg-success' : 'odd:bg-gray-100'}>
+        <tr class={user.id === $authUser.id ? 'bg-neutral-content' : 'odd:bg-gray-100'}>
           <td>
             <div class="avatar">
               <div class="mask mask-squircle w-12 h-12">
-                <img src="" alt={user.level} />
+                <img
+                  src={getLevelIcon(user.level)}
+                  alt={'Level ' + user.level}
+                  title={'Level ' + user.level}
+                />
               </div>
             </div>
           </td>
@@ -61,7 +72,13 @@
           <td>
             <div class="avatar">
               <div class="mask mask-squircle w-12 h-12">
-                <img src="" alt={user.wcagMasterLevel} />
+                {#if user.wcagMasterLevel > 0}
+                  <img
+                    src={getWCAGMasterIcon(user.wcagMasterLevel)}
+                    alt={'WCAG Master Level ' + user.wcagMasterLevel}
+                    title={'WCAG Master Level ' + user.wcagMasterLevel}
+                  />
+                {/if}
               </div>
             </div>
           </td>
@@ -73,13 +90,13 @@
           </td>
           <!-- Read Blog Posts Column -->
           <td>{user.readBlogPosts}</td>
-          <!-- View profile Column TODO: Make go to profile page -->
+          <!-- View profile Column -->
           <td>
             <a
               class="btn btn-ghost btn-sm"
               role="button"
               sveltekit:prefetch
-              href={`/profile/${user.id}`}>Profile</a
+              href={`/profile/${user.id}`}>View Profile</a
             >
           </td>
         </tr>
@@ -88,12 +105,12 @@
     <!-- foot -->
     <tfoot>
       <tr>
-        <th class="bg-primary">Level</th>
-        <th class="bg-primary">Name</th>
-        <th class="bg-primary">Total XP</th>
-        <th class="bg-primary">WCAG Master</th>
-        <th class="bg-primary">Exercises solved</th>
-        <th class="bg-primary">Posts read</th>
+        <th class="bg-primary">{column1}</th>
+        <th class="bg-primary">{column2}</th>
+        <th class="bg-primary">{column3}</th>
+        <th class="bg-primary">{column4}</th>
+        <th class="bg-primary">{column5}</th>
+        <th class="bg-primary">{column6}</th>
         <th class="bg-primary" />
       </tr>
     </tfoot>

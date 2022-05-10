@@ -61,7 +61,7 @@
 <!-- Content creator options -->
 {#if userIsAuthor()}
   <button>
-    <a href={`${$page.url.pathname}/create-exercise`}> Create exercise motherfucker </a>
+    <a href={`${$page.url.pathname}/create-exercise`}>Create exercise</a>
   </button>
 {/if}
 

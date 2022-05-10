@@ -1,6 +1,6 @@
 import PrismaClient from '$lib/prisma';
 import type { Difficulty, ExerciseType } from '$lib/utils/stringTypes';
-import type { Assignment, Course, Exercise, Persona, WCAGCriteria } from '@prisma/client';
+import type { Assignment, Course, Exercise, Persona, UserSolvesExercise, WCAGCriteria } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -25,7 +25,8 @@ export async function getExercise(exerciseId: string): Promise<Exercise> {
                     include: {
                         answers: true
                     }
-                }
+                },
+                usersSolved: true
             }
         })
         return result
@@ -46,7 +47,8 @@ export async function getCourseFromExercise(exercise: Exercise): Promise<Course>
                     orderBy: {
                         createdAt: 'asc'
                     }
-                }
+                },
+                authors: true
             }
         })
         return result
@@ -109,6 +111,21 @@ export async function giveExerciseCategoryAndAnswers(exercise: Exercise, criteri
     catch (PrismaClientKnownRequestError) {
         console.log(`Creating exercise categories and assignments/answers failed`)
         return false
+    }
+}
+
+export async function userSolvesExercise(exerciseId: string, userId: string, xp: number): Promise<UserSolvesExercise> {
+    try {
+        const result: UserSolvesExercise = await prisma.userSolvesExercise.create({
+            data: {
+                exerciseId: exerciseId,
+                userId: userId,
+                xp: xp,
+            }
+        })
+        return result
+    } catch (PrismaClientKnownRequestError) {
+        console.log(`userSolvesExercise`)
     }
 }
 /*
