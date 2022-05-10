@@ -51,21 +51,24 @@
   ]
 </script>
 
+<h1 class="px-8 py-4 text-center text-3xl">Welcome to the course platform</h1>
+<h2 class="pb-20 text-center text-2xl">- where you can learn everything about accisibility</h2>
+
 <!-- Blog posts -->
-<div class="flex gap-20 pb-20 max-w-[792px] w-full">
-  <div class="card lg:card-side flex-wrap bg-white shadow-xl max-w-[792px]">
+<div class="flex w-full max-w-[792px] gap-20 pb-20">
+  <div class="card max-w-[792px] flex-wrap bg-white shadow-xl lg:card-side">
     <div class="flex w-full bg-primary">
-      <h1 class="text-2xl px-8 py-4 text-white">
+      <h1 class="px-8 py-4 text-2xl text-white">
         <a sveltekit:prefetch href={`/posts`}>
           <!-- TODO: Make page-->
           Blog Posts
         </a>
       </h1>
     </div>
-    <div class="flex py-4 px-6 gap-4">
+    <div class="flex gap-4 py-4 px-6">
       {#each blogPosts as blogPost}
         <div
-          class="card w-50 bg-base-100 shadow-xl w-1/3"
+          class="w-50 card w-1/3 bg-base-100 shadow-xl"
           on:click={() => goto(`/blogs/${blogPost.id}`)}
           style="cursor: pointer"
         >
@@ -86,13 +89,13 @@
 
 <!-- Personas, courses, profile card -->
 <div class="flex gap-20">
-  <div class="flex flex-col gap-20 max-w-[792px] w-full">
+  <div class="flex w-full max-w-[792px] flex-col gap-20">
     <!-- Persona card -->
     <div
-      class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[792px] w-full justify-center"
+      class="card w-full max-w-[792px] flex-wrap justify-center bg-base-100 shadow-xl lg:card-side"
     >
       <div class="flex w-full bg-primary">
-        <h1 class="text-2xl pl-8 py-4 text-white">
+        <h1 class="py-4 pl-8 text-2xl text-white">
           <a sveltekit:prefetch href={`/personas`}>
             <!-- TODO: Make page-->
             Personas
@@ -101,9 +104,9 @@
       </div>
       <div class="flex flex-wrap p-4">
         {#each personas as persona}
-          <div class="p-2 items-center">
+          <div class="items-center p-2">
             <div
-              class="card w-96 bg-base-100 shadow-xl h-full max-w-[160px] max-h-[450px] items-center"
+              class="card h-full max-h-[450px] w-96 max-w-[160px] items-center bg-base-100 shadow-xl"
               on:click={() => goto(`/persona/${persona.id}`)}
               style="cursor: pointer"
             >
@@ -116,7 +119,7 @@
                   />
                 </div>
               </figure>
-              <div class="card-body items-center text-center p-2 pb-4">
+              <div class="card-body items-center p-2 pb-4 text-center">
                 <h2 class="card-title text-base">
                   {persona.name}
                 </h2>
@@ -129,10 +132,10 @@
 
     <!-- Courses Card -->
     <div
-      class="card lg:card-side flex-wrap bg-base-100 shadow-xl max-w-[792px] w-full justify-center"
+      class="card w-full max-w-[792px] flex-wrap justify-center bg-base-100 shadow-xl lg:card-side"
     >
       <div class="flex w-full bg-primary">
-        <h1 class="text-2xl pl-8 py-4 text-white">
+        <h1 class="py-4 pl-8 text-2xl text-white">
           <a sveltekit:prefetch href={`/courses`}>
             <!-- TODO: Make page-->
             Courses
@@ -141,9 +144,9 @@
       </div>
       <div class="flex flex-wrap p-4">
         {#each courses as course}
-          <div class="p-2 items-center">
+          <div class="items-center p-2">
             <div
-              class="card w-96 bg-base-100 shadow-xl h-full max-w-[160px] max-h-[450px] items-center"
+              class="card h-full max-h-[450px] w-96 max-w-[160px] items-center bg-base-100 shadow-xl"
               on:click={() => goto(`/course/${course.id}`)}
               style="cursor: pointer"
             >
@@ -160,7 +163,7 @@
                   />
                 </div>
               </figure>
-              <div class="card-body items-center text-center p-2 pb-4">
+              <div class="card-body items-center p-2 pb-4 text-center">
                 <h2 class="card-title text-base">
                   {course.title}
                 </h2>
@@ -176,7 +179,7 @@
   {#if $authUser}
     <div class="card w-96 bg-base-100 shadow-xl">
       <div class="flex w-full bg-primary">
-        <h1 class="text-2xl pl-8 py-4 text-white">Profile</h1>
+        <h1 class="py-4 pl-8 text-2xl text-white">Profile</h1>
       </div>
       <figure class="px-8 pt-8">
         <img
@@ -186,19 +189,19 @@
         />
       </figure>
       <div class="card-body items-center text-center">
-        <div class="w-full relative">
+        <div class="relative w-full">
           <progress
-            class="progress progress-primary w-full h-10"
+            class="progress progress-primary h-10 w-full"
             value={userXP.progressXP}
             max={userXP.nextLevelXP}
           />
-          <p class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-xl">
+          <p class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xl text-white">
             Level {userXP.level}
           </p>
         </div>
         <div class="flex w-full justify-evenly">
           {#each badges as badge}
-            <img class="rounded-xl h-10 w-10" src={badge.url} alt="WCAG badges" />
+            <img class="h-10 w-10 rounded-xl" src={badge.url} alt="WCAG badges" />
           {/each}
         </div>
         <h2 class="card-title">Solved exercises</h2>

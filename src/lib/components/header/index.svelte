@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { authUser } from '$lib/stores'
-  import { HomeIcon, SearchIcon, BarChart2Icon } from 'svelte-feather-icons'
   import { goto } from '$app/navigation'
+  import { authUser } from '$lib/stores'
+  import { BarChart2Icon, HomeIcon, SearchIcon } from 'svelte-feather-icons'
 </script>
 
 <!-- The header looks ass on less than 400px, and should be fixed with an entire other menu -->
-<header class="navbar bg-primary mb-20 shadow-xl rounded-b-2xl">
+<header class="navbar mb-6 rounded-b-2xl bg-primary shadow-xl">
   <!-- <div class="navbar bg-primary mb-40 shadow-xl rounded-b-2xl"> -->
   <div class="navbar-start">
     <a sveltekit:prefetch href="/" class="btn btn-ghost btn-circle" title="Home">
@@ -21,7 +21,7 @@
     <!-------------------------------------------->
   </div>
   <div class="navbar-center">
-    <ul tabindex="0" class="flex-row p-4 menu menu-compact">
+    <ul tabindex="0" class="menu menu-compact flex-row p-4">
       <li>
         <a sveltekit:prefetch href="/about">About</a>
       </li>
@@ -33,8 +33,8 @@
   </div>
   <div class="navbar-end">
     {#if $authUser}
-      <div class="dropdown dropdown-end">
-        <div tabindex="0" class="btn btn-ghost btn-circle avatar">
+      <div class="dropdown-end dropdown">
+        <div tabindex="0" class="avatar btn btn-ghost btn-circle">
           <div type="text" class="w-10 rounded-full">
             <img
               src={$authUser.avatarURL
@@ -46,7 +46,7 @@
         </div>
         <ul
           tabindex="0"
-          class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
+          class="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow"
         >
           <li>
             <a sveltekit:prefetch href="/dymmy-url" class="justify-between">
@@ -68,6 +68,6 @@
 
 <style>
   .navbar-center a {
-    @apply text-base-100 text-lg;
+    @apply text-lg text-base-100;
   }
 </style>

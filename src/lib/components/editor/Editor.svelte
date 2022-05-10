@@ -1,15 +1,15 @@
 <script lang="ts">
   import { browser } from '$app/env'
-  import { onMount } from 'svelte'
   import type monaco from 'monaco-editor'
   import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
-  import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
   import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker'
   import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
+  import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
   import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
-  import prettier from 'prettier'
   import type { Options } from 'prettier'
+  import prettier from 'prettier'
   import parser from 'prettier/parser-babel'
+  import { onMount } from 'svelte'
 
   export let initialValue: string
   export let language: string
@@ -87,7 +87,7 @@
 <div class="editor-wrapper">
   <div class="min-h-full" bind:this={divEl} />
   <button
-    class="button-format btn btn-outline btn-secondary btn-sm absolute top-1 right-1 z-20 opacity-0 hover:opacity-100 duration-300"
+    class="button-format btn btn-outline btn-secondary btn-sm absolute top-1 right-1 z-20 opacity-0 duration-300 hover:opacity-100"
     on:click={formatOnClick}>Format</button
   >
 </div>
