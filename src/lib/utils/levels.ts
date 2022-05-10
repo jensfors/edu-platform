@@ -6,6 +6,7 @@ export const intermediateXP: number = 100
 export const expertXP: number = 150
 export const blogXPconst: number = 0.1
 export const newsXPconst: number = 0.1
+export const levels: { level: number, xp: number }[] = getLevels()
 
 export function getDifficultyXP(difficulty: Difficulty): number {
     switch (difficulty) {
@@ -26,9 +27,37 @@ export function getLevels(): { level: number, xp: number }[] {
     return levels
 }
 
-export function getUserLevel(progressXP: number): XP {
-    const levels = getLevels()
+export function getLevel(level: number): { level: number, xp: number } {
+    if (level < maxLevel) {
+        return { level: levels[level].level, xp: levels[level + 1].xp }
+    }
+    return { level: maxLevel, xp: 0 }
+}
 
+export function getNewUserLevel(prevUserLevel: XP, newXP: number) {
+    let newUserLevel: XP = { level: prevUserLevel.level, nextLevelXP: prevUserLevel.nextLevelXP, progressXP: prevUserLevel.progressXP }
+    if (prevUserLevel.progressXP + newXP >= prevUserLevel.nextLevelXP) {
+        newUserLevel.progressXP += newXP
+        while (newUserLevel.progressXP > newUserLevel.nextLevelXP && newUserLevel.level < maxLevel) {
+            const newProgressXP: number = (newUserLevel.progressXP - newUserLevel.nextLevelXP)
+            const newLevel: { level: number, xp: number } = getLevel(newUserLevel.level + 1)
+            newUserLevel.level = newLevel.level, newUserLevel.nextLevelXP = newLevel.xp, newUserLevel.progressXP = newProgressXP
+            if (newUserLevel.level === maxLevel) {
+                newUserLevel.nextLevelXP = newUserLevel.progressXP
+            }
+        }
+        /*
+        const newProgressXP: number = newXP - (prevUserLevel.nextLevelXP - prevUserLevel.progressXP)
+        const newLevel: { level: number, xp: number } = getLevel(prevUserLevel.level + 1)
+        newUserLevel.level = newLevel.level, newUserLevel.nextLevelXP = newLevel.xp, newUserLevel.progressXP = newProgressXP
+        */
+    } else {
+        newUserLevel.level = prevUserLevel.level, newUserLevel.nextLevelXP = prevUserLevel.nextLevelXP, newUserLevel.progressXP = prevUserLevel.progressXP + newXP
+    }
+    return newUserLevel
+}
+
+export function getUserLevel(progressXP: number): XP {
     // TODO: get XP from db
     let xp: XP = { level: 0, nextLevelXP: 0, progressXP: progressXP }
 
@@ -57,7 +86,6 @@ export function getUserLevel(progressXP: number): XP {
 export function getLevelForAUser(xp: number): number {
     let level: number = 0
     let enoughXP: boolean = true
-    let levels: { level: number, xp: number }[] = getLevels()
     if (xp > getMaxLevelXP()) return maxLevel
     else if (levels[1].xp > xp) return level
     while (enoughXP) {
@@ -72,7 +100,6 @@ export function getLevelForAUser(xp: number): number {
 }
 
 export function getMaxLevelXP(): number {
-    const levels = getLevels()
     let xp = 0;
     levels.forEach((level) => xp += level.xp)
     return xp
