@@ -1,12 +1,20 @@
-import type { XP } from "./stringTypes";
+import { Difficulty, type XP } from "./stringTypes";
 
-//import type { User } from "@prisma/client";
 export const maxLevel: number = 100
 export const beginnerXP: number = 75
 export const intermediateXP: number = 100
 export const expertXP: number = 150
 export const blogXPconst: number = 0.1
 export const newsXPconst: number = 0.1
+
+export function getDifficultyXP(difficulty: Difficulty): number {
+    switch (difficulty) {
+        case Difficulty.Beginner: return beginnerXP
+        case Difficulty.Intermediate: return intermediateXP
+        case Difficulty.Expert: return expertXP
+        default: return 0
+    }
+}
 
 export function getLevels(): { level: number, xp: number }[] {
     let levels: { level: number, xp: number }[] = []

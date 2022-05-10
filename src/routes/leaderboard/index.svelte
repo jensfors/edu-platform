@@ -15,7 +15,7 @@
 </script>
 
 <div class="flex justify-center p-5">
-  <h1>Leaderboard</h1>
+  <h1 class="text-3xl">Leaderboard</h1>
 </div>
 
 <div class="overflow-x-auto w-full">
@@ -34,7 +34,7 @@
     </thead>
     <tbody>
       {#each users as user}
-        <tr class={user.id === $authUser.id ? 'bg-success' : 'odd:bg-gray-100'}>
+        <tr class={user.id === $authUser.id ? 'bg-neutral-content' : 'odd:bg-gray-100'}>
           <td>
             <div class="avatar">
               <div class="mask mask-squircle w-12 h-12">
@@ -90,13 +90,13 @@
           </td>
           <!-- Read Blog Posts Column -->
           <td>{user.readBlogPosts}</td>
-          <!-- View profile Column TODO: Make go to profile page -->
+          <!-- View profile Column -->
           <td>
             <a
               class="btn btn-ghost btn-sm"
               role="button"
-              sveltekit:reload
-              href={`/profile/${user.id}`}>Profile</a
+              sveltekit:prefetch
+              href={`/profile/${user.id}`}>View Profile</a
             >
           </td>
         </tr>
