@@ -2,6 +2,8 @@
   import { goto } from '$app/navigation'
   import { authUser } from '$lib/stores'
   import { BarChart2Icon, HomeIcon, SearchIcon } from 'svelte-feather-icons'
+
+  // TODO: Fetch user data from database, so we can use the id for navigation
 </script>
 
 <!-- The header looks ass on less than 400px, and should be fixed with an entire other menu -->
@@ -49,7 +51,7 @@
           class="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow"
         >
           <li>
-            <a sveltekit:prefetch href="/dymmy-url" class="justify-between">
+            <a sveltekit:prefetch href={`/profile/${$authUser.id}`} class="justify-between">
               Profile {$authUser.firstName}
               <span class="badge">New</span>
             </a>
