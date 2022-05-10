@@ -78,7 +78,7 @@
             <a
               class="btn btn-ghost btn-sm"
               role="button"
-              sveltekit:reload
+              sveltekit:prefetch
               href={`/profile/${user.id}`}>Profile</a
             >
           </td>
