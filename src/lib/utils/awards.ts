@@ -3,7 +3,7 @@ import { getPrincipleNum, type Principle } from "./stringTypes";
 
 export const maxMasterLevel: number = 5
 
-// Adds solves to criteria
+// Adds amount of solves to criteria
 export function addSolvesToCriteria(allCriteria: WCAGCriteria[], solvedCriteria: WCAGCriteria[]) {
     allCriteria.forEach((criterion: WCAGCriteria) => {
         let isSolved: boolean = false
