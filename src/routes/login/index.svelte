@@ -43,7 +43,7 @@
 
 <form on:submit|preventDefault={handleLogin}>
   <div class="form-widget">
-    <h1 class="header">Eternal Dev Community</h1>
+    <h1 class="header">The accessibility community</h1>
     <p class="description">Enter your email below to get a link to login</p>
     <div class="form-group">
       <label for="email">Email Address</label>
