@@ -25,6 +25,10 @@ export function getWCAGMasterLevel(criteria: WCAGCriteria[]): number {
     return getMinimumSolves(criteria, maxWCAGMaster)
 }
 
+export function GetNextMasterLevel(masterLevel: number): number {
+    return masterLevel > maxWCAGMaster ? maxWCAGMaster : masterLevel + 1
+}
+
 export function getPrincipleMasterLevel(criteria: WCAGCriteria[], principle: Principle): number {
     const principleCriteria: WCAGCriteria[] = getPrincipleCriteria(criteria, getPrincipleNum(principle))
     return getMinimumSolves(principleCriteria, maxPrincipleLevel)
@@ -48,17 +52,19 @@ function getMinimumSolves(criteria: WCAGCriteria[], maxLevel: number): number {
     return level
 }
 
+
 export function getMasterProgress(masterLevel: number, criteria: WCAGCriteria[]): { progress: number, total: number } {
-    const progress: number = getTotalSolves(criteria)
+    const progress: number = getTotalSolvesForMasterLevel(masterLevel, criteria)
     const total: number = criteria.length * (masterLevel < maxWCAGMaster ? masterLevel + 1 : maxWCAGMaster)
     return { progress, total }
 }
 
-function getTotalSolves(criteria: WCAGCriteria[]): number {
+function getTotalSolvesForMasterLevel(masterLevel: number, criteria: WCAGCriteria[]): number {
     let solves: number = 0
+    let nextMasterLevel: number = masterLevel === maxWCAGMaster ? maxWCAGMaster : masterLevel + 1
     criteria.forEach((criterion) => {
         // @ts-ignore
-        solves += criterion.solves
+        solves += criterion.solves > nextMasterLevel ? nextMasterLevel : criterion.solves
     })
     return solves
 }
