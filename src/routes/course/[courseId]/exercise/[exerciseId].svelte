@@ -139,11 +139,12 @@
   </article>
 </div>
 
+<!-- Exercise -->
 <div class="divider pt-14 pb-7">Exercise</div>
-
 <p class="pb-6 text-xl font-semibold">{exerciseQuestion}</p>
 <CodeCell initialHtml={codeExercise} />
 
+<!-- Navigation buttons -->
 <div class="flex justify-center gap-20 py-16">
   {#if isFirstExercise()}
     <a
