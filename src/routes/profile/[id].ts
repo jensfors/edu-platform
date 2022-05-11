@@ -16,13 +16,7 @@ export async function get({ params }) {
     user.userXP = userXP
     const solvedCriteria: WCAGCriteria[] = await getAllCriteriaSolved(id)
     let criteria: WCAGCriteria[] = await getAllCriteria()
-    console.log(criteria.length)
     addSolvesToCriteria(criteria, solvedCriteria)
-    console.log(getWCAGMasterLevel(criteria))
-    console.log(getMasterProgress(getWCAGMasterLevel(criteria), criteria))
-
-
-
 
     return {
         body: {
