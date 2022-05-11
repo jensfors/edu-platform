@@ -1,9 +1,15 @@
+import type { Principle } from "./stringTypes"
+
 export function getLevelIcon(level: number): string {
     return `/static/levels/${level}.png`
 }
 
 export function getWCAGMasterIcon(level: number): string {
     return `/static/WCAGMaster/${level}.png`
+}
+
+export function getPrincipleMasterIcon(level: number, principle: Principle): string {
+    return `/static/PrincipleMaster/${principle}/${level}.png`
 }
 
 export function getLevelColor(level: number): string {
