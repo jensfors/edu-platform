@@ -20,7 +20,7 @@
     }
 
     sleep(0).then(() => {
-      progress.set(55)
+      progress.set(97)
     })
   })
 </script>
@@ -46,7 +46,7 @@
           style:--newXP={newXP}
         />
       </div>
-      <div class="stats shadow">
+      <div class="stats z-50 -mt-3 bg-white shadow">
         <div class="stat">
           <div class="stat-value text-2xl">89,400</div>
         </div>
