@@ -1,5 +1,5 @@
 import { getAllPersonasForCourse, getCourse, getWCAGPrinciplesForCourse } from "$lib/db/courses";
-import type { Course, Persona, UserSolvesExercise, WCAGPrinciple } from "@prisma/client";
+import type { Course, Persona, WCAGPrinciple } from "@prisma/client";
 
 export async function get({ params }) {
     const { courseId } = params
