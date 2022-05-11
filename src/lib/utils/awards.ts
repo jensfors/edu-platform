@@ -52,6 +52,7 @@ function getMinimumSolves(criteria: WCAGCriteria[], maxLevel: number): number {
     return level
 }
 
+
 export function getMasterProgress(masterLevel: number, criteria: WCAGCriteria[]): { progress: number, total: number } {
     const progress: number = getTotalSolvesForMasterLevel(masterLevel, criteria)
     const total: number = criteria.length * (masterLevel < maxWCAGMaster ? masterLevel + 1 : maxWCAGMaster)
