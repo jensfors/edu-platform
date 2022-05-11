@@ -43,7 +43,7 @@
           // Successfully uploaded
         })
         .catch((error) => {
-          console.log('Yikes an fucking error occured')
+          console.log('Yikes an error occured')
           // Upload failed
         })
     } catch (error) {
@@ -59,7 +59,7 @@
 <form on:submit|preventDefault={handleSignup}>
   <div class="form-widget">
     <h1 class="header">Sign up today</h1>
-    <p class="description">Create an account and join the community of memers</p>
+    <p class="description">Create an account and join the community</p>
     <div class="form-group">
       <label for="email">Email address</label>
       <input
