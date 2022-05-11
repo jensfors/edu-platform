@@ -25,7 +25,7 @@ export function getWCAGMasterLevel(criteria: WCAGCriteria[]): number {
     return getMinimumSolves(criteria, maxWCAGMaster)
 }
 
-export function GetNextMasterLevel(masterLevel: number): number {
+export function getNextMasterLevel(masterLevel: number): number {
     return masterLevel > maxWCAGMaster ? maxWCAGMaster : masterLevel + 1
 }
 
