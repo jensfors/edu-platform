@@ -7,7 +7,7 @@
   export let courses: Course[]
 </script>
 
-<div class="flex">
+<div class="flex self-center max-w-[1120px] w-full">
   <div class="flex-col">
     <figure class="img">
       <img class="rounded-2xl" src={persona.avatarUrl} alt={persona.name} />

@@ -22,17 +22,20 @@
     </a>
     <!-------------------------------------------->
   </div>
-  <div class="navbar-center">
-    <ul tabindex="0" class="menu menu-compact flex-row p-4">
-      <li>
-        <a sveltekit:prefetch href="/about">About</a>
-      </li>
-      <li>
-        <a sveltekit:prefetch href="/testing-zone">Testing Zone</a>
-      </li>
-      <li><a sveltekit:prefetch href="/todos">Todos</a></li>
-    </ul>
-  </div>
+  <!--
+
+    <div class="navbar-center">
+      <ul tabindex="0" class="menu menu-compact flex-row p-4">
+        <li>
+          <a sveltekit:prefetch href="/about">About</a>
+        </li>
+        <li>
+          <a sveltekit:prefetch href="/testing-zone">Testing Zone</a>
+        </li>
+        <li><a sveltekit:prefetch href="/todos">Todos</a></li>
+      </ul>
+    </div>
+  -->
   <div class="navbar-end">
     {#if $authUser}
       <div class="dropdown-end dropdown">
@@ -42,7 +45,7 @@
               src={$authUser.avatarURL
                 ? $authUser.avatarURL
                 : '/static/defaults/DefaultProfile.png'}
-              alt="profile"
+              alt="Profile avatar"
             />
           </div>
         </div>
@@ -52,11 +55,9 @@
         >
           <li>
             <a sveltekit:prefetch href={`/profile/${$authUser.id}`} class="justify-between">
-              Profile {$authUser.firstName}
-              <span class="badge">New</span>
+              View Profile
             </a>
           </li>
-          <li><a sveltekit:prefetch href="/dymma-url">Settings</a></li>
           <li><a sveltekit:prefetch href="/dyamy-url">Logout</a></li>
         </ul>
       </div>

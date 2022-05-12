@@ -1,10 +1,12 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
   import { page } from '$app/stores'
+  import { getPrincipleMasterLevel, getWCAGMasterLevel } from '$lib/utils/awards'
   import { getCourseIcon } from '$lib/utils/courseIcon'
+  import { getPrincipleMasterIcon, getWCAGMasterIcon } from '$lib/utils/levelIcon'
   import { createAuthorsString, formatDate } from '$lib/utils/stringFormating'
-  import type { XP } from '$lib/utils/stringTypes'
-  import type { Course, Persona, Post, WCAGPrinciple } from '@prisma/client'
+  import { Principle, type XP } from '$lib/utils/stringTypes'
+  import type { Course, Persona, Post, WCAGCriteria, WCAGPrinciple } from '@prisma/client'
   import { get } from 'svelte/store'
   import { authUser } from '../lib/stores'
 
@@ -15,6 +17,9 @@
   export let readBlogPosts: number
   export let personas: Persona[]
   export let blogPosts: Post[]
+  export let criteria: WCAGCriteria[]
+
+  let awards: { name: string; img: string; level: number }[] = setAwards()
 
   if ($authUser) {
     $page.url.searchParams.set('userId', get(authUser).id)
@@ -23,7 +28,9 @@
 
   function getPostAuthor(post: Post): string {
     try {
+      // @ts-ignore
       if (post.authors) {
+        // @ts-ignore
         return createAuthorsString(post.authors)
       }
       return 'No authors'
@@ -32,64 +39,68 @@
     }
   }
 
-  const badges = [
-    {
-      url: 'https://picsum.photos/120/120?random=111',
-    },
-    {
-      url: 'https://picsum.photos/120/120?random=222',
-    },
-    {
-      url: 'https://picsum.photos/120/120?random=333',
-    },
-    {
-      url: 'https://picsum.photos/120/120?random=444',
-    },
-    {
-      url: 'https://picsum.photos/120/120?random=555',
-    },
-  ]
+  function setAwards(): { name: string; img: string; level: number }[] {
+    let awards: { name: string; img: string; level: number }[] = []
+    // Gets the WCAG Master Level Award
+    let wcagMasterLevel: number = getWCAGMasterLevel(criteria)
+    awards.push({
+      name: 'WCAG Master',
+      img: getWCAGMasterIcon(wcagMasterLevel),
+      level: wcagMasterLevel,
+    })
+    // Gets the award for each WCAG Principle
+    for (let principle in Principle) {
+      if (isNaN(Number(principle))) {
+        let level: number = getPrincipleMasterLevel(criteria, Principle[principle])
+        awards.push({
+          name: principle + ' Master',
+          img: getPrincipleMasterIcon(level, Principle[principle]),
+          level,
+        })
+      }
+    }
+    return awards
+  }
 </script>
 
 <h1 class="px-8 py-4 text-center text-3xl">Welcome to the course platform</h1>
-<h2 class="pb-20 text-center text-2xl">- where you can learn everything about accisibility</h2>
+<h2 class="pb-12 text-center text-2xl">Where you can learn everything about accessibility</h2>
 
-<!-- Blog posts -->
-<div class="flex w-full max-w-[792px] gap-20 pb-20">
-  <div class="card max-w-[792px] flex-wrap bg-white shadow-xl lg:card-side">
-    <div class="flex w-full bg-primary">
-      <h1 class="px-8 py-4 text-2xl text-white">
-        <a sveltekit:prefetch href={`/posts`}>
-          <!-- TODO: Make page-->
-          Blog Posts
-        </a>
-      </h1>
-    </div>
-    <div class="flex gap-4 py-4 px-6">
-      {#each blogPosts as blogPost}
-        <div
-          class="w-50 card w-1/3 bg-base-100 shadow-xl"
-          on:click={() => goto(`/blogs/${blogPost.id}`)}
-          style="cursor: pointer"
-        >
-          <div class="card-body justify-between p-4">
-            <h2 class="card-title text-lg">
-              {blogPost.title}
-            </h2>
-            <div class="h-1/2">
-              <p class="font-semibold">{getPostAuthor(blogPost)}</p>
-              <p class="text-gray-500">{formatDate(blogPost.createdAt.toString())}</p>
-            </div>
-          </div>
-        </div>
-      {/each}
-    </div>
-  </div>
-</div>
-
-<!-- Personas, courses, profile card -->
 <div class="flex gap-20">
   <div class="flex w-full max-w-[792px] flex-col gap-20">
+    <!-- Blog posts -->
+    <div class="flex w-full max-w-[792px] gap-20">
+      <div class="card max-w-[792px] flex-wrap bg-white shadow-xl lg:card-side">
+        <div class="flex w-full bg-primary">
+          <h1 class="px-8 py-4 text-2xl text-white">
+            <a sveltekit:prefetch href={`/posts`}>
+              <!-- TODO: Make page-->
+              Blog Posts
+            </a>
+          </h1>
+        </div>
+        <div class="flex gap-4 py-4 px-6">
+          {#each blogPosts as blogPost}
+            <div
+              class="w-50 card w-1/3 bg-base-100 shadow-xl"
+              on:click={() => goto(`/blogs/${blogPost.id}`)}
+              style="cursor: pointer"
+            >
+              <div class="card-body justify-between p-4">
+                <h2 class="card-title text-lg">
+                  {blogPost.title}
+                </h2>
+                <div class="h-1/2">
+                  <p class="font-semibold">{getPostAuthor(blogPost)}</p>
+                  <p class="text-gray-500">{formatDate(blogPost.createdAt.toString())}</p>
+                </div>
+              </div>
+            </div>
+          {/each}
+        </div>
+      </div>
+    </div>
+
     <!-- Persona card -->
     <div
       class="card w-full max-w-[792px] flex-wrap justify-center bg-base-100 shadow-xl lg:card-side"
@@ -177,7 +188,7 @@
 
   <!-- Profile card  -->
   {#if $authUser}
-    <div class="card w-96 bg-base-100 shadow-xl">
+    <div class="card w-96 h-full bg-base-100 shadow-xl">
       <div class="flex w-full bg-primary">
         <h1 class="py-4 pl-8 text-2xl text-white">Profile</h1>
       </div>
@@ -188,7 +199,8 @@
           class="rounded-xl"
         />
       </figure>
-      <div class="card-body items-center text-center">
+      <div class="card-body items-center text-center pt-4">
+        <h2 class="card-title pb-2">{$authUser.firstName + ' ' + $authUser.lastName}</h2>
         <div class="relative w-full">
           <progress
             class="progress progress-primary h-10 w-full"
@@ -200,8 +212,15 @@
           </p>
         </div>
         <div class="flex w-full justify-evenly">
-          {#each badges as badge}
-            <img class="h-10 w-10 rounded-xl" src={badge.url} alt="WCAG badges" />
+          {#each awards as award}
+            <div class="flex h-14 w-14">
+              <img
+                class="h-full w-full"
+                src={award.img}
+                alt={award.name + ' Level ' + award.level}
+                title={award.name + ' Level ' + award.level}
+              />
+            </div>
           {/each}
         </div>
         <h2 class="card-title">Solved exercises</h2>

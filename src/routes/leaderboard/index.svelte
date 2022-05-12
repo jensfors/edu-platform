@@ -6,6 +6,7 @@
   import type { User } from '@prisma/client'
 
   export let users: User[]
+  const column0: string = 'Rank'
   const column1: string = 'Level'
   const column2: string = 'Name'
   const column3: string = 'Total XP'
@@ -23,6 +24,7 @@
     <!-- head -->
     <thead>
       <tr>
+        <th class="bg-primary">{column0}</th>
         <th class="bg-primary">{column1}</th>
         <th class="bg-primary">{column2}</th>
         <th class="bg-primary">{column3}</th>
@@ -33,8 +35,13 @@
       </tr>
     </thead>
     <tbody>
-      {#each users as user}
+      {#each users as user, index}
         <tr class={user.id === $authUser.id ? 'bg-neutral-content' : 'odd:bg-gray-100'}>
+          <!--Rank Column -->
+          <td>
+            {index + 1}
+          </td>
+          <!-- Level Column -->
           <td>
             <div class="avatar">
               <div class="mask mask-squircle w-12 h-12">
@@ -46,6 +53,7 @@
               </div>
             </div>
           </td>
+          <!--Name Column -->
           <td>
             <div class="flex items-center space-x-3">
               <div class="avatar">
@@ -72,13 +80,11 @@
           <td>
             <div class="avatar">
               <div class="mask mask-squircle w-12 h-12">
-                {#if user.wcagMasterLevel > 0}
-                  <img
-                    src={getWCAGMasterIcon(user.wcagMasterLevel)}
-                    alt={'WCAG Master Level ' + user.wcagMasterLevel}
-                    title={'WCAG Master Level ' + user.wcagMasterLevel}
-                  />
-                {/if}
+                <img
+                  src={getWCAGMasterIcon(user.wcagMasterLevel)}
+                  alt={'WCAG Master Level ' + user.wcagMasterLevel}
+                  title={'WCAG Master Level ' + user.wcagMasterLevel}
+                />
               </div>
             </div>
           </td>
@@ -105,6 +111,7 @@
     <!-- foot -->
     <tfoot>
       <tr>
+        <th class="bg-primary">{column0}</th>
         <th class="bg-primary">{column1}</th>
         <th class="bg-primary">{column2}</th>
         <th class="bg-primary">{column3}</th>
