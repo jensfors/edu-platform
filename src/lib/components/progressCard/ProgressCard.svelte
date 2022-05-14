@@ -4,9 +4,10 @@
   import { cubicIn } from 'svelte/easing'
   import { tweened } from 'svelte/motion'
 
+  export let user
   let compliment = compliments[Math.floor(Math.random() * compliments.length)]
-  let currXP = 200
-  let newXP = currXP + 100
+  let { nextLevelXP, progressXP } = user.userXP
+  let progressAfterCompletedExercise = progressXP + 100
 
   const progress = tweened(1, {
     duration: 1000,
@@ -38,26 +39,59 @@
       Put a lot of cool stats in here Xp and stuff
     </p>
     <div class="flex">
-      <div class="relative flex justify-center">
-        <progress class="progress progress-accent h-10 w-80" value={$progress} max="100" />
-        <span
-          class="xp left-50% absolute -top-9 text-center text-blue-600"
-          style:--currXP={currXP}
-          style:--newXP={newXP}
+      <!-- <div class="relative flex justify-center"> -->
+      <div class="meter h-10 w-80">
+        <span style:width="{$progress}%" />
+        <p
+          class="xp left-50% absolute -top-9 w-full text-center text-blue-600"
+          style:--currXP={progressXP}
+          style:--newXP={progressAfterCompletedExercise}
         />
       </div>
+      <!-- <progress
+          class="h-10 w-80 appearance-none"
+          style="accent-color: blue;"
+          value={$progress}
+          max="100"
+        /> -->
+      <!-- </div> -->
       <div class="stats z-50 -mt-3 bg-white shadow">
         <div class="stat">
-          <div class="stat-value text-2xl">89,400</div>
+          <div class="stat-value text-2xl">{nextLevelXP}</div>
         </div>
       </div>
     </div>
-
-    <span class="yaya"> / 1234 XP</span>
   </label>
 </label>
 
 <style>
+  .meter {
+    box-sizing: content-box;
+    /* height: 20px; Can be anything */
+    position: relative;
+    /* margin: 60px 0 20px 0; Just for demo spacing */
+    background: #555;
+    /* border-radius: 25px; */
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    /* padding: 10px; */
+    box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
+  }
+  .meter > span {
+    display: block;
+    height: 100%;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    /* border-top-left-radius: 20px; */
+    /* border-bottom-left-radius: 20px; */
+    background-color: rgb(43, 194, 83);
+    background-image: linear-gradient(center bottom, rgb(43, 194, 83) 37%, rgb(84, 240, 84) 69%);
+  }
+
   .yaya {
     font: 800 40px system-ui;
   }
