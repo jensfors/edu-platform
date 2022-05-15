@@ -1,6 +1,6 @@
 <script lang="ts">
   // your script goes here
-  import Card from '$lib/components/progressCard/Card.svelte'
+  import ProgressCard from '$lib/components/progressCard/ProgressCard.svelte'
   import { getNextMasterLevel, getWCAGMasterLevel } from '$lib/utils/awards'
   import { getCourseIcon } from '$lib/utils/courseIcon'
   import { getWCAGMasterIcon } from '$lib/utils/levelIcon'
@@ -10,6 +10,8 @@
   export let sortedWcag
   const level = getWCAGMasterLevel(criteria) // just use the level from the user, when we have made a default for level 0.. until then we +1
   const nextLevel = getNextMasterLevel(level)
+
+  let visible = false
 </script>
 
 <h1>WCAG Master</h1>
@@ -109,5 +111,5 @@
 
 <div class="divider" />
 <div class="w-30">
-  <Card />
+  <ProgressCard {user} />
 </div>
