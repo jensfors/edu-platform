@@ -9,10 +9,11 @@
   export let exercise: Exercise
   export let course: Course
 
-  console.log('exer: ', exercise)
-  console.log('course: ', course)
+  //console.log('exer: ', exercise)
+  //console.log('course: ', course)
 
   let showSolution: boolean = userHasSolvedExercise()
+  showSolution = false // TODO: Remove when done
   // @ts-ignore
   let criteria = exercise.criteria
   // @ts-ignore
@@ -62,7 +63,6 @@
   }
 
   async function onSubmit() {
-    console.log('Submitting motherfucker ')
     const res = await fetch(`${$page.url.pathname}`, {
       method: 'POST',
       body: JSON.stringify({
@@ -174,7 +174,8 @@
     disabled={showSolution}
     on:click={() => {
       showSolution = true
-      if (!userIsAuthor()) {
+      // TODO: Remove when done
+      if (/* !userIsAuthor() && */ $authUser) {
         onSubmit()
       }
     }}

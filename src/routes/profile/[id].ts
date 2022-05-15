@@ -8,7 +8,7 @@ import type { User, WCAGCriteria } from '@prisma/client'
 export async function get({ params }) {
   const { id } = params
   const user: User = await getUser(id)
-  const totalXP: number = await getXP(user)
+  const totalXP: number = await getXP(id)
   const userXP: XP = getUserLevel(totalXP)
   // @ts-ignore
   userXP.totalXP = totalXP

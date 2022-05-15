@@ -43,7 +43,7 @@ export async function get({ url }) {
         const user: User = await getUser(userId)
         solvedExercises = await getAmountOfSolvedExercises(user)
         readBlogPosts = await getAmountOfReadPosts(user, PostType.Blog)
-        const progressXP: number = await getXP(user)
+        const progressXP: number = await getXP(userId)
         userXP = getUserLevel(progressXP)
         solvedCriteria = await getAllCriteriaSolved(userId)
         addSolvesToCriteria(criteria, solvedCriteria)

@@ -44,10 +44,10 @@ export async function getAmountOfReadPosts(user: User, type: PostType): Promise<
   return result
 }
 
-export async function getXP(user: User): Promise<number> {
+export async function getXP(userId: string): Promise<number> {
   const result: User = await prisma.user.findUnique({
     where: {
-      id: user.id,
+      id: userId,
     },
     include: {
       solvedExercises: true,

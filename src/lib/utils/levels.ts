@@ -52,7 +52,7 @@ export function getNewUserLevel(prevUserLevel: XP, newXP: number) {
         newUserLevel.level = newLevel.level, newUserLevel.nextLevelXP = newLevel.xp, newUserLevel.progressXP = newProgressXP
         */
     } else {
-        newUserLevel.level = prevUserLevel.level, newUserLevel.nextLevelXP = prevUserLevel.nextLevelXP, newUserLevel.progressXP = prevUserLevel.progressXP + newXP
+        newUserLevel.progressXP = prevUserLevel.progressXP + newXP
     }
     return newUserLevel
 }
