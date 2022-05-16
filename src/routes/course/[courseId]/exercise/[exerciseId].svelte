@@ -4,6 +4,7 @@
   import ProgressCard from '$lib/components/progressCard/ProgressCard.svelte'
   import { authUser } from '$lib/stores'
   import { getCourseIcon } from '$lib/utils/courseIcon'
+  import type { Difficulty } from '$lib/utils/stringTypes'
   import type { Course, Exercise } from '@prisma/client'
 
   export let exercise: Exercise
@@ -71,7 +72,18 @@
         difficulty: exercise.difficulty,
       }),
     })
+
     console.log('response: ', res)
+  }
+
+  async function getXPStatus() {
+    const userId: string = $authUser.id
+    const difficulty: string = exercise.difficulty
+    const res = await fetch(`../../../api/xp/${userId}/${difficulty}`, {
+      method: 'GET',
+    })
+    const data = await res.json()
+    console.log('dab', data)
   }
 
   function userIsAuthor(): boolean {
@@ -176,6 +188,7 @@
       showSolution = true
       // TODO: Remove when done
       if (/* !userIsAuthor() && */ $authUser) {
+        getXPStatus()
         onSubmit()
       }
     }}
