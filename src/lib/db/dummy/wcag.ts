@@ -1,6 +1,4 @@
-import PrismaClient from '$lib/prisma';
-
-const prisma = new PrismaClient();
+import { prisma } from '$lib/prisma';
 
 export const createWCAGs = async () => {
     await prisma.wCAGPrinciple.create({

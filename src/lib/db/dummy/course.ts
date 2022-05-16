@@ -1,7 +1,5 @@
-import PrismaClient from '$lib/prisma';
+import { prisma } from '$lib/prisma';
 import { bobBlind, danDeaf, mattiMovement, userJen, userKasper, userMatti, userSimon } from './data';
-
-const prisma = new PrismaClient();
 
 export const createCourses = async () => {
     await prisma.course.create({

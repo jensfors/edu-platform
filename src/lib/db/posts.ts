@@ -1,9 +1,6 @@
-import PrismaClient from '$lib/prisma';
+import { prisma } from '$lib/prisma';
 import { PostType } from '$lib/utils/stringTypes';
 import type { Post, User, UserHasPost, WCAGCriteria } from '@prisma/client';
-import { userMatti } from './dummy/data';
-
-const prisma = new PrismaClient();
 
 
 // Gets the 'amount' latest blog posts that are public

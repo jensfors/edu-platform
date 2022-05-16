@@ -2,8 +2,6 @@
   import { goto } from '$app/navigation'
   import { authUser } from '$lib/stores'
   import { BarChart2Icon, HomeIcon, SearchIcon } from 'svelte-feather-icons'
-
-  // TODO: Fetch user data from database, so we can use the id for navigation
 </script>
 
 <!-- The header looks ass on less than 400px, and should be fixed with an entire other menu -->

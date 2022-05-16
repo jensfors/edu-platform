@@ -1,7 +1,5 @@
-import PrismaClient from '$lib/prisma';
+import { prisma } from '$lib/prisma';
 import type { Course, Exercise, Persona } from '@prisma/client';
-
-const prisma = new PrismaClient();
 
 export async function getAllPersonas(): Promise<Persona[]> {
     const result: Persona[] = await prisma.persona.findMany(/*{

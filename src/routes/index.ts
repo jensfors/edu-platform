@@ -48,6 +48,7 @@ export async function get({ url }) {
         solvedCriteria = await getAllCriteriaSolved(userId)
         addSolvesToCriteria(criteria, solvedCriteria)
     }
+    console.log(coursePrinciples)
 
     return {
         body: {

@@ -1,7 +1,5 @@
-import PrismaClient from '$lib/prisma';
+import { prisma } from '$lib/prisma';
 import type { Course, Persona, User, WCAGPrinciple } from '@prisma/client';
-
-const prisma = new PrismaClient();
 
 export async function getLatestCourses(amount: number): Promise<Course[]> {
     const result: Course[] = await prisma.course.findMany({
@@ -100,7 +98,8 @@ export async function createCourse(title: string, description: string, userId: s
                     },
                     mainAuthor: true
                 }
-            }
+            },
+            public: true // TODO: Change so able to save private
         }
 
     })

@@ -1,8 +1,7 @@
-import PrismaClient from '$lib/prisma';
+import { prisma } from '$lib/prisma';
 import type { Difficulty, ExerciseType } from '$lib/utils/stringTypes';
 import type { Assignment, Course, Exercise, Persona, UserSolvesExercise, WCAGCriteria } from '@prisma/client';
 
-const prisma = new PrismaClient();
 
 export async function getExercise(exerciseId: string): Promise<Exercise> {
     try {

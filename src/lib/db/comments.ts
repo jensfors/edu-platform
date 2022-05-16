@@ -1,9 +1,6 @@
-import PrismaClient from '$lib/prisma';
+import { prisma } from '$lib/prisma';
 import type { Comment, Post, UserLikesComment } from '@prisma/client';
 import { userMatti, userSimon } from './dummy/data';
-
-const prisma = new PrismaClient();
-
 
 export async function addCommentToPost(post: Post, text: string): Promise<Comment> {
     const result: Comment = await prisma.comment.create({
