@@ -55,9 +55,7 @@ export function getLevelBorderColor(level: number): string {
         return '#FFD81E'
     } else if (level <= 99) {
         return '#DC1330'
-    } else if (level === 100) {
-        return '#E97F7F'
     } else {
-        return '#000000'
+        return '#E97F7F'
     }
 }
