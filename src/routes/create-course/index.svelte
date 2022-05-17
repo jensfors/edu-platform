@@ -1,15 +1,15 @@
 <script lang="ts">
   import { authUser } from '$lib/stores'
-  import { page } from '$app/stores'
+  import type { Course } from '@prisma/client'
 
   let title: string = ''
   let description: string = ''
-  let isSaved: boolean = false
   let saveButtonClicked = false
   let message: string = ''
+  let course: Course
 
   async function onSave() {
-    const res = await fetch(`${$page.url.pathname}`, {
+    const res = await fetch(`../api/course/create`, {
       method: 'POST',
       body: JSON.stringify({
         userId: $authUser.id,
@@ -17,8 +17,9 @@
         description,
       }),
     })
-    isSaved = res.status === 200
-    message = isSaved ? 'Course has been saved' : 'There was an error saving the course'
+    let data = await res.json()
+    course = data.course
+    message = data.message
   }
 </script>
 
@@ -53,10 +54,12 @@
   <!-- Button -->
   <div class="flex justify-center">
     <!-- If the course has been saved => redirect -->
-    {#if isSaved}
-      <!-- TODO: Needs to be changed to go to the course when we can get the data from POST requests-->
-      <a class="button-width btn btn-primary" role="button" sveltekit:prefetch href={`/`}
-        >Go to course</a
+    {#if course}
+      <a
+        class="button-width btn btn-primary"
+        role="button"
+        sveltekit:prefetch
+        href={`/course/${course?.id}`}>Go to course</a
       >
       <!-- If not saved show save button-->
     {:else}
@@ -72,7 +75,7 @@
   <!-- Alert when saving -->
   {#if saveButtonClicked && message !== ''}
     <div class="flex pb-8">
-      <div class="justify-center alert {isSaved ? 'alert-success' : 'alert-danger'}" role="alert">
+      <div class="justify-center alert {course ? 'alert-success' : 'alert-danger'}" role="alert">
         {message}
       </div>
     </div>

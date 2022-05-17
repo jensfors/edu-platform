@@ -68,7 +68,7 @@
   }
 
   async function onSubmit() {
-    const res = await fetch(`${$page.url.pathname}`, {
+    const res = await fetch(`../../../api/exercise/xp`, {
       method: 'POST',
       body: JSON.stringify({
         userId: $authUser.id,
@@ -76,10 +76,29 @@
         difficulty: exercise.difficulty,
       }),
     })
+    /*
+    const res = await fetch(`${$page.url.pathname}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        userId: $authUser.id,
+        exerciseId: exercise.id,
+        difficulty: exercise.difficulty,
+      }),
+    }) */
 
     console.log('response: ', res)
+    let data = await res.json()
+    console.log(data)
+    user = {
+      userXP: {
+        level: data.beforeXP.level,
+        nextLevelXP: data.beforeXP.nextLevelXP,
+        progressXP: data.afterXP.progressXP,
+      },
+    }
+    console.log(user)
   }
-
+  /*
   async function getXPStatus() {
     const userId: string = $authUser.id
     const difficulty: string = exercise.difficulty
@@ -94,7 +113,7 @@
         progressXP: data.afterXP.progressXP,
       },
     }
-  }
+  } */
 
   function userIsAuthor(): boolean {
     let isAuthor: boolean = false
@@ -198,7 +217,6 @@
       showSolution = true
       // TODO: Remove when done
       if (/* !userIsAuthor() && */ $authUser) {
-        getXPStatus()
         onSubmit()
       }
     }}
