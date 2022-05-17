@@ -46,19 +46,13 @@ export function getNewUserLevel(prevUserLevel: XP, newXP: number) {
                 newUserLevel.nextLevelXP = newUserLevel.progressXP
             }
         }
-        /*
-        const newProgressXP: number = newXP - (prevUserLevel.nextLevelXP - prevUserLevel.progressXP)
-        const newLevel: { level: number, xp: number } = getLevel(prevUserLevel.level + 1)
-        newUserLevel.level = newLevel.level, newUserLevel.nextLevelXP = newLevel.xp, newUserLevel.progressXP = newProgressXP
-        */
     } else {
-        newUserLevel.level = prevUserLevel.level, newUserLevel.nextLevelXP = prevUserLevel.nextLevelXP, newUserLevel.progressXP = prevUserLevel.progressXP + newXP
+        newUserLevel.progressXP = prevUserLevel.progressXP + newXP
     }
     return newUserLevel
 }
 
 export function getUserLevel(progressXP: number): XP {
-    // TODO: get XP from db
     let xp: XP = { level: 0, nextLevelXP: 0, progressXP: progressXP }
 
     // New user = level 0

@@ -23,12 +23,22 @@ function combineLetters(principles: WCAGPrinciple[]): string {
 
 export function getPrinciples(course: Course): WCAGPrinciple[] {
     let principles: WCAGPrinciple[] = []
+    // @ts-ignore
     course.exercises.forEach((exercise: Exercise) => {
+        // @ts-ignore
         exercise.criteria.forEach((criteria) => {
-            if (!(principles.indexOf(criteria.criteria.principle) > -1)) {
+            if (!hasPrinciple(principles, criteria.criteria.principle)) {
                 principles.push(criteria.criteria.principle)
             }
         })
     })
     return principles
+}
+
+function hasPrinciple(principles: WCAGPrinciple[], principle: WCAGPrinciple) {
+    let has: boolean = false
+    principles.forEach((p) => {
+        if (p.name == principle.name) has = true
+    })
+    return has
 }

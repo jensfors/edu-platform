@@ -1,5 +1,5 @@
 import PrismaClient from '$lib/prisma'
-import type { PostType } from '$lib/utils/stringTypes'
+import { Roles, type PostType } from '$lib/utils/stringTypes'
 import type { User } from '@prisma/client'
 
 const prisma = new PrismaClient()
@@ -44,10 +44,10 @@ export async function getAmountOfReadPosts(user: User, type: PostType): Promise<
   return result
 }
 
-export async function getXP(user: User): Promise<number> {
+export async function getXP(userId: string): Promise<number> {
   const result: User = await prisma.user.findUnique({
     where: {
-      id: user.id,
+      id: userId,
     },
     include: {
       solvedExercises: true,
@@ -56,9 +56,11 @@ export async function getXP(user: User): Promise<number> {
   })
 
   let xp: number = 0
+  // @ts-ignore
   for (let exercise of result.solvedExercises) {
     xp += exercise.xp
   }
+  // @ts-ignore
   for (let post of result.readPosts) {
     xp += post.xp
   }
@@ -79,6 +81,7 @@ export async function createUser(
       firstName: firstName,
       lastName: lastName,
       avatarURL: avatarURL,
+      role: Roles.Creator, // TODO: Change to normal when we have a way of upgrading users to creators
     },
   })
   return result

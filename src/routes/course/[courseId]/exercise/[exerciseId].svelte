@@ -1,14 +1,24 @@
 <script lang="ts">
-  import type { Course, Exercise } from '@prisma/client'
-  import { getCourseIcon } from '$lib/utils/courseIcon'
-  import CodeCell from '$lib/components/editor/CodeCell.svelte'
   import { page } from '$app/stores'
+  import CodeCell from '$lib/components/editor/CodeCell.svelte'
+  import {
+    default as ProgressCard,
+    default as ProgressCardModal,
+  } from '$lib/components/progressCard/ProgressCardModal.svelte'
   import { authUser } from '$lib/stores'
+  import { getCourseIcon } from '$lib/utils/courseIcon'
+  import type { Difficulty } from '$lib/utils/stringTypes'
+  import type { Course, Exercise } from '@prisma/client'
 
   export let exercise: Exercise
   export let course: Course
 
+  let user = null
+  //console.log('exer: ', exercise)
+  //console.log('course: ', course)
+
   let showSolution: boolean = userHasSolvedExercise()
+  showSolution = false // TODO: Remove when done
   // @ts-ignore
   let criteria = exercise.criteria
   // @ts-ignore
@@ -66,6 +76,26 @@
         difficulty: exercise.difficulty,
       }),
     })
+
+    console.log('response: ', res)
+  }
+
+  async function getXPStatus() {
+    const userId: string = $authUser.id
+    const difficulty: string = exercise.difficulty
+    const res = await fetch(`../../../api/xp/${userId}/${difficulty}`, {
+      method: 'GET',
+    })
+    const data = await res.json()
+    console.log('dab', data)
+    user = {
+      userXP: {
+        level: data.beforeXP.level,
+        nextLevelXP: data.beforeXP.nextLevelXP,
+        progressXP: data.afterXP.progressXP,
+      },
+    }
+    // let { nextLevelXP, progressXP, level } = user.userXP
   }
 
   function userIsAuthor(): boolean {
@@ -91,6 +121,8 @@
   let prevExercise: Exercise = course.exercises[isFirstExercise() ? currentExIndex : prevExIndex]
   // @ts-ignore
   let nextExercise: Exercise = course.exercises[isLastExercise() ? currentExIndex : nextExIndex]
+
+  console.log('authUser', $authUser)
 </script>
 
 <div class="flex justify-center">
@@ -101,10 +133,10 @@
   class="tooltip tooltip-bottom [--tooltip-text-color:black] [--tooltip-color:#fefefe]"
   data-tip={persona.description}
 >
-  <div class="flex p-1 justify-center items-center">
+  <div class="flex items-center justify-center p-1">
     <div class="h-16 w-16">
       <img
-        class="h-full w-auto mask mask-squircle -ml-1"
+        class="mask mask-squircle -ml-1 h-full w-auto"
         src={persona.avatarUrl}
         alt={`Picture for the persona: ${persona.name}`}
       />
@@ -115,12 +147,12 @@
     </div>
   </div>
 </div>
-<div class="pl-8 flex flex-row justify-center">
+<div class="flex flex-row justify-center pl-8">
   {#each criteria as criterion}
     <div class="pr-2 pt-2">
       <span
         title={criterion.criteria.principle.description}
-        class="badge badge-ghost badge-lg"
+        class="badge badge-lg badge-ghost"
         style:background-color={criterion.criteria.principle.color}
       >
         <img
@@ -148,7 +180,7 @@
 <div class="flex justify-center gap-20 py-16">
   {#if isFirstExercise()}
     <a
-      class="btn btn-primary button-width"
+      class="button-width btn btn-primary"
       role="button"
       sveltekit:prefetch
       href={`/course/${course.id}`}>Go back to course</a
@@ -162,21 +194,28 @@
     >
   {/if}
   <button
-    class="btn btn-success button-width"
+    class="button-width btn btn-success"
     disabled={showSolution}
     on:click={() => {
       showSolution = true
-      if (!userIsAuthor()) {
+      // TODO: Remove when done
+      if (/* !userIsAuthor() && */ $authUser) {
+        getXPStatus()
         onSubmit()
       }
     }}
   >
     {showSolution ? 'Answer submitted' : 'Submit answer'}</button
   >
+  {#if user}
+    <div class="w-30">
+      <ProgressCardModal {user} />
+    </div>
+  {/if}
   <div>
     {#if isLastExercise()}
       <a
-        class="btn btn-primary button-width"
+        class="button-width btn btn-primary"
         role="button"
         sveltekit:prefetch
         href={`/course/${course.id}`}>Go back to course</a

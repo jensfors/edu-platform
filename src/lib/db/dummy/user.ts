@@ -1,7 +1,5 @@
-import PrismaClient from '$lib/prisma';
+import { prisma } from '$lib/prisma';
 import { bobBlind, danDeaf, mattiMovement, userJen, userKasper, userMatti, userSimon } from './data';
-
-const prisma = new PrismaClient();
 
 export const createUsers = async () => {
     await prisma.user.create({
@@ -10,7 +8,6 @@ export const createUsers = async () => {
             email: userMatti.email,
             firstName: userMatti.firstName,
             lastName: userMatti.lastName,
-            password: userMatti.password,
             role: userMatti.role,
             avatarURL: userMatti.avatarURL,
             personas: {
@@ -38,7 +35,6 @@ export const createUsers = async () => {
             email: userJen.email,
             firstName: userJen.firstName,
             lastName: userJen.lastName,
-            password: userJen.password,
             role: userJen.role,
             avatarURL: userJen.avatarURL,
             personas: {
@@ -59,7 +55,6 @@ export const createUsers = async () => {
             email: userKasper.email,
             firstName: userKasper.firstName,
             lastName: userKasper.lastName,
-            password: userKasper.password,
             role: userKasper.role,
             avatarURL: userKasper.avatarURL
         }
@@ -71,7 +66,6 @@ export const createUsers = async () => {
             email: userSimon.email,
             firstName: userSimon.firstName,
             lastName: userSimon.lastName,
-            password: userSimon.password,
             role: userSimon.role,
             avatarURL: userSimon.avatarURL
         }

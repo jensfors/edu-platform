@@ -1,7 +1,5 @@
-import PrismaClient from '$lib/prisma';
+import { prisma } from '$lib/prisma';
 import { userMatti, userJen, userKasper, userSimon } from './data';
-
-const prisma = new PrismaClient();
 
 export const createBlogPosts = async () => {
     await prisma.post.create({

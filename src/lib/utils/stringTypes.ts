@@ -21,6 +21,12 @@ export enum Principle {
     Robust = 'Robust'
 }
 
+export enum Roles {
+    Normal = 'Normal',
+    Creator = 'Creator',
+    Admin = 'Admin'
+}
+
 export function getPrincipleNum(principle: Principle) {
     return principle === Principle.Perceivable ? 1 : principle === Principle.Operable ? 2 : principle === Principle.Understandable ? 3 : principle === Principle.Robust ? 4 : 0
 }
