@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from '$app/stores'
   import { authUser } from '$lib/stores'
   import type { Course } from '@prisma/client'
 
@@ -9,7 +10,7 @@
   let course: Course
 
   async function onSave() {
-    const res = await fetch(`../api/course/create`, {
+    const res = await fetch(`${$page.url.origin}/api/course/create`, {
       method: 'POST',
       body: JSON.stringify({
         userId: $authUser.id,
@@ -23,12 +24,12 @@
   }
 </script>
 
-<div class="mx-auto block max-w-xl w-full">
+<div class="mx-auto block w-full max-w-xl">
   <div class="flex w-full justify-center pb-10">
     <h1 class="text-3xl">Create course</h1>
   </div>
 
-  <div class="px-10 justify-center">
+  <div class="justify-center px-10">
     <!-- Enter title -->
     <div class="form-control w-full pb-10">
       <label class="label" for="Enter the title of your course?">
@@ -75,7 +76,7 @@
   <!-- Alert when saving -->
   {#if saveButtonClicked && message !== ''}
     <div class="flex pb-8">
-      <div class="justify-center alert {course ? 'alert-success' : 'alert-danger'}" role="alert">
+      <div class="alert justify-center {course ? 'alert-success' : 'alert-danger'}" role="alert">
         {message}
       </div>
     </div>
