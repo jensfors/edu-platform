@@ -21,7 +21,7 @@
           // Successfully uploaded
         })
         .catch((error) => {
-          console.log('Yikes an fucking error occured')
+          console.log('Yikes an error occured')
           // Upload failed
         })
       // Puts user in localStorage

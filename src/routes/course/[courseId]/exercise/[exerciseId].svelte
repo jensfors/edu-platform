@@ -83,7 +83,6 @@
       method: 'GET',
     })
     const data = await res.json()
-    console.log('dab', data)
   }
 
   function userIsAuthor(): boolean {
