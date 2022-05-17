@@ -1,7 +1,10 @@
 <script lang="ts">
   import { page } from '$app/stores'
   import CodeCell from '$lib/components/editor/CodeCell.svelte'
-  import ProgressCard from '$lib/components/progressCard/ProgressCard.svelte'
+  import {
+    default as ProgressCard,
+    default as ProgressCardModal,
+  } from '$lib/components/progressCard/ProgressCardModal.svelte'
   import { authUser } from '$lib/stores'
   import { getCourseIcon } from '$lib/utils/courseIcon'
   import type { Difficulty } from '$lib/utils/stringTypes'
@@ -10,6 +13,7 @@
   export let exercise: Exercise
   export let course: Course
 
+  let user = null
   //console.log('exer: ', exercise)
   //console.log('course: ', course)
 
@@ -83,6 +87,13 @@
       method: 'GET',
     })
     const data = await res.json()
+    user = {
+      userXP: {
+        level: data.beforeXP.level,
+        nextLevelXP: data.beforeXP.nextLevelXP,
+        progressXP: data.afterXP.progressXP,
+      },
+    }
   }
 
   function userIsAuthor(): boolean {
@@ -194,7 +205,11 @@
   >
     {showSolution ? 'Answer submitted' : 'Submit answer'}</button
   >
-  <!-- <ProgressCard /> -->
+  {#if user}
+    <div class="w-30">
+      <ProgressCardModal {user} />
+    </div>
+  {/if}
   <div>
     {#if isLastExercise()}
       <a
