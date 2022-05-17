@@ -1,6 +1,7 @@
 <script lang="ts">
   // your script goes here
-  import ProgressCard from '$lib/components/progressCard/ProgressCard.svelte'
+  import ProgressCard from '$lib/components/progressCard/ProgressBar.svelte'
+  import ProgressCardModal from '$lib/components/progressCard/ProgressCardModal.svelte'
   import { getNextMasterLevel, getWCAGMasterLevel } from '$lib/utils/awards'
   import { getCourseIcon } from '$lib/utils/courseIcon'
   import { getWCAGMasterIcon } from '$lib/utils/levelIcon'
@@ -14,6 +15,10 @@
   let visible = false
 </script>
 
+<div class="flex justify-center">
+  <ProgressCard {user} />
+</div>
+<div class="divider" />
 <h1>WCAG Master</h1>
 <div class="avatar">
   <div class="w-24 rounded-full">
@@ -109,7 +114,6 @@
   {/each}
 </div>
 
-<div class="divider" />
-<div class="w-30">
-  <ProgressCard {user} />
-</div>
+<!-- <div class="w-30">
+  <ProgressCardModal {user} />
+</div> -->
