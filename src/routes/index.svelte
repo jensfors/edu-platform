@@ -39,7 +39,7 @@
   import { getCourseIcon } from '$lib/utils/courseIcon'
   import { getPrincipleMasterIcon, getWCAGMasterIcon } from '$lib/utils/levelIcon'
   import { createAuthorsString, formatDate } from '$lib/utils/stringFormating'
-  import { Principle, Roles, type XP } from '$lib/utils/stringTypes'
+  import { Principle, type XP } from '$lib/utils/stringTypes'
   import type { Course, Persona, Post, WCAGCriteria, WCAGPrinciple } from '@prisma/client'
 
   export let userXP: XP
@@ -98,14 +98,6 @@
 
 <h1 class="px-8 py-4 text-center text-3xl">Welcome to the course platform</h1>
 <h2 class="pb-12 text-center text-2xl">Where you can learn everything about accessibility</h2>
-
-{#if $authUser?.role === Roles.Creator || $authUser?.role === Roles.Admin}
-  <div class="flex justify-center pb-8">
-    <a class="button-width btn btn-primary" role="button" sveltekit:prefetch href={`/create-course`}
-      >Create course</a
-    >
-  </div>
-{/if}
 
 <div class="flex gap-20">
   <div class="flex w-full max-w-[792px] flex-col gap-20">

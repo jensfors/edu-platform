@@ -2,9 +2,11 @@
   // your script goes here
   import ProgressCard from '$lib/components/progressCard/ProgressBar.svelte'
   import ProgressCardModal from '$lib/components/progressCard/ProgressCardModal.svelte'
+  import { authUser } from '$lib/stores'
   import { getNextMasterLevel, getWCAGMasterLevel } from '$lib/utils/awards'
   import { getCourseIcon } from '$lib/utils/courseIcon'
   import { getWCAGMasterIcon } from '$lib/utils/levelIcon'
+  import { Roles } from '$lib/utils/stringTypes'
 
   export let user
   export let criteria
@@ -14,6 +16,14 @@
 
   let visible = false
 </script>
+
+{#if $authUser.id === user.id && ($authUser?.role === Roles.Creator || $authUser?.role === Roles.Admin)}
+  <div class="flex justify-center pb-8">
+    <a class="button-width btn btn-primary" role="button" sveltekit:prefetch href={`/create-course`}
+      >Create course</a
+    >
+  </div>
+{/if}
 
 <div class="flex justify-center">
   <ProgressCard {user} />
