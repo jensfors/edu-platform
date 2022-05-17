@@ -22,18 +22,18 @@ export async function get({ params }) {
     body: {
       user,
       criteria,
-      sortedWcag: getWcagType(criteria),
+      sortedCriteria: getCriteriasByPrinciple(criteria),
     },
   }
 }
 
 // Sort wcag into their respective arrays
-function getWcagType(criteria) {
+function getCriteriasByPrinciple(criteria) {
   const operable = []
   const perceivable = []
   const robust = []
   const understandable = []
-  const sortedWcags = {
+  const sortedCriteria = {
     operable,
     perceivable,
     robust,
@@ -52,5 +52,5 @@ function getWcagType(criteria) {
     }
   })
 
-  return sortedWcags
+  return sortedCriteria
 }

@@ -62,12 +62,12 @@ export function getLevelBorderColor(level: number): string {
 
 export function getMasterColor(level: number): string {
     if (level === 0) {
-        return '#6B533A'
+        return '#84745C'
     } else if (level <= 2) {
-        return '#947C4C'
+        return '#B49D7E'
     } else if (level <= 4) {
-        return '#A4A4A4'
+        return '#E1E1E1'
     } else {
-        return '#D99B19'
+        return '#FFD546'
     }
 }
