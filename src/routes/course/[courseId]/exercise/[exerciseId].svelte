@@ -1,13 +1,9 @@
 <script lang="ts">
   import { page } from '$app/stores'
   import CodeCell from '$lib/components/editor/CodeCell.svelte'
-  import {
-    default as ProgressCard,
-    default as ProgressCardModal,
-  } from '$lib/components/progressCard/ProgressCardModal.svelte'
+  import { default as ProgressCardModal } from '$lib/components/progressCard/ProgressCardModal.svelte'
   import { authUser } from '$lib/stores'
   import { getCourseIcon } from '$lib/utils/courseIcon'
-  import type { Difficulty } from '$lib/utils/stringTypes'
   import type { Course, Exercise } from '@prisma/client'
 
   export let exercise: Exercise

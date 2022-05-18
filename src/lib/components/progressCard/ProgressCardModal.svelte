@@ -2,13 +2,13 @@
   import { compliments } from '$lib/utils/compliments'
   import { fadeScale } from '$lib/utils/customAnimations'
   import { getLevelBorderColor, getLevelColor, getLevelIcon } from '$lib/utils/levelIcon'
-  import { onDestroy, onMount } from 'svelte'
   import { cubicIn, sineOut } from 'svelte/easing'
   import { tweened } from 'svelte/motion'
   import { fade, fly } from 'svelte/transition'
 
   export let user
   export let xpGained: number
+
   let compliment = compliments[Math.floor(Math.random() * compliments.length)]
   let { nextLevelXP, progressXP, level } = user.userXP
   let remainingXPToNextLevel = nextLevelXP - progressXP
