@@ -1,19 +1,27 @@
 <script lang="ts">
   import { compliments } from '$lib/utils/compliments'
+  import { fadeScale } from '$lib/utils/customAnimations'
   import { getLevelBorderColor, getLevelColor, getLevelIcon } from '$lib/utils/levelIcon'
   import { onDestroy, onMount } from 'svelte'
-  import { sineOut } from 'svelte/easing'
+  import { cubicIn, sineOut } from 'svelte/easing'
   import { tweened } from 'svelte/motion'
+  import { fade, fly } from 'svelte/transition'
 
-  export let user 
+  export let user
+  export let xpGained: number
   let compliment = compliments[Math.floor(Math.random() * compliments.length)]
   let { nextLevelXP, progressXP, level } = user.userXP
-  let progressAfterCompletedExercise = progressXP
-  let progerssPercentage = (progressAfterCompletedExercise / nextLevelXP) * 100 // * 100 to get percentage instead of decimal number
+  let remainingXPToNextLevel = nextLevelXP - progressXP
+  let progressAfterCompletedExercise = nextLevelXP
+  let progerssPercentage = (progressXP / nextLevelXP) * 100 // * 100 to get percentage instead of decimal number
+
+  // UI States
   let visible = false
+  let showXPGained = true
+  let showProgressBar = false
 
   // We wait until the items is visible to animate it, so they are not execute already when the component is mounted
-  $: if (visible) {
+  $: if (showProgressBar) {
     progress.set(progerssPercentage)
   }
 
@@ -31,38 +39,68 @@
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="xp-modal" class="modal-toggle" />
 <label for="xp-modal" class="modal cursor-pointer">
-  <label class="modal-box" for="">
+  <label class="modal-box relative" for="">
     <h3 class="text-center text-lg font-bold">Congratulations, {compliment}</h3>
     <p class="py-4">
       You've been selected for a chance to get one year of subscription to use Wikipedia for free!
       Put a lot of cool stats in here Xp and stuff
     </p>
-    <div class="flex h-20">
-      <div class="avatar z-10">
-        <div class="w-20 rounded-full">
-          <img src={getLevelIcon(level)} alt={'Level icon showing you are level ' + level} />
-        </div>
-      </div>
-      {#if visible}
-        <div class="meter top-[25%] -ml-2 h-10 w-80">
-          <span style:width="{$progress}%" />
-          <p
-            class="xp left-50% absolute top-[7px] w-full text-center text-2xl font-extrabold leading-10"
-            style:--currXP={progressXP}
-            style:--newXP={progressAfterCompletedExercise}
-          />
+    {#if visible}
+      <!-- XP gained -->
+      {#if showXPGained}
+        <div class="flex justify-center">
+          <h1
+            class="absolute text-6xl"
+            in:fadeScale={{
+              delay: 0,
+              duration: 1500,
+              easing: cubicIn,
+              baseScale: 0.5,
+            }}
+            on:introend={() => {
+              showXPGained = !showXPGained
+              showProgressBar = !showProgressBar
+            }}
+            out:fly={{ y: -250, duration: 3000 }}
+          >
+            +{xpGained} xp
+          </h1>
         </div>
       {/if}
-      <div
-        class="flex flex-col items-center justify-center rounded-xl border-2 border-solid p-4"
-        style:background-color={getLevelColor(level + 1)}
-        style:border-color={getLevelBorderColor(level + 1)}
-      >
-        <div class="text-4xl font-extrabold">
-          {nextLevelXP}
-        </div>
+      <!-- Progress and level bar -->
+      <div class="flex h-20">
+        {#if showProgressBar}
+          <div class="flex h-full w-full" in:fade>
+            <!-- Level Icon -->
+            <div class="avatar z-10">
+              <div class="w-20 rounded-full">
+                <img src={getLevelIcon(level)} alt={'Level icon showing you are level ' + level} />
+              </div>
+            </div>
+            <!-- Progress Bar -->
+            <div class="meter top-[25%] -ml-2 h-10 w-80">
+              <span style:width="{$progress}%" />
+              <p
+                class="xp left-50% absolute top-[7px] w-full text-center text-2xl font-extrabold leading-10"
+                style:--currXP={progressXP}
+                style:--newXP={progressAfterCompletedExercise}
+              />
+            </div>
+            <!-- Remaining XP to level up -->
+            <div
+              class="flex flex-col items-center justify-center rounded-xl border-2 border-solid p-4"
+              style:background-color={getLevelColor(level + 1)}
+              style:border-color={getLevelBorderColor(level + 1)}
+            >
+              <div class="stat-desc opacity-100">XP to level up</div>
+              <div class="text-4xl font-extrabold">
+                {remainingXPToNextLevel}
+              </div>
+            </div>
+          </div>
+        {/if}
       </div>
-    </div>
+    {/if}
   </label>
 </label>
 
