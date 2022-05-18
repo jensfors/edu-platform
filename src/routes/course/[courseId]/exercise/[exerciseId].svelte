@@ -10,7 +10,6 @@
   export let course: Course
 
   //TODO:  This is temporary - refactor when progressbar is ready
-  let user = null
   let progressData = null
 
   let showSolution: boolean = userHasSolvedExercise()
@@ -77,14 +76,6 @@
       let data = await res.json()
       progressData = data
       console.log('data baby: ', data)
-
-      user = {
-        userXP: {
-          level: data.beforeXP.level,
-          nextLevelXP: data.beforeXP.nextLevelXP,
-          progressXP: data.afterXP.progressXP,
-        },
-      }
     } catch (error) {
       console.log('An error occured when submitting your exercise solution', error)
     }
@@ -198,12 +189,9 @@
   >
     {showSolution ? 'Answer submitted' : 'Submit answer'}</button
   >
-  {#if user}
+  {#if progressData}
     <div class="w-30">
-      <ProgressCardModal
-        {user}
-        xpGained={progressData.afterXP.progressXP - progressData.beforeXP.progressXP}
-      />
+      <ProgressCardModal userXP={progressData} />
     </div>
   {/if}
   <div>
