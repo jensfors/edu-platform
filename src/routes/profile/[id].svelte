@@ -73,7 +73,7 @@
         <p
           class="left-50% absolute top-[0px] w-full text-center text-2xl font-extrabold leading-10"
         >
-          dab
+          processText
         </p>
       </div>
     </div>
