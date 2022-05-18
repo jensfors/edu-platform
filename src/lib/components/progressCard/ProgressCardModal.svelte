@@ -31,34 +31,12 @@
     progressXP: beforeProgressXP,
   } = userXP.beforeXP
   let { level: afterLevel, nextLevelXP: afterTotalXP, progressXP: afterProgressXP } = userXP.afterXP
-
-  let initialBarXP = beforeProgressXP
-  let afterBarXP = afterProgressXP
-  let barPercentage = (beforeProgressXP / afterTotalXP) * 100 // * 100 to get percentage instead of decimal number
   let xpGained: number = afterProgressXP - beforeProgressXP
-
-  console.log('yaya ', beforeTotalXP, beforeProgressXP, beforeLevel)
-  console.log('userXP: ', userXP)
-
-  let extraTestXP = 0
-
-  let remainingXPToNextLevel = afterTotalXP - (afterProgressXP + extraTestXP)
-  console.log('Remaining ', remainingXPToNextLevel)
 
   // UI States
   let visible = false
   let showXPGained = true
   let showProgressBar = false
-
-  // Wait until progressbar is visible to animate it
-  $: if (showProgressBar) {
-    progress.set(barPercentage)
-  }
-
-  const progress = tweened(1, {
-    duration: 2000,
-    easing: sineOut,
-  })
 </script>
 
 <!-- The button to open modal -->
