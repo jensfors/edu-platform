@@ -23,15 +23,7 @@
   const COMPLIMENT = compliments[Math.floor(Math.random() * compliments.length)]
 
   export let userXP: userXP
-
-  // destructuring props
-  let {
-    level: beforeLevel,
-    nextLevelXP: beforeTotalXP,
-    progressXP: beforeProgressXP,
-  } = userXP.beforeXP
-  let { level: afterLevel, nextLevelXP: afterTotalXP, progressXP: afterProgressXP } = userXP.afterXP
-  let xpGained: number = afterProgressXP - beforeProgressXP
+  let xpGained: number = userXP.afterXP.progressXP - userXP.beforeXP.progressXP
 
   // UI States
   let visible = false
