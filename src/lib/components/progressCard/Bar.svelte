@@ -1,11 +1,8 @@
 <script lang="ts">
-  import { compliments } from '$lib/utils/compliments'
-  import { fadeScale } from '$lib/utils/customAnimations'
   import { getLevelBorderColor, getLevelColor, getLevelIcon } from '$lib/utils/levelIcon'
-  import { cubicIn, sineOut } from 'svelte/easing'
+  import { sineOut } from 'svelte/easing'
   import { tweened } from 'svelte/motion'
-  import { fade, fly } from 'svelte/transition'
-  import Bar from './Bar.svelte'
+  import { fade } from 'svelte/transition'
 
   interface userXP {
     afterXP: {
@@ -19,9 +16,6 @@
       progressXP: number
     }
   }
-
-  const COMPLIMENT = compliments[Math.floor(Math.random() * compliments.length)]
-
   export let userXP: userXP
 
   // destructuring props
@@ -45,65 +39,44 @@
   let remainingXPToNextLevel = afterTotalXP - (afterProgressXP + extraTestXP)
   console.log('Remaining ', remainingXPToNextLevel)
 
-  // UI States
-  let visible = false
-  let showXPGained = true
-  let showProgressBar = false
-
-  // Wait until progressbar is visible to animate it
-  $: if (showProgressBar) {
-    progress.set(barPercentage)
-  }
-
   const progress = tweened(1, {
     duration: 2000,
     easing: sineOut,
   })
+  progress.set(barPercentage)
 </script>
 
-<!-- The button to open modal -->
-<label for="xp-modal" class="modal-button btn" on:click={() => (visible = true)}>open modal</label>
-
-<!-- Put this part before </body> tag -->
-<input type="checkbox" id="xp-modal" class="modal-toggle" />
-<label for="xp-modal" class="modal cursor-pointer">
-  <label class="modal-box relative" for="">
-    <h3 class="text-center text-lg font-bold">Congratulations, {COMPLIMENT}</h3>
-    <p class="py-4">
-      You've been selected for a chance to get one year of subscription to use Wikipedia for free!
-      Put a lot of cool stats in here Xp and stuff
-    </p>
-    {#if visible}
-      <!-- XP gained -->
-      {#if showXPGained}
-        <div class="flex justify-center">
-          <h1
-            class="absolute text-6xl"
-            in:fadeScale={{
-              delay: 0,
-              duration: 1500,
-              easing: cubicIn,
-              baseScale: 0.5,
-            }}
-            on:introend={() => {
-              showXPGained = !showXPGained
-              showProgressBar = !showProgressBar
-            }}
-            out:fly={{ y: -250, duration: 3000 }}
-          >
-            +{xpGained} xp
-          </h1>
-        </div>
-      {/if}
-      <!-- Progress and level bar -->
-      <div class="flex h-20 flex-col">
-        {#if showProgressBar}
-          <Bar {userXP} />
-        {/if}
-      </div>
-    {/if}
-  </label>
-</label>
+<div class="flex h-full w-full" in:fade>
+  <!-- Level Icon -->
+  <div class="avatar z-10">
+    <div class="w-20 rounded-full">
+      <img
+        src={getLevelIcon(beforeLevel)}
+        alt={'Level icon showing you are level ' + beforeLevel}
+      />
+    </div>
+  </div>
+  <!-- Progress Bar -->
+  <div class="meter top-[25%] -ml-2 h-10 w-80">
+    <span style:width="{$progress}%" />
+    <p
+      class="xp left-50% absolute top-[7px] w-full text-center text-2xl font-extrabold leading-10"
+      style:--currXP={initialBarXP}
+      style:--newXP={afterBarXP}
+    />
+  </div>
+  <!-- Remaining XP to level up -->
+  <div
+    class="flex flex-col items-center justify-center rounded-xl border-2 border-solid p-4"
+    style:background-color={getLevelColor(beforeLevel + 1)}
+    style:border-color={getLevelBorderColor(beforeLevel + 1)}
+  >
+    <div class="stat-desc opacity-100">XP to level up</div>
+    <div class="text-4xl font-extrabold">
+      {remainingXPToNextLevel}
+    </div>
+  </div>
+</div>
 
 <style>
   .meter {
