@@ -13,7 +13,9 @@
   export let exercise: Exercise
   export let course: Course
 
+  //TODO:  This is temporary - refactor when progressbar is ready
   let user = null
+  let progressData = null
 
   let showSolution: boolean = userHasSolvedExercise()
   showSolution = false // TODO: Remove when done
@@ -77,6 +79,8 @@
       })
 
       let data = await res.json()
+      progressData = data
+      console.log('data baby: ', data)
 
       user = {
         userXP: {
@@ -200,7 +204,10 @@
   >
   {#if user}
     <div class="w-30">
-      <ProgressCardModal {user} />
+      <ProgressCardModal
+        {user}
+        xpGained={progressData.afterXP.progressXP - progressData.beforeXP.progressXP}
+      />
     </div>
   {/if}
   <div>
