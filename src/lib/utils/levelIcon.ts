@@ -59,3 +59,15 @@ export function getLevelBorderColor(level: number): string {
         return '#E97F7F'
     }
 }
+
+export function getMasterColor(level: number): string {
+    if (level === 0) {
+        return '#84745C'
+    } else if (level <= 2) {
+        return '#B49D7E'
+    } else if (level <= 4) {
+        return '#E1E1E1'
+    } else {
+        return '#FFD546'
+    }
+}

@@ -1,15 +1,46 @@
+<script context="module">
+  import { authUser } from '$lib/stores'
+  import { get } from 'svelte/store'
+  import '../app.css'
+
+  export const load = async ({ fetch }) => {
+    let userId = get(authUser) ? get(authUser).id : null
+    const response = await fetch(`/api/home/${userId}`, {
+      method: 'GET',
+    })
+    let data = await response.json()
+    const userXP = data.userXP
+    const courses = data.courses
+    const coursePrinciples = data.coursePrinciples
+    const solvedExercises = data.solvedExercises
+    const readBlogPosts = data.readBlogPosts
+    const personas = data.personas
+    const blogPosts = data.blogPosts
+    const criteria = data.criteria
+
+    return {
+      props: {
+        userXP,
+        courses,
+        coursePrinciples,
+        solvedExercises,
+        readBlogPosts,
+        personas,
+        blogPosts,
+        criteria,
+      },
+    }
+  }
+</script>
+
 <script lang="ts">
   import { goto } from '$app/navigation'
-  import { page } from '$app/stores'
   import { getPrincipleMasterLevel, getWCAGMasterLevel } from '$lib/utils/awards'
   import { getCourseIcon } from '$lib/utils/courseIcon'
   import { getPrincipleMasterIcon, getWCAGMasterIcon } from '$lib/utils/levelIcon'
   import { createAuthorsString, formatDate } from '$lib/utils/stringFormating'
-  import { Principle, Roles, type XP } from '$lib/utils/stringTypes'
+  import { Principle, type XP } from '$lib/utils/stringTypes'
   import type { Course, Persona, Post, WCAGCriteria, WCAGPrinciple } from '@prisma/client'
-  import { get } from 'svelte/store'
-  import { authUser } from '../lib/stores'
-  import Auth from './auth.svelte'
 
   export let userXP: XP
   export let courses: Course[]
@@ -21,12 +52,13 @@
   export let criteria: WCAGCriteria[]
 
   let awards: { name: string; img: string; level: number }[] = setAwards()
-
+  // TODO: Delete if new GET works fine
+  /*
   if ($authUser) {
     $page.url.searchParams.set('userId', get(authUser).id)
     goto(`?${$page.url.searchParams.toString()}`)
   }
-
+*/
   function getPostAuthor(post: Post): string {
     try {
       // @ts-ignore
@@ -66,14 +98,6 @@
 
 <h1 class="px-8 py-4 text-center text-3xl">Welcome to the course platform</h1>
 <h2 class="pb-12 text-center text-2xl">Where you can learn everything about accessibility</h2>
-
-{#if $authUser?.role === Roles.Creator || $authUser?.role === Roles.Admin}
-  <div class="flex justify-center pb-8">
-    <a class="button-width btn btn-primary" role="button" sveltekit:prefetch href={`/create-course`}
-      >Create course</a
-    >
-  </div>
-{/if}
 
 <div class="flex gap-20">
   <div class="flex w-full max-w-[792px] flex-col gap-20">

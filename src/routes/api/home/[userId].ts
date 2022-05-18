@@ -4,12 +4,11 @@ import { getLatestBlogPosts } from "$lib/db/posts";
 import { getAmountOfReadPosts, getAmountOfSolvedExercises, getUser, getXP } from "$lib/db/user";
 import { getAllCriteria, getAllCriteriaSolved } from "$lib/db/wcag";
 import { addSolvesToCriteria } from "$lib/utils/awards";
-import { getNewUserLevel, getUserLevel } from "$lib/utils/levels";
+import { getUserLevel } from "$lib/utils/levels";
 import { PostType, XP } from "$lib/utils/stringTypes";
 import type { Course, Persona, Post, User, WCAGCriteria, WCAGPrinciple } from "@prisma/client";
-// TODO: Delete file if new GET Works fine
-/*
-export async function get({ url }) {
+
+export async function get({ params }) {
     let courses: Course[] = []
     let userXP: XP = { level: 0, nextLevelXP: 0, progressXP: 0 }
     let solvedExercises: number = 0
@@ -17,7 +16,7 @@ export async function get({ url }) {
     let personas: Persona[] = []
     let blogPosts: Post[] = []
 
-    const userId: string = url.searchParams.get('userId')
+    const userId: string = params.userId
 
     // Getting courses for main page
     courses = await getLatestCourses(4)
@@ -40,7 +39,8 @@ export async function get({ url }) {
 
     // IF a user is logged in, all relevant info is fetched
     let solvedCriteria: WCAGCriteria[] = []
-    if (userId !== null) {
+
+    if (userId !== "null") {
         const user: User = await getUser(userId)
         solvedExercises = await getAmountOfSolvedExercises(user)
         readBlogPosts = await getAmountOfReadPosts(user, PostType.Blog)
@@ -49,7 +49,6 @@ export async function get({ url }) {
         solvedCriteria = await getAllCriteriaSolved(userId)
         addSolvesToCriteria(criteria, solvedCriteria)
     }
-    console.log(coursePrinciples)
 
     return {
         body: {
@@ -63,4 +62,4 @@ export async function get({ url }) {
             criteria,
         }
     };
-};  */
+};

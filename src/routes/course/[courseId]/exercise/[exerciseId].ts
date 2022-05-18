@@ -21,6 +21,7 @@ export async function get({ params }) {
   }
 }
 
+/*
 export async function post({ request }) {
   // Insert new post data in DB
   let result = null // TODO: Remove when done
@@ -33,10 +34,10 @@ export async function post({ request }) {
 
   // Update DB with xp and get new level/xp
   //let result = await userSolvesExercise(data.exerciseId, data.userId, exerciseXP) // TODO: outcoment when done
-  /*const afterXP: XP = getNewUserLevel(beforeXP, exerciseXP)
+  const afterXP: XP = getNewUserLevel(beforeXP, exerciseXP)
   console.log("Befor exercise:", beforeXP)
   console.log("After exercise:", afterXP)
-*/
+
   return {
     body: {
       message: result ? 'Exercise successfully solved' : 'Damn, something went kinda wrong',
@@ -45,3 +46,4 @@ export async function post({ request }) {
     },
   }
 }
+*/

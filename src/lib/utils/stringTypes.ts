@@ -31,6 +31,10 @@ export function getPrincipleNum(principle: Principle) {
     return principle === Principle.Perceivable ? 1 : principle === Principle.Operable ? 2 : principle === Principle.Understandable ? 3 : principle === Principle.Robust ? 4 : 0
 }
 
+export function getPrincipleList(): Principle[] {
+    return [Principle.Perceivable, Principle.Operable, Principle.Understandable, Principle.Robust]
+}
+
 export type XP = {
     level: number, nextLevelXP: number, progressXP: number
 }

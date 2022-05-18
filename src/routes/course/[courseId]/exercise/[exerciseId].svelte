@@ -13,9 +13,9 @@
   export let exercise: Exercise
   export let course: Course
 
+  //TODO:  This is temporary - refactor when progressbar is ready
   let user = null
-  //console.log('exer: ', exercise)
-  //console.log('course: ', course)
+  let progressData = null
 
   let showSolution: boolean = userHasSolvedExercise()
   showSolution = false // TODO: Remove when done
@@ -68,34 +68,30 @@
   }
 
   async function onSubmit() {
-    const res = await fetch(`${$page.url.pathname}`, {
-      method: 'POST',
-      body: JSON.stringify({
-        userId: $authUser.id,
-        exerciseId: exercise.id,
-        difficulty: exercise.difficulty,
-      }),
-    })
+    try {
+      const res = await fetch(`${$page.url.origin}/api/exercise/xp`, {
+        method: 'POST',
+        body: JSON.stringify({
+          userId: $authUser.id,
+          exerciseId: exercise.id,
+          difficulty: exercise.difficulty,
+        }),
+      })
 
-    console.log('response: ', res)
-  }
+      let data = await res.json()
+      progressData = data
+      console.log('data baby: ', data)
 
-  async function getXPStatus() {
-    const userId: string = $authUser.id
-    const difficulty: string = exercise.difficulty
-    const res = await fetch(`../../../api/xp/${userId}/${difficulty}`, {
-      method: 'GET',
-    })
-    const data = await res.json()
-    console.log('dab', data)
-    user = {
-      userXP: {
-        level: data.beforeXP.level,
-        nextLevelXP: data.beforeXP.nextLevelXP,
-        progressXP: data.afterXP.progressXP,
-      },
+      user = {
+        userXP: {
+          level: data.beforeXP.level,
+          nextLevelXP: data.beforeXP.nextLevelXP,
+          progressXP: data.afterXP.progressXP,
+        },
+      }
+    } catch (error) {
+      console.log('An error occured when submitting your exercise solution', error)
     }
-    // let { nextLevelXP, progressXP, level } = user.userXP
   }
 
   function userIsAuthor(): boolean {
@@ -187,7 +183,7 @@
     >
   {:else}
     <a
-      class="btn btn-primary button-width"
+      class="button-width btn btn-primary"
       role="button"
       sveltekit:reload
       href={`/course/${course.id}/exercise/${prevExercise.id}`}>Previous exercise</a
@@ -200,7 +196,6 @@
       showSolution = true
       // TODO: Remove when done
       if (/* !userIsAuthor() && */ $authUser) {
-        getXPStatus()
         onSubmit()
       }
     }}
@@ -209,7 +204,10 @@
   >
   {#if user}
     <div class="w-30">
-      <ProgressCardModal {user} />
+      <ProgressCardModal
+        {user}
+        xpGained={progressData.afterXP.progressXP - progressData.beforeXP.progressXP}
+      />
     </div>
   {/if}
   <div>
@@ -222,7 +220,7 @@
       >
     {:else}
       <a
-        class="btn btn-primary button-width"
+        class="button-width btn btn-primary"
         role="button"
         sveltekit:reload
         href={`/course/${course.id}/exercise/${nextExercise.id}`}>Next exercise</a
