@@ -6,13 +6,14 @@
   import { authUser } from '$lib/stores'
   import { getPrincipleMasterLevel, getWCAGMasterLevel } from '$lib/utils/awards'
   import { formatDate } from '$lib/utils/stringFormating'
-  import { getPrincipleList, Roles } from '$lib/utils/stringTypes'
+  import { getPrincipleList, Principle, Roles } from '$lib/utils/stringTypes'
+  import { getPrincipleMasterIcon, getWCAGMasterIcon } from '$lib/utils/levelIcon'
 
   export let user
   export let criteria
   export let sortedCriteria
+  const principleList: Principle[] = getPrincipleList()
   let wcagMasterLevel = getWCAGMasterLevel(criteria)
-  console.log(user)
 </script>
 
 <!-- Create course button -->
@@ -24,6 +25,7 @@
   </div>
 {/if}
 
+<!-- Profile information section -->
 <div class="flex flex-col justify-center items-center">
   <div class="">
     <ProgressCard {user} />
@@ -45,6 +47,26 @@
       <p><i>Account created {formatDate(user.createdAt)}</i></p>
     </div>
   </div>
+  <div class="flex flex-row gap-4 pt-2">
+    <!-- Show all master level badges-->
+    {#each principleList as principle, index}
+      <!-- Show WCAG Master level in the middle-->
+      {#if principleList.length / 2 === index}
+        <div class="w-20 rounded-full">
+          <img
+            src={getWCAGMasterIcon(wcagMasterLevel)}
+            alt={`Icon showing the WCAG Master level`}
+          />
+        </div>
+      {/if}
+      <div class="w-20 rounded-full">
+        <img
+          src={getPrincipleMasterIcon(getPrincipleMasterLevel(criteria, principle), principle)}
+          alt={`Icon showing the ${principle} Master level`}
+        />
+      </div>
+    {/each}
+  </div>
   <div class="divider" />
 </div>
 
@@ -55,7 +77,7 @@
 <AwardCollapse {sortedCriteria} currentLevel={wcagMasterLevel} principle={null} />
 
 <!-- All Principle Master Collapses -->
-{#each getPrincipleList() as principle}
+{#each principleList as principle}
   <AwardCollapse
     {sortedCriteria}
     currentLevel={getPrincipleMasterLevel(criteria, principle)}
