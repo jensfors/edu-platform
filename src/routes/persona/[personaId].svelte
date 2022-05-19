@@ -35,9 +35,8 @@
       {persona.name}
     </h1>
     {#if persona.official}
-      <span title="This is an official persona" class="badge badge-secondary">OFFICIAL</span>
+      <span title="This is an official persona" class="badge badge-info">OFFICIAL</span>
     {/if}
-
     <Author authors={[persona.author]} />
     <p>
       {persona.description}
