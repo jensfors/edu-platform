@@ -37,7 +37,7 @@
     if (principle) {
       progress = getMasterProgress(currentLevel, getPrincipleCriteria(principle))
     } else {
-      let allCriteria = [].concat(
+      let allCriteria: WCAGCriteria[] = [].concat(
         sortedCriteria.perceivable,
         sortedCriteria.operable,
         sortedCriteria.understandable,

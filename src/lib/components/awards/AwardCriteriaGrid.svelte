@@ -20,7 +20,7 @@
       />
       <span class="pt-1 text-2xl text-[#0B0A26]">{criterion.number}</span>
     </div>
-    <span class="-mb-2 pt-1 text-xs text-[#0B0A26]">Completed:</span>
+    <span class="-mb-2 pt-1 text-xs text-[#0B0A26]">Completed</span>
     <p class="text-xl text-[#0B0A26]">{criterion.solves} / {nextLevel}</p>
   </div>
 {/each}
