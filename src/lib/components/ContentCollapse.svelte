@@ -20,7 +20,7 @@
       <!-- Header -->
       <input type="checkbox" checked={true} />
       <div class="flex collapse-title bg-primary p-2 pl-4">
-        <h1 class="flex items-center text-2xl font-medium pl-3">
+        <h1 class="flex items-center text-2xl font-medium pl-3 text-white">
           {type}
         </h1>
       </div>

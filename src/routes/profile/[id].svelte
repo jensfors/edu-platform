@@ -59,7 +59,7 @@
           />
         </div>
       {/if}
-      <div class="w-20 rounded-full">
+      <div class="flex rounded-full w-16 items-center">
         <img
           src={getPrincipleMasterIcon(getPrincipleMasterLevel(criteria, principle), principle)}
           alt={`Icon showing the ${principle} Master level`}

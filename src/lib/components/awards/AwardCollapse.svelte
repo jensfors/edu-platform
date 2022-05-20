@@ -63,7 +63,7 @@
           alt={`Icon showing the ${principle ? principle : 'WCAG'} Master level`}
         />
       </div>
-      <h1 class="flex items-center text-2xl font-medium pl-3">
+      <h1 class="flex items-center text-2xl font-medium pl-3 text-white">
         {principle ? `${principle} Master` : 'WCAG Master'}
       </h1>
     </div>
