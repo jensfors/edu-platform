@@ -9,9 +9,23 @@
   export let type: string
   const courseType = 'Courses'
   const personaType = 'Personas'
+
+  // Returns false if the user has not created any personas or courses yet
+  function hasType(): boolean {
+    switch (type) {
+      case courseType:
+        // @ts-ignore
+        return user.courses && user.courses.length > 0
+      case personaType:
+        // @ts-ignore
+        return user.personas && user.personas.length > 0
+      default:
+        return false
+    }
+  }
 </script>
 
-{#if user.role === Roles.Creator || user.role === Roles.Admin}
+{#if (user.role === Roles.Creator || user.role === Roles.Admin) && hasType()}
   <div class="pb-6">
     <div
       tabindex="0"
