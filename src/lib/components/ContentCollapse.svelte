@@ -15,10 +15,10 @@
     switch (type) {
       case courseType:
         // @ts-ignore
-        return user.courses && user.courses.length > 0
+        return user.courses && user.courses.length
       case personaType:
         // @ts-ignore
-        return user.personas && user.personas.length > 0
+        return user.personas && user.personas.length
       default:
         return false
     }
