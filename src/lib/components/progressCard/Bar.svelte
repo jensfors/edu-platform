@@ -1,8 +1,42 @@
 <script lang="ts">
   import { getLevelBorderColor, getLevelColor, getLevelIcon } from '$lib/utils/levelIcon'
+  import confetti from 'canvas-confetti'
   import { sineOut } from 'svelte/easing'
   import { tweened } from 'svelte/motion'
   import { fade } from 'svelte/transition'
+
+  console.log('confetti party: ', confetti)
+  // confetti({
+  //   particleCount: 250,
+  //   spread: 100,
+  //   disableForReducedMotion: true,
+  // })
+
+  // do this for 30 seconds
+  var duration = 30 * 1000
+  var end = Date.now() + duration
+
+  // ;(function frame() {
+  //   // launch a few confetti from the left edge
+  //   confetti({
+  //     particleCount: 7,
+  //     angle: 60,
+  //     spread: 55,
+  //     origin: { x: 0 },
+  //   })
+  //   // and launch a few from the right edge
+  //   confetti({
+  //     particleCount: 7,
+  //     angle: 120,
+  //     spread: 55,
+  //     origin: { x: 1 },
+  //   })
+
+  //   // keep going until we are out of time
+  //   if (Date.now() < end) {
+  //     requestAnimationFrame(frame)
+  //   }
+  // })()
 
   interface userXP {
     afterXP: {
@@ -31,7 +65,13 @@
   let barPercentage = (afterTotalXP / beforeTotalXP) * 100 // * 100 to get percentage instead of decimal number
   let remainingXPToNextLevel = afterTotalXP - afterProgressXP
 
+  // Animation variables
   const progress = tweened(1, {
+    duration: 2000,
+    easing: sineOut,
+  })
+
+  const barXP = tweened(1, {
     duration: 2000,
     easing: sineOut,
   })
@@ -40,8 +80,6 @@
     duration: 2000,
     easing: sineOut,
   })
-
-  remainingXP.set(remainingXPToNextLevel)
 
   console.log('yaya ', beforeTotalXP, beforeProgressXP, beforeLevel)
   console.log('userXP: ', userXP)
@@ -57,21 +95,35 @@
     const maxPercentage = 100
     // Re-animate if they level up
     if (afterLevel > beforeLevel) {
+      // PAAAAAARTY - they leveled up for gods sake!
+      confetti({
+        particleCount: 250,
+        spread: 100,
+        disableForReducedMotion: true,
+      })
+
+      // Animate remaining of current lvl xp
       progress.set(maxPercentage)
+      barXP.set(beforeTotalXP)
       remainingXP.set(beforeTotalXP)
 
       // timeout to wait until the first animation is done
       setTimeout(() => {
         // Reset state
         progress.set(0, { duration: 0 })
+        barXP.set(0, { duration: 0 })
         remainingXP.set(0, { duration: 0 })
         // Animate with new values
         progress.set(barPercentage - maxPercentage)
+        barXP.set(afterProgressXP)
         remainingXP.set(remainingXPToNextLevel)
       }, 2000)
     } else {
       progress.set(barPercentage)
+      console.log('remainingXP: ', remainingXPToNextLevel)
       remainingXP.set(remainingXPToNextLevel)
+      console.log('fuck me daddy: ', afterProgressXP)
+      barXP.set(afterProgressXP)
     }
   }
 </script>
@@ -89,11 +141,14 @@
   <!-- Progress Bar -->
   <div class="meter top-[25%] -ml-2 h-10 w-80">
     <span style:width="{$progress}%" />
-    <p
+    <p class="left-50% absolute top-[1px] w-full text-center text-2xl font-extrabold leading-10">
+      {$barXP.toFixed(0)}
+    </p>
+    <!-- <p
       class="xp left-50% absolute top-[7px] w-full text-center text-2xl font-extrabold leading-10"
       style:--currXP={initialBarXP}
       style:--newXP={afterBarXP}
-    />
+    /> -->
   </div>
   <!-- Remaining XP to level up -->
   <div
@@ -159,34 +214,5 @@
     /* border-bottom-left-radius: 20px; */
     background-color: rgb(43, 194, 83);
     background-image: linear-gradient(center bottom, rgb(43, 194, 83) 37%, rgb(84, 240, 84) 69%);
-  }
-
-  .yaya {
-    font: 800 40px system-ui;
-  }
-
-  @property --num {
-    syntax: '<integer>';
-    initial-value: 0;
-    inherits: false;
-  }
-
-  .xp {
-    animation: counter 3s normal ease-in-out forwards;
-    counter-reset: num var(--num);
-    font: 800 24px system-ui;
-    /* padding: 2rem; */
-  }
-  .xp::after {
-    content: counter(num);
-  }
-
-  @keyframes counter {
-    from {
-      --num: var(--currXP);
-    }
-    to {
-      --num: var(--newXP);
-    }
   }
 </style>
