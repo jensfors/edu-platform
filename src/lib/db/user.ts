@@ -96,7 +96,27 @@ export async function getUser(id: string): Promise<User> {
         readPosts: true,
         personas: true,
         posts: true,
-        courses: true,
+        courses: {
+          include: {
+            course: {
+              include: {
+                exercises: {
+                  include: {
+                    criteria: {
+                      include: {
+                        criteria: {
+                          include: {
+                            principle: true
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
       },
     })
     return result

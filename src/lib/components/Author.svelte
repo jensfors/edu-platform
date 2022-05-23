@@ -14,8 +14,7 @@
           alt={`Profile picture for the author: ${author.firstName} ${author.lastName}`}
         />
       </div>
-      <!-- TODO: Goto an author page to see courses and personas made by the author-->
-      <a href="/dummy-profile-page"><i>{`${author.firstName} ${author.lastName}`}</i></a>
+      <a href="/profile/{author.id}"><i>{`${author.firstName} ${author.lastName}`}</i></a>
     </div>
   {/each}
 {/if}

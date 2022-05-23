@@ -106,10 +106,8 @@ export async function createCourse(title: string, description: string, userId: s
     return result
 }
 
-// TODO: Turn into prisma
 // Returns a list of the Personas which are in exercises for a given course
 export async function getAllPersonasForCourse(course: Course): Promise<Persona[]> {
-    //const result: Persona[] = await prisma.$queryRaw`SELECT DISTINCT "Persona".* FROM "Course" JOIN "Exercise" ON ${course.id} = "Exercise"."courseId" JOIN "Persona" ON "Exercise"."personaId" = "Persona".id`
     const result: Persona[] = await prisma.persona.findMany({
         where: {
             exercises: {

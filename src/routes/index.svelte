@@ -39,7 +39,7 @@
   import { getCourseIcon } from '$lib/utils/courseIcon'
   import { getPrincipleMasterIcon, getWCAGMasterIcon } from '$lib/utils/levelIcon'
   import { createAuthorsString, formatDate } from '$lib/utils/stringFormating'
-  import { Principle, type XP } from '$lib/utils/stringTypes'
+  import { getPrincipleList, Principle, type XP } from '$lib/utils/stringTypes'
   import type { Course, Persona, Post, WCAGCriteria, WCAGPrinciple } from '@prisma/client'
 
   export let userXP: XP
@@ -52,13 +52,7 @@
   export let criteria: WCAGCriteria[]
 
   let awards: { name: string; img: string; level: number }[] = setAwards()
-  // TODO: Delete if new GET works fine
-  /*
-  if ($authUser) {
-    $page.url.searchParams.set('userId', get(authUser).id)
-    goto(`?${$page.url.searchParams.toString()}`)
-  }
-*/
+
   function getPostAuthor(post: Post): string {
     try {
       // @ts-ignore
@@ -82,16 +76,14 @@
       level: wcagMasterLevel,
     })
     // Gets the award for each WCAG Principle
-    for (let principle in Principle) {
-      if (isNaN(Number(principle))) {
-        let level: number = getPrincipleMasterLevel(criteria, Principle[principle])
-        awards.push({
-          name: principle + ' Master',
-          img: getPrincipleMasterIcon(level, Principle[principle]),
-          level,
-        })
-      }
-    }
+    getPrincipleList().forEach((principle: Principle) => {
+      let level: number = getPrincipleMasterLevel(criteria, principle)
+      awards.push({
+        name: `${principle} Master`,
+        img: getPrincipleMasterIcon(level, principle),
+        level,
+      })
+    })
     return awards
   }
 </script>
@@ -116,7 +108,7 @@
           {#each blogPosts as blogPost}
             <div
               class="w-50 card w-1/3 bg-base-100 shadow-xl"
-              on:click={() => goto(`/blogs/${blogPost.id}`)}
+              on:click={() => goto(`/posts/${blogPost.id}`)}
               style="cursor: pointer"
             >
               <div class="card-body justify-between p-4">

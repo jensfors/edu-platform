@@ -1,6 +1,6 @@
 import { getUser, getXP } from '$lib/db/user'
 import { getAllCriteria, getAllCriteriaSolved } from '$lib/db/wcag'
-import { addSolvesToCriteria, getMasterProgress, getWCAGMasterLevel } from '$lib/utils/awards'
+import { addSolvesToCriteria } from '$lib/utils/awards'
 import { getUserLevel } from '$lib/utils/levels'
 import type { XP } from '$lib/utils/stringTypes'
 import type { User, WCAGCriteria } from '@prisma/client'
