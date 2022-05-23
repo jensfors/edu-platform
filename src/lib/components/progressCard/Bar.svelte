@@ -28,22 +28,52 @@
 
   let initialBarXP = beforeProgressXP
   let afterBarXP = afterProgressXP
-  let barPercentage = (beforeProgressXP / afterTotalXP) * 100 // * 100 to get percentage instead of decimal number
-  let xpGained: number = afterProgressXP - beforeProgressXP
-
-  console.log('yaya ', beforeTotalXP, beforeProgressXP, beforeLevel)
-  console.log('userXP: ', userXP)
-
-  let extraTestXP = 0
-
-  let remainingXPToNextLevel = afterTotalXP - (afterProgressXP + extraTestXP)
-  console.log('Remaining ', remainingXPToNextLevel)
+  let barPercentage = (afterTotalXP / beforeTotalXP) * 100 // * 100 to get percentage instead of decimal number
+  let remainingXPToNextLevel = afterTotalXP - afterProgressXP
 
   const progress = tweened(1, {
     duration: 2000,
     easing: sineOut,
   })
-  progress.set(barPercentage)
+
+  const remainingXP = tweened(1, {
+    duration: 2000,
+    easing: sineOut,
+  })
+
+  remainingXP.set(remainingXPToNextLevel)
+
+  console.log('yaya ', beforeTotalXP, beforeProgressXP, beforeLevel)
+  console.log('userXP: ', userXP)
+  console.log('Remaining ', remainingXPToNextLevel)
+
+  console.log('before: ', beforeTotalXP)
+  console.log('after: ', afterTotalXP)
+  console.log('barPercentage: ', barPercentage)
+
+  animate()
+
+  function animate() {
+    const maxPercentage = 100
+    // Re-animate if they level up
+    if (afterLevel > beforeLevel) {
+      progress.set(maxPercentage)
+      remainingXP.set(beforeTotalXP)
+
+      // timeout to wait until the first animation is done
+      setTimeout(() => {
+        // Reset state
+        progress.set(0, { duration: 0 })
+        remainingXP.set(0, { duration: 0 })
+        // Animate with new values
+        progress.set(barPercentage - maxPercentage)
+        remainingXP.set(remainingXPToNextLevel)
+      }, 2000)
+    } else {
+      progress.set(barPercentage)
+      remainingXP.set(remainingXPToNextLevel)
+    }
+  }
 </script>
 
 <div class="flex h-full w-full" in:fade>
@@ -73,7 +103,7 @@
   >
     <div class="stat-desc opacity-100">XP to level up</div>
     <div class="text-4xl font-extrabold">
-      {remainingXPToNextLevel}
+      {$remainingXP.toFixed(0)}
     </div>
   </div>
 </div>
