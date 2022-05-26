@@ -22,8 +22,9 @@ export function getLevels(): { level: number, xp: number }[] {
     // Sick algorithm for calculating xp per level
     for (let level = 0; level <= maxLevel; level++) {
         let xp: number = level === 0 ? 0 : intermediateXP + (level ** 1.72)
-        levels.push({ level: level, xp: Math.round(xp) })
+        levels.push({ level: level, xp: Math.ceil(xp) })
     }
+    console.log(levels)
     return levels
 }
 
