@@ -23,7 +23,6 @@
   // @ts-ignore
   let nextExercise: Exercise = course.exercises[isLastExercise() ? currentExIndex : nextExIndex]
   let showSolution: boolean = userHasSolvedExercise()
-  showSolution = false // TODO: Remove when done
   // @ts-ignore
   let criteria = exercise.criteria
   // @ts-ignore
@@ -76,7 +75,7 @@
   function onSubmit() {
     showSolution = true
     // TODO: Remove when done
-    if (/* !userIsAuthor() && */ $authUser) {
+    if (!userIsAuthor() && $authUser) {
       uploadProgress()
     }
     showModal = true
@@ -203,6 +202,16 @@
   {/if}
   <!-- TODO: Old button to show modal, make sure we don't need it before delete -->
   <!-- <button class="button-width btn btn-success" disabled={showSolution} on:click={() => onSubmit()}>
+  <button
+    class="button-width btn btn-success"
+    disabled={showSolution}
+    on:click={() => {
+      showSolution = true
+      if (!userIsAuthor() && $authUser) {
+        onSubmit()
+      }
+    }}
+  >
     {showSolution ? 'Answer submitted' : 'Submit answer'}</button
   > -->
   <label

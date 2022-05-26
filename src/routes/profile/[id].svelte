@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from '$app/stores'
   import AwardCollapse from '$lib/components/awards/AwardCollapse.svelte'
   import ContentCollapse from '$lib/components/ContentCollapse.svelte'
   import Verified from '$lib/components/Verified.svelte'
@@ -13,13 +14,36 @@
   export let sortedCriteria
   const principleList: Principle[] = getPrincipleList()
   let wcagMasterLevel = getWCAGMasterLevel(criteria)
+
+  async function deleteTestSolutions() {
+    try {
+      const res = await fetch(`${$page.url.origin}/api/user/testUser`, {
+        method: 'POST',
+      })
+    } catch (error) {
+      console.log('An error occured when submitting your exercise solution', error)
+    }
+  }
 </script>
 
 <!-- Create course button -->
 {#if $authUser.id === user.id && ($authUser?.role === Roles.Creator || $authUser?.role === Roles.Admin)}
-  <div class="flex justify-center pb-4">
-    <a class="button-width btn btn-primary" role="button" sveltekit:prefetch href={`/create-course`}
-      >Create course</a
+  <div class="flex flex-row justify-center gap-4">
+    <div class="flex justify-center pb-4">
+      <a
+        class="button-width btn btn-primary"
+        role="button"
+        sveltekit:prefetch
+        href={`/create-course`}>Create course</a
+      >
+    </div>
+    <button
+      class="button-width btn btn-success"
+      on:click={() => {
+        deleteTestSolutions()
+      }}
+    >
+      {'Delete Test Solutions'}</button
     >
   </div>
 {/if}

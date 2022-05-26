@@ -124,3 +124,12 @@ export async function getUser(id: string): Promise<User> {
     console.log(`User with id ${id} does not exist`)
   }
 }
+
+export async function deleteTestUserSolutions() {
+  const result = await prisma.userSolvesExercise.deleteMany({
+    where: {
+      userId: '66c50a3e-4985-4e47-a752-324dfb15e8a4'
+    },
+  })
+  console.log('Superdab', result)
+}
