@@ -8,7 +8,7 @@
 
 {#each criteria as criterion}
   <div
-    class="w-50 card flex w-[12.5%] flex-col items-center gap-2 p-2 outline outline-slate-300"
+    class="card flex w-36 flex-col items-center gap-2 p-2 outline outline-slate-300"
     style:background-color={criterion.principle.color}
     style:opacity={criterion.solves < nextLevel ? 0.5 : 1}
   >
