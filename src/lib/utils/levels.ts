@@ -24,7 +24,6 @@ export function getLevels(): { level: number, xp: number }[] {
         let xp: number = level === 0 ? 0 : intermediateXP + (level ** 1.72)
         levels.push({ level: level, xp: Math.ceil(xp) })
     }
-    console.log(levels)
     return levels
 }
 
