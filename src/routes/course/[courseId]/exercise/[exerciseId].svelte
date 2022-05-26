@@ -13,7 +13,6 @@
   let progressData = null
 
   let showSolution: boolean = userHasSolvedExercise()
-  showSolution = false // TODO: Remove when done
   // @ts-ignore
   let criteria = exercise.criteria
   // @ts-ignore
@@ -75,7 +74,6 @@
 
       let data = await res.json()
       progressData = data
-      console.log('data baby: ', data)
     } catch (error) {
       console.log('An error occured when submitting your exercise solution', error)
     }
@@ -104,8 +102,6 @@
   let prevExercise: Exercise = course.exercises[isFirstExercise() ? currentExIndex : prevExIndex]
   // @ts-ignore
   let nextExercise: Exercise = course.exercises[isLastExercise() ? currentExIndex : nextExIndex]
-
-  console.log('authUser', $authUser)
 </script>
 
 <div class="flex justify-center">
@@ -181,8 +177,7 @@
     disabled={showSolution}
     on:click={() => {
       showSolution = true
-      // TODO: Remove when done
-      if (/* !userIsAuthor() && */ $authUser) {
+      if (!userIsAuthor() && $authUser) {
         onSubmit()
       }
     }}

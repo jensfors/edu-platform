@@ -6,13 +6,12 @@ import type { XP } from '$lib/utils/stringTypes'
 export async function post({ params, request }) {
     let data = await request.json()
     let exerciseXP = getDifficultyXP(data.difficulty)
-    let result = null
     // Fetch XP data before completion for xp modal
     const totalUserXP: number = await getXP(data.userId)
     const beforeXP: XP = getUserLevel(totalUserXP)
 
     // Update DB with xp and get new level/xp
-    //let result = await userSolvesExercise(data.exerciseId, data.userId, exerciseXP) // TODO: outcoment when done
+    let result = await userSolvesExercise(data.exerciseId, data.userId, exerciseXP) // TODO: outcoment when done
     const afterXP: XP = getNewUserLevel(beforeXP, exerciseXP)
 
     return {
