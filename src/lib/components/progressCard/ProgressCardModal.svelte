@@ -2,10 +2,13 @@
   import { compliments } from '$lib/utils/compliments'
   import { fadeScale } from '$lib/utils/customAnimations'
   import { getLevelBorderColor, getLevelColor, getLevelIcon } from '$lib/utils/levelIcon'
+  import { getDifficultyXP } from '$lib/utils/levels'
+  import type { Difficulty, Principle } from '$lib/utils/stringTypes'
+  import { onDestroy, onMount } from 'svelte'
   import { cubicIn, sineOut } from 'svelte/easing'
   import { tweened } from 'svelte/motion'
   import { fade, fly } from 'svelte/transition'
-  import Bar from './Bar.svelte'
+  import ProgressBar from './Progressbar.svelte'
 
   interface userXP {
     afterXP: {
@@ -22,8 +25,19 @@
 
   const COMPLIMENT = compliments[Math.floor(Math.random() * compliments.length)]
 
+  export let exerciseDifficulty: Difficulty
   export let userXP: userXP
-  let xpGained: number = userXP.afterXP.progressXP - userXP.beforeXP.progressXP
+  let xpGained: number = getDifficultyXP(exerciseDifficulty)
+
+  function scrollIntoView() {
+    console.log('Scroll baby girl')
+    // const el = document.querySelector(target.getAttribute('label'))
+    const el = document.getElementById('solution')
+    if (!el) return
+    el.scrollIntoView({
+      behavior: 'smooth',
+    })
+  }
 
   // UI States
   let visible = false
@@ -32,18 +46,14 @@
 </script>
 
 <!-- The button to open modal -->
-<label for="xp-modal" class="modal-button btn" on:click={() => (visible = true)}>open modal</label>
+<!-- <label for="xp-modal" class="modal-button btn" on:click={() => (visible = true)}>open modal</label> -->
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="xp-modal" class="modal-toggle" />
 <label for="xp-modal" class="modal cursor-pointer">
   <label class="modal-box relative" for="">
-    <h3 class="text-center text-lg font-bold">Congratulations, {COMPLIMENT}</h3>
-    <p class="py-4">
-      You've been selected for a chance to get one year of subscription to use Wikipedia for free!
-      Put a lot of cool stats in here Xp and stuff
-    </p>
-    {#if visible}
+    <h3 class="py-4 text-center text-2xl font-bold">Congratulations, {COMPLIMENT}</h3>
+    {#if true}
       <!-- XP gained -->
       {#if showXPGained}
         <div class="flex justify-center">
@@ -68,7 +78,7 @@
       <!-- Progress and level bar -->
       <div class="flex h-20 flex-col">
         {#if showProgressBar}
-          <Bar {userXP} />
+          <ProgressBar {userXP} />
         {/if}
       </div>
     {/if}
