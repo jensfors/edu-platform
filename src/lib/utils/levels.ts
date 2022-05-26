@@ -34,10 +34,13 @@ export function getLevel(level: number): { level: number, xp: number } {
     return { level: maxLevel, xp: 0 }
 }
 
+// Returns the new user level status after receiving 'newXP'
 export function getNewUserLevel(prevUserLevel: XP, newXP: number) {
     let newUserLevel: XP = { level: prevUserLevel.level, nextLevelXP: prevUserLevel.nextLevelXP, progressXP: prevUserLevel.progressXP }
+    // If the user levels up
     if (prevUserLevel.progressXP + newXP >= prevUserLevel.nextLevelXP) {
         newUserLevel.progressXP += newXP
+        // Loops through levels until new level is reached
         while (newUserLevel.progressXP > newUserLevel.nextLevelXP && newUserLevel.level < maxLevel) {
             const newProgressXP: number = (newUserLevel.progressXP - newUserLevel.nextLevelXP)
             const newLevel: { level: number, xp: number } = getLevel(newUserLevel.level + 1)
@@ -46,6 +49,7 @@ export function getNewUserLevel(prevUserLevel: XP, newXP: number) {
                 newUserLevel.nextLevelXP = newUserLevel.progressXP
             }
         }
+        // If the user statys the same level
     } else {
         newUserLevel.progressXP = prevUserLevel.progressXP + newXP
     }
