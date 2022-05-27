@@ -19,8 +19,8 @@
   <h1 class="text-3xl">Leaderboard</h1>
 </div>
 
-<div class="overflow-x-auto w-full">
-  <table class="table table-zebra w-full text-center">
+<div class="w-full overflow-x-auto">
+  <table class="table-zebra table w-full text-center">
     <!-- head -->
     <thead>
       <tr>
@@ -44,7 +44,7 @@
           <!-- Level Column -->
           <td>
             <div class="avatar">
-              <div class="mask mask-squircle w-12 h-12">
+              <div class="mask mask-squircle h-12 w-12">
                 <img
                   src={getLevelIcon(user.level)}
                   alt={'Level ' + user.level}
@@ -57,7 +57,7 @@
           <td>
             <div class="flex items-center space-x-3">
               <div class="avatar">
-                <div class="mask mask-squircle w-12 h-12">
+                <div class="mask mask-squircle h-12 w-12">
                   <img
                     src={user.avatarURL}
                     alt="Profile avatar for {user.firstName} {user.lastName}"
@@ -79,7 +79,7 @@
           <!-- WCAG Master Level Column -->
           <td>
             <div class="avatar">
-              <div class="mask mask-squircle w-12 h-12">
+              <div class="mask mask-squircle h-12 w-12">
                 <img
                   src={getWCAGMasterIcon(user.wcagMasterLevel)}
                   alt={'WCAG Master Level ' + user.wcagMasterLevel}
