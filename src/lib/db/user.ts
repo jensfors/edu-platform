@@ -94,7 +94,11 @@ export async function getUser(id: string): Promise<User> {
       include: {
         solvedExercises: true,
         readPosts: true,
-        personas: true,
+        personas: {
+          orderBy: {
+            private: 'asc',
+          }
+        },
         posts: true,
         courses: {
           include: {
@@ -113,9 +117,9 @@ export async function getUser(id: string): Promise<User> {
                     }
                   }
                 }
-              }
-            }
-          }
+              },
+            },
+          },
         },
       },
     })
