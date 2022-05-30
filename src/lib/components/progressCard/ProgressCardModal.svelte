@@ -1,13 +1,10 @@
 <script lang="ts">
   import { compliments } from '$lib/utils/compliments'
   import { fadeScale } from '$lib/utils/customAnimations'
-  import { getLevelBorderColor, getLevelColor, getLevelIcon } from '$lib/utils/levelIcon'
   import { getDifficultyXP } from '$lib/utils/levels'
-  import type { Difficulty, Principle } from '$lib/utils/stringTypes'
-  import { onDestroy, onMount } from 'svelte'
-  import { cubicIn, sineOut } from 'svelte/easing'
-  import { tweened } from 'svelte/motion'
-  import { fade, fly } from 'svelte/transition'
+  import type { Difficulty } from '$lib/utils/stringTypes'
+  import { cubicIn } from 'svelte/easing'
+  import { fly } from 'svelte/transition'
   import ProgressBar from './Progressbar.svelte'
 
   interface userXP {
@@ -27,22 +24,12 @@
 
   export let exerciseDifficulty: Difficulty
   export let userXP: userXP
+
   let xpGained: number = getDifficultyXP(exerciseDifficulty)
-
-  function scrollIntoView() {
-    console.log('Scroll baby girl')
-    // const el = document.querySelector(target.getAttribute('label'))
-    const el = document.getElementById('solution')
-    if (!el) return
-    el.scrollIntoView({
-      behavior: 'smooth',
-    })
-  }
-
-  // UI States
-  let visible = false
   let showXPGained = true
   let showProgressBar = false
+
+  console.log('I AM CARD')
 </script>
 
 <!-- The button to open modal -->
