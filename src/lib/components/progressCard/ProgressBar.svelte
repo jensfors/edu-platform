@@ -29,7 +29,7 @@
 
   let initialBarXP = beforeProgressXP
   let afterBarXP = afterProgressXP
-  let barPercentage = (afterTotalXP / beforeTotalXP) * 100 // * 100 to get percentage instead of decimal number
+  let barPercentage = (afterProgressXP / afterTotalXP) * 100 // * 100 to get percentage instead of decimal number
   let remainingXPToNextLevel = afterTotalXP - afterProgressXP
 
   // Animation variables
@@ -48,7 +48,7 @@
     easing: sineOut,
   })
 
-  console.log('yaya ', beforeTotalXP, beforeProgressXP, beforeLevel)
+  console.log('yaya 123 ', beforeTotalXP, beforeProgressXP, beforeLevel)
   console.log('userXP: ', userXP)
   console.log('Remaining ', remainingXPToNextLevel)
 
@@ -81,15 +81,17 @@
         barXP.set(0, { duration: 0 })
         remainingXP.set(0, { duration: 0 })
         // Animate with new values
-        progress.set(barPercentage - maxPercentage)
+        console.log('Getting here or what?: ', barPercentage)
+        progress.set(barPercentage)
         barXP.set(afterProgressXP)
         remainingXP.set(remainingXPToNextLevel)
       }, 2000)
     } else {
+      console.log('barPercentage123: ', barPercentage)
       progress.set(barPercentage)
-      console.log('remainingXP: ', remainingXPToNextLevel)
+      console.log('remainingXP123: ', remainingXPToNextLevel)
       remainingXP.set(remainingXPToNextLevel)
-      console.log('fuck me daddy: ', afterProgressXP)
+      console.log('afterProgressXP123: ', afterProgressXP)
       barXP.set(afterProgressXP)
     }
   }
