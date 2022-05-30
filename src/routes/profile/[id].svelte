@@ -2,6 +2,7 @@
   import { page } from '$app/stores'
   import AwardCollapse from '$lib/components/awards/AwardCollapse.svelte'
   import ContentCollapse from '$lib/components/ContentCollapse.svelte'
+  import ProfileBar from '$lib/components/progressCard/ProfileBar.svelte'
   import Verified from '$lib/components/Verified.svelte'
   import { authUser } from '$lib/stores'
   import { getPrincipleMasterLevel, getWCAGMasterLevel } from '$lib/utils/awards'
@@ -24,6 +25,7 @@
       console.log('An error occured when submitting your exercise solution', error)
     }
   }
+  console.log('user: ', user)
 </script>
 
 <!-- Create course button -->
@@ -47,6 +49,11 @@
     >
   </div>
 {/if}
+
+<!-- Progress bar -->
+<div class="flex justify-center pb-6">
+  <ProfileBar userXP={user.userXP} />
+</div>
 
 <!-- Profile information section -->
 <div class="flex flex-col items-center justify-center">
