@@ -10,11 +10,7 @@
   export let exercise: Exercise
   export let course: Course
 
-  console.log('exerfuckifuckfuck', exercise)
-
-  //TODO:  This is temporary - refactor when progressbar is ready
   let progressData = null
-
   let currentExIndex = getExerciseIndex()
   let nextExIndex = currentExIndex + 1
   let prevExIndex = currentExIndex - 1
@@ -81,7 +77,8 @@
     showModal = true
     setTimeout(() => {
       showModal = false
-    }, 6000)
+    }, 6500)
+    // This animation has to be inside a timeout for some reason
     setTimeout(() => {
       scrollIntoView()
     }, 1000)
@@ -121,16 +118,12 @@
   }
 
   function scrollIntoView() {
-    console.log('Scroll baby girl')
-    // const el = document.querySelector(target.getAttribute('label'))
     const el = document.getElementById('solution')
     if (!el) return
     el.scrollIntoView({
       behavior: 'smooth',
     })
   }
-
-  console.log('authUser', $authUser)
 </script>
 
 <div class="flex justify-center">
