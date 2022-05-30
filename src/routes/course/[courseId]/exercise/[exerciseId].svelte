@@ -4,14 +4,20 @@
   import { default as ProgressCardModal } from '$lib/components/progressCard/ProgressCardModal.svelte'
   import { authUser } from '$lib/stores'
   import { getCourseIcon } from '$lib/utils/courseIcon'
+  import { Difficulty } from '$lib/utils/stringTypes'
   import type { Course, Exercise } from '@prisma/client'
 
   export let exercise: Exercise
   export let course: Course
 
-  //TODO:  This is temporary - refactor when progressbar is ready
   let progressData = null
-
+  let currentExIndex = getExerciseIndex()
+  let nextExIndex = currentExIndex + 1
+  let prevExIndex = currentExIndex - 1
+  // @ts-ignore
+  let prevExercise: Exercise = course.exercises[isFirstExercise() ? currentExIndex : prevExIndex]
+  // @ts-ignore
+  let nextExercise: Exercise = course.exercises[isLastExercise() ? currentExIndex : nextExIndex]
   let showSolution: boolean = userHasSolvedExercise()
   // @ts-ignore
   let criteria = exercise.criteria
@@ -23,6 +29,7 @@
   let codeSolution = exercise.assignments[0].answers[1].text
   // @ts-ignore
   let exerciseQuestion = exercise.assignments[0].question
+  let showModal = false
 
   function userHasSolvedExercise(): boolean {
     let hasSolved: boolean = false
@@ -61,7 +68,24 @@
     return index
   }
 
-  async function onSubmit() {
+  function onSubmit() {
+    showSolution = true
+    // TODO: Remove when done
+    if (!userIsAuthor() && $authUser) {
+      uploadProgress()
+    }
+    showModal = true
+    setTimeout(() => {
+      showModal = false
+    }, 6500)
+    // This animation has to be inside a timeout for some reason
+    setTimeout(() => {
+      scrollIntoView()
+    }, 1000)
+  }
+
+  async function uploadProgress() {
+    console.log('uploading progress..')
     try {
       const res = await fetch(`${$page.url.origin}/api/exercise/xp`, {
         method: 'POST',
@@ -71,9 +95,8 @@
           difficulty: exercise.difficulty,
         }),
       })
-
-      let data = await res.json()
-      progressData = data
+      progressData = await res.json()
+      console.log('uploaded progress sucessfully')
     } catch (error) {
       console.log('An error occured when submitting your exercise solution', error)
     }
@@ -94,20 +117,18 @@
     return isAuthor
   }
 
-  let currentExIndex = getExerciseIndex()
-  let nextExIndex = currentExIndex + 1
-  let prevExIndex = currentExIndex - 1
-
-  // @ts-ignore
-  let prevExercise: Exercise = course.exercises[isFirstExercise() ? currentExIndex : prevExIndex]
-  // @ts-ignore
-  let nextExercise: Exercise = course.exercises[isLastExercise() ? currentExIndex : nextExIndex]
+  function scrollIntoView() {
+    const el = document.getElementById('solution')
+    if (!el) return
+    el.scrollIntoView({
+      behavior: 'smooth',
+    })
+  }
 </script>
 
 <div class="flex justify-center">
   <h1>{exercise.title}</h1>
 </div>
-
 <div
   class="tooltip tooltip-bottom [--tooltip-text-color:black] [--tooltip-color:#fefefe]"
   data-tip={persona.description}
@@ -172,6 +193,8 @@
       href={`/course/${course.id}/exercise/${prevExercise.id}`}>Previous exercise</a
     >
   {/if}
+  <!-- TODO: Old button to show modal, make sure we don't need it before delete -->
+  <!-- <button class="button-width btn btn-success" disabled={showSolution} on:click={() => onSubmit()}>
   <button
     class="button-width btn btn-success"
     disabled={showSolution}
@@ -183,10 +206,21 @@
     }}
   >
     {showSolution ? 'Answer submitted' : 'Submit answer'}</button
+  > -->
+  <label
+    for="xp-modal"
+    role="button"
+    class="modal-button button-width btn btn-success {showSolution ? 'btn-disabled' : ''}"
+    tabindex={showSolution && -1}
+    aria-disabled={showSolution && true}
+    on:click={() => onSubmit()}>{showSolution ? 'Answer submitted' : 'Submit answer'}</label
   >
-  {#if progressData}
+  {#if showSolution && showModal}
     <div class="w-30">
-      <ProgressCardModal userXP={progressData} />
+      <ProgressCardModal
+        userXP={progressData}
+        exerciseDifficulty={Difficulty[exercise.difficulty]}
+      />
     </div>
   {/if}
   <div>
@@ -207,9 +241,14 @@
     {/if}
   </div>
 </div>
-
+<!-- Solution code -->
 {#if showSolution}
-  <CodeCell initialHtml={codeSolution} />
+  <div id="solution">
+    <p class="pb-6 text-center text-xl font-semibold">
+      Compare your solution with the author's solution below
+    </p>
+    <CodeCell initialHtml={codeSolution} />
+  </div>
 {/if}
 
 <style>

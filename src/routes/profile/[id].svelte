@@ -1,14 +1,14 @@
 <script lang="ts">
+  import { page } from '$app/stores'
   import AwardCollapse from '$lib/components/awards/AwardCollapse.svelte'
-  import ProgressCard from '$lib/components/progressCard/ProgressBar.svelte'
-  import Verified from '$lib/components/Verified.svelte'
   import ContentCollapse from '$lib/components/ContentCollapse.svelte'
+  import ProfileBar from '$lib/components/progressCard/ProfileBar.svelte'
+  import Verified from '$lib/components/Verified.svelte'
   import { authUser } from '$lib/stores'
   import { getPrincipleMasterLevel, getWCAGMasterLevel } from '$lib/utils/awards'
+  import { getPrincipleMasterIcon, getWCAGMasterIcon } from '$lib/utils/levelIcon'
   import { formatDate } from '$lib/utils/stringFormating'
   import { getPrincipleList, Principle, Roles } from '$lib/utils/stringTypes'
-  import { getPrincipleMasterIcon, getWCAGMasterIcon } from '$lib/utils/levelIcon'
-  import { page } from '$app/stores'
 
   export let user
   export let criteria
@@ -25,6 +25,7 @@
       console.log('An error occured when submitting your exercise solution', error)
     }
   }
+  console.log('user: ', user)
 </script>
 
 <!-- Create course button -->
@@ -49,15 +50,17 @@
   </div>
 {/if}
 
+<!-- Progress bar -->
+<div class="flex justify-center pb-6">
+  <ProfileBar userXP={user.userXP} />
+</div>
+
 <!-- Profile information section -->
-<div class="flex flex-col justify-center items-center">
-  <div class="">
-    <ProgressCard {user} />
-  </div>
+<div class="flex flex-col items-center justify-center">
   <div class="flex p-4">
     <div class="h-16 w-16">
       <img
-        class="h-full w-auto mask mask-squircle -ml-1"
+        class="mask mask-squircle -ml-1 h-full w-auto"
         src={user.avatarURL}
         alt={`Profile picture for the author: ${user.firstName} ${user.lastName}`}
       />
@@ -83,7 +86,7 @@
           />
         </div>
       {/if}
-      <div class="flex rounded-full w-16 items-center">
+      <div class="flex w-16 items-center rounded-full">
         <img
           src={getPrincipleMasterIcon(getPrincipleMasterLevel(criteria, principle), principle)}
           alt={`Icon showing the ${principle} Master level`}

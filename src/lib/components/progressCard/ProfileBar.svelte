@@ -1,79 +1,75 @@
 <script lang="ts">
   import { getLevelBorderColor, getLevelColor, getLevelIcon } from '$lib/utils/levelIcon'
+  import confetti from 'canvas-confetti'
   import { sineOut } from 'svelte/easing'
   import { tweened } from 'svelte/motion'
   import { fade } from 'svelte/transition'
 
   interface userXP {
-    afterXP: {
-      level: number
-      nextLevelXP: number
-      progressXP: number
-    }
-    beforeXP: {
-      level: number
-      nextLevelXP: number
-      progressXP: number
-    }
+    level: number
+    nextLevelXP: number
+    progressXP: number
+    totalXP: number
   }
+
   export let userXP: userXP
 
   // destructuring props
-  let {
-    level: beforeLevel,
-    nextLevelXP: beforeTotalXP,
-    progressXP: beforeProgressXP,
-  } = userXP.beforeXP
-  let { level: afterLevel, nextLevelXP: afterTotalXP, progressXP: afterProgressXP } = userXP.afterXP
+  let { level, nextLevelXP, progressXP, totalXP } = userXP
+  let barPercentage = (progressXP / nextLevelXP) * 100 // * 100 to get percentage instead of decimal number
+  let remainingXPToNextLevel = nextLevelXP - progressXP
 
-  let initialBarXP = beforeProgressXP
-  let afterBarXP = afterProgressXP
-  let barPercentage = (beforeProgressXP / afterTotalXP) * 100 // * 100 to get percentage instead of decimal number
-  let xpGained: number = afterProgressXP - beforeProgressXP
-
-  console.log('yaya ', beforeTotalXP, beforeProgressXP, beforeLevel)
-  console.log('userXP: ', userXP)
-
-  let extraTestXP = 0
-
-  let remainingXPToNextLevel = afterTotalXP - (afterProgressXP + extraTestXP)
-  console.log('Remaining ', remainingXPToNextLevel)
-
+  // Animation variables
   const progress = tweened(1, {
     duration: 2000,
     easing: sineOut,
   })
+
+  const barXP = tweened(1, {
+    duration: 2000,
+    easing: sineOut,
+  })
+
+  const remainingXP = tweened(1, {
+    duration: 2000,
+    easing: sineOut,
+  })
+
   progress.set(barPercentage)
+  barXP.set(progressXP)
+  remainingXP.set(remainingXPToNextLevel)
 </script>
 
-<div class="flex h-full w-full" in:fade>
-  <!-- Level Icon -->
-  <div class="avatar z-10">
-    <div class="w-20 rounded-full">
-      <img
-        src={getLevelIcon(beforeLevel)}
-        alt={'Level icon showing you are level ' + beforeLevel}
-      />
+<div class="flex h-20 flex-col">
+  <div class="flex h-full w-full" in:fade>
+    <!-- Level Icon -->
+    <div class="avatar z-10">
+      <div class="w-20 rounded-full">
+        <img src={getLevelIcon(level)} alt={'Level icon showing you are level ' + level} />
+      </div>
     </div>
-  </div>
-  <!-- Progress Bar -->
-  <div class="meter top-[25%] -ml-2 h-10 w-80">
-    <span style:width="{$progress}%" />
-    <p
+    <!-- Progress Bar -->
+    <div class="meter top-[25%] -ml-2 h-10 w-80">
+      <span style:width="{$progress}%" />
+      <p class="left-50% absolute top-[1px] w-full text-center text-2xl font-extrabold leading-10">
+        {$barXP.toFixed(0)}
+      </p>
+      <!-- <p
       class="xp left-50% absolute top-[7px] w-full text-center text-2xl font-extrabold leading-10"
       style:--currXP={initialBarXP}
       style:--newXP={afterBarXP}
-    />
-  </div>
-  <!-- Remaining XP to level up -->
-  <div
-    class="flex flex-col items-center justify-center rounded-xl border-2 border-solid p-4"
-    style:background-color={getLevelColor(beforeLevel + 1)}
-    style:border-color={getLevelBorderColor(beforeLevel + 1)}
-  >
-    <div class="stat-desc opacity-100">XP to level up</div>
-    <div class="text-4xl font-extrabold">
-      {remainingXPToNextLevel}
+    /> -->
+    </div>
+    <!-- Remaining XP to level up -->
+    <div
+      class="flex flex-col items-center justify-center rounded-xl border-2 border-solid p-4"
+      style:background-color={getLevelColor(level + 1)}
+      style:border-color={getLevelBorderColor(level + 1)}
+    >
+      <div class="stat-desc opacity-100">XP to level up</div>
+      <div class="text-4xl font-extrabold">
+        {$remainingXP.toFixed(0)}
+      </div>
     </div>
   </div>
 </div>
@@ -129,34 +125,5 @@
     /* border-bottom-left-radius: 20px; */
     background-color: rgb(43, 194, 83);
     background-image: linear-gradient(center bottom, rgb(43, 194, 83) 37%, rgb(84, 240, 84) 69%);
-  }
-
-  .yaya {
-    font: 800 40px system-ui;
-  }
-
-  @property --num {
-    syntax: '<integer>';
-    initial-value: 0;
-    inherits: false;
-  }
-
-  .xp {
-    animation: counter 3s normal ease-in-out forwards;
-    counter-reset: num var(--num);
-    font: 800 24px system-ui;
-    /* padding: 2rem; */
-  }
-  .xp::after {
-    content: counter(num);
-  }
-
-  @keyframes counter {
-    from {
-      --num: var(--currXP);
-    }
-    to {
-      --num: var(--newXP);
-    }
   }
 </style>
