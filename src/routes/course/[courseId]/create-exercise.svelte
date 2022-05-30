@@ -113,8 +113,6 @@
     })
   }
 
-  $: console.log('yayaya: ', perceivableWcagSelections)
-
   function onPublish() {
     // Write the stuff here to make post request that publish exercise
     console.log('CodeExercise: ', codeExercise)
