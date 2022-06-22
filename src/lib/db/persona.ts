@@ -54,7 +54,7 @@ export async function getUsersPersonas(userId: string): Promise<Persona[]> {
 }
 
 export async function getUsablePersonas(userId: string): Promise<Persona[]> {
-    const result: Persona[] = await prisma.persona.findMany({
+    let result: Persona[] = await prisma.persona.findMany({
         where: {
             private: false
             /*
@@ -68,6 +68,12 @@ export async function getUsablePersonas(userId: string): Promise<Persona[]> {
             }]*/
         }
     })
+    const result2: Persona[] = await prisma.persona.findMany({
+        where: {
+            authorId: userId
+        }
+    })
+    result = result.concat(result2)
     return result
 }
 
