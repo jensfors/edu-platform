@@ -6,7 +6,7 @@
   import Tiptap from '$lib/components/Tiptap.svelte'
   import { authUser } from '$lib/stores'
   import { ExerciseType } from '$lib/utils/stringTypes'
-  import type { Course,Persona,WCAGCriteria,WCAGPrinciple } from '@prisma/client'
+  import type { Course, Persona, WCAGCriteria, WCAGPrinciple } from '@prisma/client'
 
   export let course: Course
   export let personas: Persona[]
@@ -27,6 +27,7 @@
   let robustWcagSelections: WCAGCriteria[] = []
   let understandableWcagSelections: WCAGCriteria[] = []
   let userId
+  let saved = false
 
   $: disableSave = exerciseTitle ? false : true
 
@@ -111,6 +112,7 @@
         userId,
       }),
     })
+    saved = true
   }
 
   function onPublish() {
@@ -316,6 +318,14 @@
 <!-- The save and publish buttons -->
 <div class="flex justify-center gap-8 pt-14">
   <button class="btn" disabled={disableSave} on:click={onSave}>Save</button>
+  {#if saved}
+    <a
+      class="button-width btn btn-primary"
+      role="button"
+      sveltekit:prefetch
+      href={`/course/${course?.id}`}>Return to course</a
+    >
+  {/if}
   <button class="btn btn-secondary" disabled={disablePublish} on:click={onPublish}>Publish</button>
 </div>
 
