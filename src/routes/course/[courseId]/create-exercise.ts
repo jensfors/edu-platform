@@ -11,7 +11,7 @@ export async function get({ params, url }) {
   let course: Course = null
   let personas: Persona[] = []
   let criteria: WCAGCriteria[] = []
-  if (courseId /* && userId*/) {
+  if (courseId && userId) {
     course = await getCourse(courseId)
     personas = await getUsablePersonas('66c50a3e-4985-4e47-a752-324dfb15e8a4')
   }
