@@ -1,11 +1,16 @@
 <script lang="ts">
   import { page } from '$app/stores'
   import CodeCell from '$lib/components/editor/CodeCell.svelte'
+  import { showFilter, showMessage } from '$lib/components/editor/editorStore'
+  import MessagePopup from '$lib/components/editor/MessagePopup.svelte'
   import { default as ProgressCardModal } from '$lib/components/progressCard/ProgressCardModal.svelte'
   import { authUser } from '$lib/stores'
   import { getCourseIcon } from '$lib/utils/courseIcon'
   import { Difficulty } from '$lib/utils/stringTypes'
   import type { Course, Exercise } from '@prisma/client'
+  import { getContext, setContext } from 'svelte'
+  import IntersectionObserver from 'svelte-intersection-observer'
+  import { fade } from 'svelte/transition'
 
   export let exercise: Exercise
   export let course: Course
@@ -124,6 +129,21 @@
       behavior: 'smooth',
     })
   }
+
+  // TODO: only display filter on button exercise
+  // cl27czldu0240c8v6nso7wjyo
+  $: {
+    console.log('mess', $showMessage)
+  }
+  $: show = showMessage
+  console.log(exercise)
+  if (exercise.id === 'cl27czldu0240c8v6nso7wjyo') {
+    showMessage.set(true)
+    showFilter.set(true)
+    console.log('yayayaya')
+  }
+
+  let node
 </script>
 
 <div class="flex justify-center">
@@ -174,7 +194,16 @@
 <!-- Exercise -->
 <div class="divider pt-14 pb-7">Exercise</div>
 <p class="pb-6 text-xl font-semibold">{exerciseQuestion}</p>
-<CodeCell initialHtml={codeExercise} />
+<IntersectionObserver element={node} let:intersecting threshold={0.5}>
+  {#if intersecting}
+    {#if $showMessage}
+      <MessagePopup />
+    {/if}
+  {/if}
+  <div bind:this={node}>
+    <CodeCell initialHtml={codeExercise} />
+  </div>
+</IntersectionObserver>
 
 <!-- Navigation buttons -->
 <div class="flex justify-center gap-20 py-16">

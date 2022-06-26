@@ -1,6 +1,7 @@
 <script lang="ts">
+  import { showMessage, showFilter } from '$lib/components/editor/editorStore'
   import { colorblindFilters } from '$lib/utils/colorblindFilters'
-  import { afterUpdate, onMount } from 'svelte'
+  import { afterUpdate, onMount, setContext } from 'svelte'
 
   let parentStyles = $$props.class // use $$props to access the parent's props which has the normal styles
   export let html: string
@@ -11,7 +12,7 @@
   let colorblindFilterCss: string = '' // Empty if no filter is selected
   let appliedFilterName: string = 'Select Filter' // Empty if no filter is selected
 
-  let triedFilter = false
+  // let triedFilter = false
 
   let iframe: HTMLIFrameElement = null
   let url
@@ -67,7 +68,7 @@
   }
 
   function addFilter(filter: string) {
-    triedFilter = true
+    showMessage.set(false)
     colorblindFilterHtml = colorblindFilters[filter].html
     colorblindFilterCss = colorblindFilters[filter].css
     appliedFilterName = colorblindFilters[filter].name
@@ -83,28 +84,27 @@
 <div class="mockup-window border border-base-300 bg-base-300 {parentStyles}">
   <iframe title="preview" bind:this={iframe} class="h-full w-full bg-white p-2" />
 
-  <div class="absolute top-1 right-1 z-20 flex">
-    {#if !triedFilter}
-      <div class="badge badge-secondary -mr-2">Try applying a colorblind filter</div>
-    {/if}
-    <div class="reverse-button-grow-direction dropdown-left dropdown mt-0 w-36">
-      <label
-        tabindex="0"
-        for="colorblind-filter"
-        class="btn btn-outline btn-sm absolute m-1 duration-300 hover:opacity-100"
-        >{appliedFilterName}</label
-      >
-      <ul tabindex="0" class="dropdown-content menu rounded-box w-60 bg-base-100 p-2 shadow">
-        {#each Object.entries(colorblindFilters) as [key, value]}
-          <li>
-            <button class="px-1 py-1 text-right text-sm" on:click={() => addFilter(value.name)}
-              >{value.description}</button
-            >
-          </li>
-        {/each}
-      </ul>
+  {#if $showFilter}
+    <div class="absolute top-1 right-1 z-20 flex">
+      <div class="reverse-button-grow-direction dropdown-left dropdown mt-0 w-36">
+        <label
+          tabindex="0"
+          for="colorblind-filter"
+          class="btn btn-outline btn-sm absolute m-1 duration-300 hover:opacity-100"
+          >{appliedFilterName}</label
+        >
+        <ul tabindex="0" class="dropdown-content menu rounded-box w-60 bg-base-100 p-2 shadow">
+          {#each Object.entries(colorblindFilters) as [key, value]}
+            <li>
+              <button class="px-1 py-1 text-right text-sm" on:click={() => addFilter(value.name)}
+                >{value.description}</button
+              >
+            </li>
+          {/each}
+        </ul>
+      </div>
     </div>
-  </div>
+  {/if}
 </div>
 
 <style>
