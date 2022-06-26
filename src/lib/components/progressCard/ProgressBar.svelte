@@ -98,34 +98,26 @@
 </script>
 
 <div class="flex h-full w-full" in:fade>
-  <!-- Level Icon -->
-  <div class="avatar z-10">
-    <div class="w-20 rounded-full">
-      <img
-        src={getLevelIcon(beforeLevel)}
-        alt={'Level icon showing you are level ' + beforeLevel}
+<!-- Level Icon -->
+<div class="avatar z-10">
+  <div class="w-20 rounded-full">
+    <img src={getLevelIcon(beforeLevel)} alt={'Level icon showing you are level ' + beforeLevel}
       />
-    </div>
-  </div>
-  <!-- Progress Bar -->
-  <div class="meter top-[25%] -ml-2 h-10 w-80">
-    <span style:width="{$progress}%" />
-    <p class="left-50% absolute top-[1px] w-full text-center text-2xl font-extrabold leading-10">
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="meter top-[25%] -ml-2 h-10 w-80">
+      <span style:width="{$progress}%" />
+      <p class="left-50% absolute top-[1px] w-full text-center text-2xl font-extrabold leading-10">
       {$barXP.toFixed(0)}
-    </p>
-    <!-- <p
-      class="xp left-50% absolute top-[7px] w-full text-center text-2xl font-extrabold leading-10"
-      style:--currXP={initialBarXP}
-      style:--newXP={afterBarXP}
+      </p>
+      <!-- <p class="xp left-50% absolute top-[7px] w-full text-center text-2xl font-extrabold leading-10" style:--currXP={initialBarXP} style:--newXP={afterBarXP}
     /> -->
-  </div>
-  <!-- Remaining XP to level up -->
-  <div
-    class="flex flex-col items-center justify-center rounded-xl border-2 border-solid p-4"
-    style:background-color={getLevelColor(beforeLevel + 1)}
-    style:border-color={getLevelBorderColor(beforeLevel + 1)}
+    </div>
+    <!-- Remaining XP to level up -->
+    <div class="flex flex-col items-center justify-center rounded-xl border-2 border-solid p-4" style:background-color={getLevelColor(beforeLevel + 1)} style:border-color={getLevelBorderColor(beforeLevel + 1)}
   >
-    <div class="stat-desc opacity-100">XP to level up</div>
+<div class="stat-desc opacity-100">XP to level up</div>
     <div class="text-4xl font-extrabold">
       {$remainingXP.toFixed(0)}
     </div>

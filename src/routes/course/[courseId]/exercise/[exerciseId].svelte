@@ -1,11 +1,16 @@
 <script lang="ts">
   import { page } from '$app/stores'
   import CodeCell from '$lib/components/editor/CodeCell.svelte'
+  import { showFilter,showMessage } from '$lib/components/editor/editorStore'
+  import MessagePopup from '$lib/components/editor/MessagePopup.svelte'
   import { default as ProgressCardModal } from '$lib/components/progressCard/ProgressCardModal.svelte'
   import { authUser } from '$lib/stores'
   import { getCourseIcon } from '$lib/utils/courseIcon'
   import { Difficulty } from '$lib/utils/stringTypes'
-  import type { Course, Exercise } from '@prisma/client'
+  import type { Course,Exercise } from '@prisma/client'
+  import { getContext,setContext } from 'svelte'
+  import IntersectionObserver from 'svelte-intersection-observer'
+  import { fade } from 'svelte/transition'
 
   export let exercise: Exercise
   export let course: Course
@@ -30,6 +35,7 @@
   // @ts-ignore
   let exerciseQuestion = exercise.assignments[0].question
   let showModal = false
+  let intersectionElement
 
   function userHasSolvedExercise(): boolean {
     let hasSolved: boolean = false
@@ -134,6 +140,11 @@
       behavior: 'smooth',
     })
   }
+
+  if (exercise.id === 'cl27czldu0240c8v6nso7wjyo') {
+    showMessage.set(true)
+    showFilter.set(true)
+  }
 </script>
 
 <div class="flex justify-center">
@@ -184,7 +195,19 @@
 <!-- Exercise -->
 <div class="divider pt-14 pb-7">Exercise</div>
 <p class="pb-6 text-xl font-semibold">{exerciseQuestion}</p>
-<CodeCell initialHtml={codeExercise} />
+<IntersectionObserver element={intersectionElement} let:intersecting threshold={0.5}>
+  {#if intersecting}
+    {#if $showMessage}
+      <MessagePopup />
+    {/if}
+  {/if}
+  <div bind:this={intersectionElement}>
+    <CodeCell
+      initialHtml={codeExercise}
+      demo={exercise.id === 'cl27czldu0240c8v6nso7wjyo' ? true : false}
+    />
+  </div>
+</IntersectionObserver>
 
 <!-- Navigation buttons -->
 <div class="flex justify-center gap-20 py-16">
