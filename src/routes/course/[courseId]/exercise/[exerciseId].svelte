@@ -35,6 +35,7 @@
   // @ts-ignore
   let exerciseQuestion = exercise.assignments[0].question
   let showModal = false
+  let intersectionElement
 
   function userHasSolvedExercise(): boolean {
     let hasSolved: boolean = false
@@ -130,20 +131,10 @@
     })
   }
 
-  // TODO: only display filter on button exercise
-  // cl27czldu0240c8v6nso7wjyo
-  $: {
-    console.log('mess', $showMessage)
-  }
-  $: show = showMessage
-  console.log(exercise)
   if (exercise.id === 'cl27czldu0240c8v6nso7wjyo') {
     showMessage.set(true)
     showFilter.set(true)
-    console.log('yayayaya')
   }
-
-  let node
 </script>
 
 <div class="flex justify-center">
@@ -194,14 +185,17 @@
 <!-- Exercise -->
 <div class="divider pt-14 pb-7">Exercise</div>
 <p class="pb-6 text-xl font-semibold">{exerciseQuestion}</p>
-<IntersectionObserver element={node} let:intersecting threshold={0.5}>
+<IntersectionObserver element={intersectionElement} let:intersecting threshold={0.5}>
   {#if intersecting}
     {#if $showMessage}
       <MessagePopup />
     {/if}
   {/if}
-  <div bind:this={node}>
-    <CodeCell initialHtml={codeExercise} />
+  <div bind:this={intersectionElement}>
+    <CodeCell
+      initialHtml={codeExercise}
+      demo={exercise.id === 'cl27czldu0240c8v6nso7wjyo' ? true : false}
+    />
   </div>
 </IntersectionObserver>
 

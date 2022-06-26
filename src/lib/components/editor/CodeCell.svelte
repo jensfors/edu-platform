@@ -2,7 +2,22 @@
   import Editor from './Editor.svelte'
   import Preview from './Preview.svelte'
 
+  export let demo: boolean = false
+  let demoHtml = `
+  <body>
+    <button>Important Button</button>
+  </body>`
+  let demoCss = `button {
+    color: #65B54E;
+    background-color: #FF6666;
+    font-size: 32px;
+    padding: 10px;
+  }`
+  let demoJs = ``
   export let initialHtml: string = '<h1>Hello, world!</h1>'
+
+  console.log('filter: ', demo)
+  console.log('initial: ', initialHtml)
   let initialCss: string = ` /* Remove this comment to apply the CSS
     h1 {
       color: CornflowerBlue;
@@ -10,16 +25,16 @@
     */`
   let initialJs: string = 'console.log("Check the console and you will see this message :-)")'
 
-  export let inputHtml: string = initialHtml
-  let inputCss: string = initialCss
-  let inputJs: string = initialJs
+  let inputHtml: string = demo ? demoHtml : initialHtml
+  let inputCss: string = demo ? demoCss : initialCss
+  let inputJs: string = demo ? demoJs : initialJs
 
   // let outputHtml: string // TODO: figure out if i can do something smarter with output code
   // let outputCss: string // TODO: figure out if i can do something smarter with output code
   // let outputJs: string // TODO: figure out if i can do something smarter with output code
 
-  let htmlTab = true
-  let cssTab = false
+  let htmlTab = demo ? false : true
+  let cssTab = demo ? true : false
   let jsTab = false
 
   function onTabClick(type: string) {
@@ -42,19 +57,19 @@
 <div>
   <div class="flex h-[600px] w-full gap-16">
     <div class=" editor-wrapper mockup-code w-1/2">
-      <div class="tabs pl-4 gap-2">
+      <div class="tabs gap-2 pl-4">
         <button
-          class="btn btn-secondary btn-outline btn-sm pt-2 pb-8 -mb-2 focus:text-black"
+          class="btn btn-outline btn-secondary btn-sm -mb-2 pt-2 pb-8 focus:text-black"
           class:btn-outline={!htmlTab}
           on:click={() => onTabClick('HTML')}>HTML</button
         >
         <button
-          class="btn btn-secondary btn-outline btn-sm pt-2 pb-8 -mb-2 focus:text-black"
+          class="btn btn-outline btn-secondary btn-sm -mb-2 pt-2 pb-8 focus:text-black"
           class:btn-outline={!cssTab}
           on:click={() => onTabClick('CSS')}>CSS</button
         >
         <button
-          class="btn btn-secondary btn-outline btn-sm pt-2 pb-8 -mb-2 focus:text-black"
+          class="btn btn-outline btn-secondary btn-sm -mb-2 pt-2 pb-8 focus:text-black"
           class:btn-outline={!jsTab}
           on:click={() => onTabClick('JS')}>JS</button
         >
@@ -83,6 +98,7 @@
   .editor-wrapper {
     /* Use this if we want height to be auto instead of set from consuming parent */
     @apply relative h-full;
+    overflow: unset;
     /* @apply relative; */
   }
 
