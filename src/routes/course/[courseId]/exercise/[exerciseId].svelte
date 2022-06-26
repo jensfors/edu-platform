@@ -1,14 +1,14 @@
 <script lang="ts">
   import { page } from '$app/stores'
   import CodeCell from '$lib/components/editor/CodeCell.svelte'
-  import { showFilter,showMessage } from '$lib/components/editor/editorStore'
+  import { showFilter, showMessage } from '$lib/components/editor/editorStore'
   import MessagePopup from '$lib/components/editor/MessagePopup.svelte'
   import { default as ProgressCardModal } from '$lib/components/progressCard/ProgressCardModal.svelte'
   import { authUser } from '$lib/stores'
   import { getCourseIcon } from '$lib/utils/courseIcon'
   import { Difficulty } from '$lib/utils/stringTypes'
-  import type { Course,Exercise } from '@prisma/client'
-  import { getContext,setContext } from 'svelte'
+  import type { Course, Exercise } from '@prisma/client'
+  import { getContext, onDestroy, setContext } from 'svelte'
   import IntersectionObserver from 'svelte-intersection-observer'
   import { fade } from 'svelte/transition'
 
@@ -145,6 +145,11 @@
     showMessage.set(true)
     showFilter.set(true)
   }
+
+  onDestroy(() => {
+    showMessage.set(false)
+    showFilter.set(false)
+  })
 </script>
 
 <div class="flex justify-center">
