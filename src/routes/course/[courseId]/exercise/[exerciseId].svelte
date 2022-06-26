@@ -40,7 +40,17 @@
   function userHasSolvedExercise(): boolean {
     let hasSolved: boolean = false
     // @ts-ignore
+
     if ($authUser && exercise.usersSolved) {
+      // If user is author
+      // @ts-ignore
+      course.authors.forEach((author) => {
+        if (author.userId === $authUser.id) {
+          hasSolved = true
+          return
+        }
+      })
+      // If user has already solved the exercise
       // @ts-ignore
       exercise.usersSolved.forEach((usersSolved) => {
         if (usersSolved.userId === $authUser.id) {

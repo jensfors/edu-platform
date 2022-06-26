@@ -6,15 +6,16 @@ import { Difficulty } from '$lib/utils/stringTypes'
 import type { Course, Exercise, Persona, WCAGCriteria } from '@prisma/client'
 
 export async function get({ params, url }) {
-  const userId: string = url.searchParams.get('userId')
+  const userId: string = await url.searchParams.get('userId')
   const { courseId } = params
   let course: Course = null
   let personas: Persona[] = []
   let criteria: WCAGCriteria[] = []
-  if (courseId /* && userId*/) {
+  if (courseId /* && userId */) {
     course = await getCourse(courseId)
-    personas = await getUsablePersonas('f25429ff-0d2c-4630-9a5b-9eda5b37cac3')
+    personas = await getUsablePersonas('66c50a3e-4985-4e47-a752-324dfb15e8a4')
   }
+  console.log(personas.length)
   criteria = await getAllCriteria()
 
   //console.log('get', course)
