@@ -2,13 +2,21 @@
   import Editor from './Editor.svelte'
   import Preview from './Preview.svelte'
 
+  export let solution: boolean = false
   export let demo: boolean = false
   let demoHtml = `
   <body>
     <button>Important Button</button>
   </body>`
-  let demoCss = `button {
+  let demoCss = !solution
+    ? `button {
     color: #65B54E;
+    background-color: #FF6666;
+    font-size: 32px;
+    padding: 10px;
+  }`
+    : `button {
+    color: #02061F;
     background-color: #FF6666;
     font-size: 32px;
     padding: 10px;
@@ -16,8 +24,6 @@
   let demoJs = ``
   export let initialHtml: string = '<h1>Hello, world!</h1>'
 
-  console.log('filter: ', demo)
-  console.log('initial: ', initialHtml)
   let initialCss: string = ` /* Remove this comment to apply the CSS
     h1 {
       color: CornflowerBlue;

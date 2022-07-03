@@ -285,7 +285,11 @@
     <p class="pb-6 text-center text-xl font-semibold">
       Compare your solution with the author's solution below
     </p>
-    <CodeCell initialHtml={codeSolution} />
+    <CodeCell
+      initialHtml={codeSolution}
+      demo={exercise.id === 'cl27czldu0240c8v6nso7wjyo' ? true : false}
+      solution={true}
+    />
   </div>
 {/if}
 
