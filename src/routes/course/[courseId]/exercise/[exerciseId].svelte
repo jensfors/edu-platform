@@ -231,20 +231,6 @@
       href={`/course/${course.id}/exercise/${prevExercise.id}`}>Previous exercise</a
     >
   {/if}
-  <!-- TODO: Old button to show modal, make sure we don't need it before delete -->
-  <!-- <button class="button-width btn btn-success" disabled={showSolution} on:click={() => onSubmit()}>
-  <button
-    class="button-width btn btn-success"
-    disabled={showSolution}
-    on:click={() => {
-      showSolution = true
-      if (!userIsAuthor() && $authUser) {
-        onSubmit()
-      }
-    }}
-  >
-    {showSolution ? 'Answer submitted' : 'Submit answer'}</button
-  > -->
   <label
     for="xp-modal"
     role="button"
