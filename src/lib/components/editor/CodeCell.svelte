@@ -23,7 +23,6 @@
   }`
   let demoJs = ``
   export let initialHtml: string = '<h1>Hello, world!</h1>'
-
   let initialCss: string = ` /* Remove this comment to apply the CSS
     h1 {
       color: CornflowerBlue;
@@ -34,10 +33,6 @@
   let inputHtml: string = demo ? demoHtml : initialHtml
   let inputCss: string = demo ? demoCss : initialCss
   let inputJs: string = demo ? demoJs : initialJs
-
-  // let outputHtml: string // TODO: figure out if i can do something smarter with output code
-  // let outputCss: string // TODO: figure out if i can do something smarter with output code
-  // let outputJs: string // TODO: figure out if i can do something smarter with output code
 
   let htmlTab = demo ? false : true
   let cssTab = demo ? true : false
@@ -102,10 +97,8 @@
 
 <style>
   .editor-wrapper {
-    /* Use this if we want height to be auto instead of set from consuming parent */
     @apply relative h-full;
     overflow: unset;
-    /* @apply relative; */
   }
 
   .editor-wrapper .button-format {
@@ -114,9 +107,5 @@
 
   .editor-wrapper:hover .button-format {
     @apply opacity-100;
-  }
-  .deuteranopia {
-    -webkit-filter: url('filters.svg#deuteranopia');
-    filter: url('filters.svg#deuteranopia');
   }
 </style>

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { showMessage, showFilter } from '$lib/components/editor/editorStore'
+  import { showFilter,showMessage } from '$lib/components/editor/editorStore'
   import { colorblindFilters } from '$lib/utils/colorblindFilters'
-  import { afterUpdate, onMount, setContext } from 'svelte'
+  import { afterUpdate,onMount } from 'svelte'
 
   let parentStyles = $$props.class // use $$props to access the parent's props which has the normal styles
   export let html: string
