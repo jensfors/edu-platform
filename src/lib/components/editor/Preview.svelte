@@ -12,7 +12,6 @@
   let colorblindFilterCss: string = '' // Empty if no filter is selected
   let appliedFilterName: string = 'Select Filter' // Empty if no filter is selected
 
-  // let triedFilter = false
 
   let iframe: HTMLIFrameElement = null
   let url
@@ -36,12 +35,6 @@
     })
 
     iframe.src = url
-  }
-
-  $: {
-    // console.log('previws: ', html)
-    // console.log('preview: ', css)
-    // console.log('previes: ', js)
   }
 
   const getGeneratedPageURL = ({ html, css, js }) => {
