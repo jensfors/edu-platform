@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { showMessage, showFilter } from '$lib/components/editor/editorStore'
+  import { showFilter,showMessage } from '$lib/components/editor/editorStore'
   import { colorblindFilters } from '$lib/utils/colorblindFilters'
-  import { afterUpdate, onMount, setContext } from 'svelte'
+  import { afterUpdate,onMount } from 'svelte'
 
   let parentStyles = $$props.class // use $$props to access the parent's props which has the normal styles
   export let html: string
@@ -12,7 +12,6 @@
   let colorblindFilterCss: string = '' // Empty if no filter is selected
   let appliedFilterName: string = 'Select Filter' // Empty if no filter is selected
 
-  // let triedFilter = false
 
   let iframe: HTMLIFrameElement = null
   let url
@@ -36,12 +35,6 @@
     })
 
     iframe.src = url
-  }
-
-  $: {
-    // console.log('previws: ', html)
-    // console.log('preview: ', css)
-    // console.log('previes: ', js)
   }
 
   const getGeneratedPageURL = ({ html, css, js }) => {
